@@ -8,42 +8,64 @@ import java.io.OutputStream
 class KlipProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
-    private val sourceSetRoot: File,
+    private val sourcesRoot: String,
+    private val klipRoots: Map<String, String>
 ) : SymbolProcessor {
-    private val klipsRoot: File = sourceSetRoot.resolve("klips").absoluteFile
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver.getSymbolsWithAnnotation(Klippable::class.qualifiedName!!)
         val classes = symbols.filterIsInstance<KSClassDeclaration>().toList()
+
         logger.warn("Processing ${classes.size} classes")
-        logger.warn("PWD: ${File("").absolutePath}")
-        logger.warn("SourceSetRoot: ${sourceSetRoot.absolutePath}")
-        logger.warn("klipsRoot: ${klipsRoot.absolutePath}")
+        logger.warn("PWD: ${File(".").canonicalPath}")
+        logger.warn("SourcesRoot: $sourcesRoot")
+        logger.warn("klipRoots: $klipRoots")
         classes.map {
-            val packageName = it.packageName.asString()
-            val className = it.simpleName.asString()
-            val containingFile = it.containingFile!!
+            generate(it)
+        }
+        return emptyList()
+    }
+
+    private fun OutputStream.appendText(str: String) {
+        this.write(str.toByteArray())
+    }
+
+    private fun generate(classDeclaration: KSClassDeclaration) {
+        val containingFile = classDeclaration.containingFile!!
+        val containingFilePath = containingFile.filePath
+        val klipName = containingFilePath.let {
+            it.removePrefix("$sourcesRoot/").split("/")[0]
+        }
+        val klipRoot = klipRoots[klipName]
+        logger.warn("klipRoot: $klipRoot")
+        if (klipRoot != null) {
+            val packageName = classDeclaration.packageName.asString()
+            val className = classDeclaration.simpleName.asString()
             codeGenerator.createNewFile(
                 dependencies = Dependencies(true, containingFile),
-                packageName = it.packageName.asString(),
-                fileName = "${className}Klipper",
+                packageName = packageName,
+                fileName = "${className}Klip",
                 extensionName = "kt"
             ).use { file ->
                 if (packageName.isNotBlank()) {
                     file.appendText("package $packageName\n\n")
                 }
-                file.appendText(
-                    """
-                    public val $className.klipPath: String
-                        get() = "${klipsRoot}${containingFile.filePath.removePrefix(sourceSetRoot.absolutePath)}"
-                """.trimIndent()
-                )
+                val klipClassRoot = "${klipRoot}${containingFilePath.removePrefix("$sourcesRoot/$klipName/kotlin")}"
+                file.appendText(buildStubs(className, klipClassRoot))
             }
+        } else {
+            logger.warn("Klip root for [$klipName] not found. Please add it via 'klip.root.$klipName' ksp option")
         }
-        return emptyList()
     }
 
-    fun OutputStream.appendText(str: String) {
-        this.write(str.toByteArray())
-    }
+    private fun buildStubs(className: String, klipClassRoot: String): String = """
+        private val klipManager = dev.petuska.klip.KlipManager("$klipClassRoot")
+        
+        public fun $className.klip(id: Any, source: () -> String): String = klipManager.klip(id, source)
+        
+        public fun <T> $className.assertKlip(id: Any, value: T) {
+            val valueStr = value.toString()
+            kotlin.test.assertEquals(klip(id) { valueStr }, valueStr)
+        }
+    """.trimIndent() + "\n"
 }

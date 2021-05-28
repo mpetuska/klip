@@ -10,7 +10,7 @@ import kotlin.test.assertNotNull
 /**
  * A simple unit test for the 'klip.greeting' plugin.
  */
-class KlipPluginTest {
+class KlipManagerPluginTest {
     @Test fun `plugin registers task`() {
         // Create a test project and apply the plugin
         val project = ProjectBuilder.builder().build()

@@ -11,7 +11,7 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:_")
+                api(kotlin("test-annotations-common"))
             }
         }
         named("commonTest") {

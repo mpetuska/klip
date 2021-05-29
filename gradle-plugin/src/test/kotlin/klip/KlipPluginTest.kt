@@ -10,13 +10,12 @@ import kotlin.test.assertNotNull
 /**
  * A simple unit test for the 'klip.greeting' plugin.
  */
-class KlipManagerPluginTest {
-    @Test fun `plugin registers task`() {
-        // Create a test project and apply the plugin
+class KlipPluginTest {
+    @Test
+    fun `plugin registers task`() {
         val project = ProjectBuilder.builder().build()
-        project.plugins.apply("klip.greeting")
+        project.plugins.apply("dev.petuska.klip")
 
-        // Verify the result
-        assertNotNull(project.tasks.findByName("greeting"))
+        assertNotNull(project.extensions.findByName("klip"))
     }
 }

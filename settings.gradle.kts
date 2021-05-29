@@ -10,9 +10,8 @@ plugins {
 }
 
 rootProject.name = "klip"
-include(":sandbox")
 
-val modules = arrayOf(":plugin", ":core", ":processor")
+val modules = arrayOf(":core", ":processor")
 modules.forEach {
     include(it)
     project(it).apply {

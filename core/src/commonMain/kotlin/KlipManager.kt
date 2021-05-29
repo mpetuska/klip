@@ -44,8 +44,9 @@ class KlipManager(
     }
 
     companion object {
+        const val UPDATE_ENV_VAR_NAME = "KLIP_UPDATE"
         private val updateMode by lazy {
-            Environment["UPDATE_KLIPS"].equals("true", true)
+            Environment[UPDATE_ENV_VAR_NAME].equals("true", true)
         }
     }
 }

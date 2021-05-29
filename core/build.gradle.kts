@@ -11,13 +11,12 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
+                api(kotlin("test"))
                 api(kotlin("test-annotations-common"))
             }
         }
-        named("commonTest") {
+        named("jvmMain") {
             dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-annotations-common"))
             }
         }
         named("jsMain") {

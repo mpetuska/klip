@@ -9,17 +9,12 @@ class KlipProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
     private val sourcesRoot: String,
-    private val klipRoots: Map<String, String>
+    private val klipRoots: Map<String, String>,
 ) : SymbolProcessor {
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver.getSymbolsWithAnnotation(Klippable::class.qualifiedName!!)
         val classes = symbols.filterIsInstance<KSClassDeclaration>().toList()
-
-        logger.warn("Processing ${classes.size} classes")
-        logger.warn("PWD: ${File(".").canonicalPath}")
-        logger.warn("SourcesRoot: $sourcesRoot")
-        logger.warn("klipRoots: $klipRoots")
         classes.map {
             generate(it)
         }
@@ -37,7 +32,6 @@ class KlipProcessor(
             it.removePrefix("$sourcesRoot/").split("/")[0]
         }
         val klipRoot = klipRoots[klipName]
-        logger.warn("klipRoot: $klipRoot")
         if (klipRoot != null) {
             val packageName = classDeclaration.packageName.asString()
             val className = classDeclaration.simpleName.asString()
@@ -61,11 +55,18 @@ class KlipProcessor(
     private fun buildStubs(className: String, klipClassRoot: String): String = """
         private val klipManager = dev.petuska.klip.KlipManager("$klipClassRoot")
         
+        ${klip(className)}        
+        ${assertKlip(className)}
+    """.trimIndent() + "\n"
+
+    private fun klip(className: String) = """
         public fun $className.klip(id: Any, source: () -> String): String = klipManager.klip(id, source)
-        
+    """.trimIndent()
+
+    private fun assertKlip(className: String) = """
         public fun <T> $className.assertKlip(id: Any, value: T) {
             val valueStr = value.toString()
             kotlin.test.assertEquals(klip(id) { valueStr }, valueStr)
         }
-    """.trimIndent() + "\n"
+    """.trimIndent()
 }

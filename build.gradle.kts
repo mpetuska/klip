@@ -79,50 +79,50 @@ subprojects {
     }
   }
 
-  publishing {
-    publications {
-      withType<MavenPublication> {
-        artifact(tasks["javadocJar"])
-        pom {
-          name by project.name
-          url by "https://github.com/mpetuska/klip"
-          description by project.description
-
-          licenses {
-            license {
-              name by "The Apache License, Version 2.0"
-              url by "https://www.apache.org/licenses/LICENSE-2.0.txt"
-            }
-          }
-
-          developers {
-            developer {
-              id to "mpetuska"
-              name to "Martynas Petuška"
-              email to "martynas@petuska.dev"
-            }
-          }
-
-          scm {
-            connection by "scm:git:git@github.com:mpetuska/klip.git"
+  afterEvaluate {
+    publishing {
+      publications {
+        withType<MavenPublication> {
+          artifact(tasks["javadocJar"])
+          pom {
+            name by project.name
             url by "https://github.com/mpetuska/klip"
-            tag by Git.headCommitHash
+            description by project.description
+
+            licenses {
+              license {
+                name by "The Apache License, Version 2.0"
+                url by "https://www.apache.org/licenses/LICENSE-2.0.txt"
+              }
+            }
+
+            developers {
+              developer {
+                id to "mpetuska"
+                name to "Martynas Petuška"
+                email to "martynas@petuska.dev"
+              }
+            }
+
+            scm {
+              connection by "scm:git:git@github.com:mpetuska/klip.git"
+              url by "https://github.com/mpetuska/klip"
+              tag by Git.headCommitHash
+            }
           }
         }
-      }
-      repositories {
-        maven("https://maven.pkg.github.com/mpetuska/klip") {
-          name = "GitHub"
-          credentials {
-            username = System.getenv("GH_USERNAME")
-            password = System.getenv("GH_PASSWORD")
+        repositories {
+          maven("https://maven.pkg.github.com/mpetuska/klip") {
+            name = "GitHub"
+            credentials {
+              username = System.getenv("GH_USERNAME")
+              password = System.getenv("GH_PASSWORD")
+            }
           }
         }
       }
     }
-  }
 
-  afterEvaluate {
     tasks {
       withType<Jar> {
         manifest {

@@ -52,16 +52,17 @@ jobs:
           VERSION=${VERSION:=${{ github.event.inputs.version }}}
           VERSION=${VERSION/v}
           ./gradlew check
+          cd gradle-plugin && ./gradlew check
       - name: Publish Pages
         shell: bash
         run: |
           VERSION=${VERSION:=${{ github.event.inputs.version }}}
           VERSION=${VERSION/v}
-          ./gradlew dokkaHtml -Pversion=${VERSION//v};
-          cp -avr build/dokka/html/ public;
+          ./gradlew dokkaHtmlMultiModule -Pversion=${VERSION//v};
+          cp -avr build/dokka/htmlMultiModule/ public;
           find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
-          echo '/npm-publish /npm-publish/npm-publish/index.html 301' > public/_redirects;
-          echo '/npm-publish/index.html /npm-publish/npm-publish/index.html 301' >> public/_redirects;
+          echo '/klip /klip/klip/index.html 301' > public/_redirects;
+          echo '/klip/index.html /klip/klip/index.html 301' >> public/_redirects;
       - uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
@@ -101,7 +102,6 @@ jobs:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingKeyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
-
 
   release-GitHub:
     name: "Release: GitHub"
@@ -172,3 +172,42 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
+
+  publish-Pages:
+    name: "Publish: Pages"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore Gradle cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.gradle/yarn
+            ~/.gradle/nodejs
+            ~/.konan
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Publish Pages
+        shell: bash
+        run: |
+          VERSION=${VERSION:=${{ github.event.inputs.version }}}
+          VERSION=${VERSION/v}
+          ./gradlew dokkaHtmlMultiModule -Pversion=${VERSION//v};
+          cp -avr build/dokka/htmlMultiModule/ public;
+          find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
+          echo '/klip /klip/klip/index.html 301' > public/_redirects;
+          echo '/klip/index.html /klip/klip/index.html 301' >> public/_redirects;
+      - uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

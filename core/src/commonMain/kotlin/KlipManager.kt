@@ -1,5 +1,8 @@
 package dev.petuska.klip
 
+/**
+ * Klip manager for a given [klipRoot]. Writes and reads all klips under [klipRoot].
+ */
 @Suppress("unused")
 class KlipManager(
   private val klipRoot: String,
@@ -25,6 +28,9 @@ class KlipManager(
     }
   }
 
+  /**
+   * Writes or returns klip depending on the working mode. [id] is converted to string using [String::toString] method
+   */
   fun klip(id: Any, source: () -> String): String {
     val file = File(path("$id"))
     return if (updateMode) {
@@ -43,7 +49,11 @@ class KlipManager(
   }
 
   companion object {
+    /**
+     * The name of the environment variable that's used to set the working mode
+     */
     const val UPDATE_ENV_VAR_NAME = "KLIP_UPDATE"
+
     private val updateMode by lazy {
       Environment[UPDATE_ENV_VAR_NAME].equals("true", true)
     }

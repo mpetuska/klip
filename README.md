@@ -21,7 +21,7 @@ Kotlin Multiplatform (pending KSP support) snapshot (klip) manager for tests
 
 ```kotlin
 plugins {
-    id("dev.petuska.klip") version "<version>"
+  id("dev.petuska.klip") version "<version>"
 }
 ```
 
@@ -29,10 +29,12 @@ plugins {
 
 ```kotlin
 klip {
-    root = File("some/custom/sources/root/src") // Unlikely to ever be anything but "./src" (default)
-    update = false // If set to true will overwrite the klips when running tests. Avoid hard-coding this.
+  root = File("some/custom/sources/root/src") // Unlikely to ever be anything but "./src" (default)
+  update = false // If set to true will overwrite the klips when running tests. Avoid hard-coding this.
 }
 ```
+
+3. Annotate your test classes where you want to use klips with `@dev.petuska.klip.Klippable`
 
 ## Properties
 

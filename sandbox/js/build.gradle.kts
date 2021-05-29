@@ -1,22 +1,22 @@
 plugins {
-    kotlin("js")
-    id("dev.petuska.klip")
+  kotlin("js")
+  id("dev.petuska.klip")
 }
 
 repositories {
-    jcenter()
+  jcenter()
 }
 
 kotlin {
-    js {
-        useCommonJs()
-        nodejs()
+  js {
+    useCommonJs()
+    nodejs()
+  }
+  sourceSets {
+    named("test") {
+      dependencies {
+        implementation(kotlin("test-js"))
+      }
     }
-    sourceSets {
-        named("test") {
-            dependencies {
-                implementation(kotlin("test-js"))
-            }
-        }
-    }
+  }
 }

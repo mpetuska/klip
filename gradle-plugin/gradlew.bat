@@ -1,1 +1,1 @@
-/home/mpetuska/IdeaProjects/klip/gradlew.bat
+../gradlew.bat

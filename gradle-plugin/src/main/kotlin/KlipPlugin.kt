@@ -33,7 +33,7 @@ class KlipPlugin : Plugin<Project> {
         ?.add(dependencies.create("${KlipExtension.group}:klip-processor:${KlipExtension.version}"))
 
       afterEvaluate {
-        extensions.findByType(KspExtension::class.java).arg("klip.root", extension.root.canonicalPath)
+        extensions.findByType(KspExtension::class.java)?.arg("klip.root", extension.root.canonicalPath)
         pluginManager.withPlugin(KOTLIN_MPP_PLUGIN) {
           extensions.configure(KotlinMultiplatformExtension::class.java) {
             it.targets.filter { target ->
@@ -52,9 +52,9 @@ class KlipPlugin : Plugin<Project> {
           extensions.configure(KotlinJsProjectExtension::class.java) {
             @Suppress("DEPRECATION")
             (
-                it._target.let { target ->
-                  configureTarget(extension, it.sourceSets, target)
-                }
+              it._target?.let { target ->
+                configureTarget(extension, it.sourceSets, target)
+              }
               )
           }
         }
@@ -85,7 +85,7 @@ class KlipPlugin : Plugin<Project> {
         sourceSets.findByName(compilation.defaultSourceSetName)?.let { ss ->
           val klipRoot = extension.root.resolve("${ss.name}/klips").canonicalPath
           ss.resources.srcDir(klipRoot)
-          ksp.arg("klip.root.${ss.name}", klipRoot)
+          ksp?.arg("klip.root.${ss.name}", klipRoot)
           ss.dependencies {
             implementation("${KlipExtension.group}:klip-core:${KlipExtension.version}")
           }

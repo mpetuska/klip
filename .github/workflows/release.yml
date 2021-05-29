@@ -46,29 +46,26 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Check with gradle
+      - name: Check Root
         shell: bash
         run: |
           VERSION=${VERSION:=${{ github.event.inputs.version }}}
           VERSION=${VERSION/v}
           ./gradlew check
-          cd gradle-plugin && ./gradlew check
-      - name: Publish Pages
+      - name: Check Plugin
         shell: bash
+        working-directory: gradle-plugin
         run: |
           VERSION=${VERSION:=${{ github.event.inputs.version }}}
           VERSION=${VERSION/v}
-          ./gradlew dokkaHtmlMultiModule -Pversion=${VERSION//v};
-          cp -avr build/dokka/htmlMultiModule/ public;
-          find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
-          echo '/klip /klip/klip/index.html 301' > public/_redirects;
-          echo '/klip/index.html /klip/klip/index.html 301' >> public/_redirects;
-      - uses: crazy-max/ghaction-github-pages@v2
-        with:
-          target_branch: gh-pages
-          build_dir: public
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          ./gradlew check
+      - name: Check Sandbox
+        shell: bash
+        working-directory: sandbox
+        run: |
+          VERSION=${VERSION:=${{ github.event.inputs.version }}}
+          VERSION=${VERSION/v}
+          ./gradlew check
 
   release-GradlePluginPortal:
     name: "Release: GradlePluginPortal"

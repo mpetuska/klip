@@ -47,6 +47,15 @@ pluginBundle {
   tags = listOf("multiplatform", "test", "kotlin", "snapshots")
 }
 
+nexusPublishing {
+  repositories {
+    sonatype {
+      nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+      snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+    }
+  }
+}
+
 signing {
   val signingKey: String? by project
   val signingPassword: String? by project

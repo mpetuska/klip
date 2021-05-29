@@ -19,6 +19,11 @@ kotlin {
       dependencies {
       }
     }
+    named("jvmTest") {
+      dependencies {
+        implementation(kotlin("test-junit"))
+      }
+    }
     named("jsMain") {
       dependencies {
         implementation("org.jetbrains.kotlinx:kotlinx-nodejs:_")

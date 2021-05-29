@@ -78,14 +78,14 @@ class KlipPlugin : Plugin<Project> {
     sourceSets: NamedDomainObjectContainer<KotlinSourceSet>,
     target: KotlinTarget
   ) {
-    target.compilations.forEach { compilation ->
-      sourceSets.findByName(compilation.defaultSourceSetName)?.let { ss ->
-        extensions.findByType(KspExtension::class.java).let { ksp ->
+    extensions.findByType(KspExtension::class.java).let { ksp ->
+      target.compilations.filter { it.name.contains("test", true) }.forEach { compilation ->
+        sourceSets.findByName(compilation.defaultSourceSetName)?.let { ss ->
           val klipRoot = extension.root.resolve("${ss.name}/klips").canonicalPath
           ss.resources.srcDir(klipRoot)
           ksp.arg("klip.root.${ss.name}", klipRoot)
           ss.dependencies {
-                implementation("${KlipExtension.group}:klip-core:${KlipExtension.version}")
+            implementation("${KlipExtension.group}:klip-core:${KlipExtension.version}")
           }
         }
       }

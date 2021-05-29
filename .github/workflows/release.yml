@@ -19,7 +19,7 @@ on:
         required: false
         default: "true"
   release:
-    types: [created]
+    types: [ created ]
 
 env:
   VERSION: ${{ github.event.release.tag_name }}
@@ -111,7 +111,7 @@ jobs:
       GH_USERNAME: ${{ github.actor }}
       GH_PASSWORD: ${{ github.token }}
     runs-on: ubuntu-latest
-    needs: [check]
+    needs: [ check ]
     if: ${{ github.event.inputs.skipGitHub != 'true' }}
     steps:
       - uses: actions/checkout@v2
@@ -189,7 +189,7 @@ jobs:
   publish-Pages:
     name: "Publish: Pages"
     runs-on: ubuntu-latest
-    needs: [release-GradlePluginPortal, release-GitHub, release-MavenCentral]
+    needs: [ check ]
     steps:
       - uses: actions/checkout@v2
       - name: Restore Gradle cache

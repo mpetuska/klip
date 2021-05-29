@@ -45,6 +45,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2.1.0
         with:
+          distribution: 'adopt'
           java-version: 11
       - name: Check Root
         shell: bash
@@ -91,6 +92,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2.1.0
         with:
+          distribution: 'adopt'
           java-version: 11
       - name: Publish plugin to Gradle Plugin Portal
         shell: bash
@@ -126,6 +128,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2.1.0
         with:
+          distribution: 'adopt'
           java-version: 11
       - name: Publish libs to GitHub Packages
         shell: bash
@@ -167,6 +170,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2.1.0
         with:
+          distribution: 'adopt'
           java-version: 11
       - name: Publish libs to GitHub Packages
         shell: bash
@@ -204,6 +208,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2.1.0
         with:
+          distribution: 'adopt'
           java-version: 11
       - name: Publish Pages
         shell: bash

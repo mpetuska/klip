@@ -2,6 +2,8 @@ plugins {
   kotlin("multiplatform")
 }
 
+description = "Kotlin multiplatform snapshot (klip) testing. KSP-based processor."
+
 kotlin {
   jvm()
   sourceSets {

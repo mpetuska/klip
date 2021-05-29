@@ -67,6 +67,11 @@ subprojects {
   }
 
   tasks {
+    create<Jar>("javadocJar") {
+      dependsOn(dokkaJavadoc)
+      archiveClassifier.set("javadoc")
+      from(dokkaJavadoc.get().outputDirectory)
+    }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
       kotlinOptions {
         jvmTarget = "${JavaVersion.VERSION_11}"
@@ -77,6 +82,7 @@ subprojects {
   publishing {
     publications {
       withType<MavenPublication> {
+        artifact(tasks["javadocJar"])
         pom {
           name by project.name
           url by "https://github.com/mpetuska/klip"

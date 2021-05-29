@@ -34,6 +34,8 @@ gradlePlugin {
   plugins {
     create(name) {
       id = "$group.klip"
+      displayName = "Kotlin multiplatform snapshot testing"
+      description = project.description
       implementationClass = "$id.KlipPlugin"
     }
   }

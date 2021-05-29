@@ -2,6 +2,8 @@ plugins {
   kotlin("multiplatform")
 }
 
+description = "Kotlin multiplatform snapshot (klip) testing. Runtime dependency."
+
 kotlin {
   jvm()
   js {

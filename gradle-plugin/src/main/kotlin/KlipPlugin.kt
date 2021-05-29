@@ -51,9 +51,11 @@ class KlipPlugin : Plugin<Project> {
         pluginManager.withPlugin(KOTLIN_JS_PLUGIN) {
           extensions.configure(KotlinJsProjectExtension::class.java) {
             @Suppress("DEPRECATION")
-            (it._target.let { target ->
-              configureTarget(extension, it.sourceSets, target)
-            })
+            (
+                it._target.let { target ->
+                  configureTarget(extension, it.sourceSets, target)
+                }
+              )
           }
         }
         tasks.withType(Test::class.java) {

@@ -29,9 +29,16 @@ class KlipCommandLineProcessor : CommandLineProcessor {
       description = KlipOption.Update.description,
     ),
     CliOption(
-      optionName = KlipOption.Function.name,
-      valueDescription = KlipOption.Function.valueDescription,
-      description = KlipOption.Function.description,
+      optionName = KlipOption.KlipAnnotation.name,
+      valueDescription = KlipOption.KlipAnnotation.valueDescription,
+      description = KlipOption.KlipAnnotation.description,
+      allowMultipleOccurrences = true,
+      required = false,
+    ),
+    CliOption(
+      optionName = KlipOption.ScopeAnnotation.name,
+      valueDescription = KlipOption.ScopeAnnotation.valueDescription,
+      description = KlipOption.ScopeAnnotation.description,
       allowMultipleOccurrences = true,
       required = false,
     ),
@@ -46,7 +53,8 @@ class KlipCommandLineProcessor : CommandLineProcessor {
       KlipOption.Enabled.name -> configuration.put(KlipKeys.KEY_ENABLED, value.toBoolean())
       KlipOption.Root.name -> configuration.put(KlipKeys.KEY_ROOT, value)
       KlipOption.Update.name -> configuration.put(KlipKeys.KEY_UPDATE, value.toBoolean())
-      KlipOption.Function.name -> configuration.appendList(KlipKeys.KEY_FUNCTION, value)
+      KlipOption.KlipAnnotation.name -> configuration.appendList(KlipKeys.KEY_KLIP_ANNOTATION, value)
+      KlipOption.ScopeAnnotation.name -> configuration.appendList(KlipKeys.KEY_SCOPE_ANNOTATION, value)
       else -> throw CliOptionProcessingException("Unknown option: ${option.optionName}")
     }
   }

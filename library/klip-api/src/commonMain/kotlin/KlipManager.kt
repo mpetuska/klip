@@ -1,5 +1,9 @@
 package dev.petuska.klip
 
+import dev.petuska.klip.ext.File
+import dev.petuska.klip.ext.readText
+import dev.petuska.klip.ext.writeText
+
 typealias Klips = MutableMap<String, String>
 
 internal object KlipManager {

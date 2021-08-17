@@ -27,10 +27,21 @@ sealed class KlipOption<T>(
     default = false,
   )
 
-  object Function : KlipOption<List<String>>(
-    name = "function",
-    valueDescription = "<fully qualified function name>",
-    description = "function to register for compiler processing",
-    default = listOf("${KlipMap.group}.${KlipMap.name}.assertKlip"),
+  object KlipAnnotation : KlipOption<List<String>>(
+    name = "annotation",
+    valueDescription = "<fully qualified annotation name>",
+    description = "annotation to register for compiler processing",
+    default = listOf("${KlipMap.group}.${KlipMap.name}.Klippable"),
+  )
+
+  object ScopeAnnotation : KlipOption<List<String>>(
+    name = "annotation",
+    valueDescription = "<fully qualified annotation name>",
+    description = "annotation to register function scope for compiler klip detection and processing",
+    default = listOf(
+      "kotlin.Test",
+      "org.junit.Test",
+      "org.junit.jupiter.api.Test"
+    ),
   )
 }

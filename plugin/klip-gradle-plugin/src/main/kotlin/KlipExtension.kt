@@ -4,7 +4,7 @@ import dev.petuska.klip.plugin.delegate.propertyDelegate
 import org.gradle.api.Project
 
 open class KlipExtension(
-  private val project: Project,
+  project: Project,
 ) {
   /**
    * Whether plugin is enabled
@@ -17,9 +17,22 @@ open class KlipExtension(
   var update by project.propertyDelegate(default = KlipOption.Update.default) { it.toBoolean() }
 
   /**
-   * Fully qualified function names to register for compiler processing
+   * Fully qualified annotation names to register for compiler processing and path injection
    */
-  var functions by project.propertyDelegate(default = KlipOption.Function.default) { it.split(",").toSet() }
+  var klipAnnotations by project.propertyDelegate(default = KlipOption.KlipAnnotation.default) { it.split(",").toSet() }
+
+  fun klipAnnotation(fqName: String) {
+    klipAnnotations += fqName
+  }
+
+  /**
+   * Fully qualified annotation names to register function scopes for compiler klip detection and processing
+   */
+  var scopeAnnotations by project.propertyDelegate(default = KlipOption.ScopeAnnotation.default) { it.split(",").toSet() }
+
+  fun scopeAnnotation(fqName: String) {
+    scopeAnnotations += fqName
+  }
 
   companion object {
     val NAME = KlipMap.name

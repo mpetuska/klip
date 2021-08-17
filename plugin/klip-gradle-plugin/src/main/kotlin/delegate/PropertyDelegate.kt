@@ -18,22 +18,24 @@ internal class PropertyDelegate<V>(
   private var value: V? = null
 
   override fun getValue(thisRef: Any, property: KProperty<*>): V {
-    value = value ?: project.propertyOrNull<V>(
-      "$PROP_BASE${
-      prefix?.removeSuffix(".")?.removePrefix(".")?.let { ".$it" } ?: ""
-      }.${property.name}"
-    )
+    value = value ?: project.propertyOrNull<V>(property.buildPropertyName()) ?: System.getenv(property.buildEnvName())
       ?.toString()?.let(converter)
     return value ?: default
   }
 
   override fun setValue(thisRef: Any, property: KProperty<*>, value: V) {
-    this.value = project.propertyOrNull<V>(
-      "$PROP_BASE${
-      prefix?.removeSuffix(".")?.removePrefix(".")?.let { ".$it" } ?: ""
-      }.${property.name}"
-    )
+    this.value = project.propertyOrNull<V>(property.buildPropertyName()) ?: System.getenv(property.buildEnvName())
       ?.toString()?.let(converter) ?: value
+  }
+
+  private fun KProperty<*>.buildPropertyName(): String {
+    return "$PROP_BASE${
+    prefix?.removeSuffix(".")?.removePrefix(".")?.let { ".$it" } ?: ""
+    }.$name"
+  }
+
+  private fun KProperty<*>.buildEnvName(): String {
+    return buildPropertyName().replace("[- .]".toRegex(), "_").toUpperCase()
   }
 
   companion object {

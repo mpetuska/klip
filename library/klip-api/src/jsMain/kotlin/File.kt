@@ -1,4 +1,4 @@
-package dev.petuska.klip
+package dev.petuska.klip.ext
 
 internal external fun require(module: String): dynamic
 
@@ -15,7 +15,7 @@ actual class File actual constructor(private val path: String) {
   actual fun getParentFile(): File = File(jsPath.dirname(path))
   actual fun exists(): Boolean = fs.existsSync(path)
 
-  override fun toString(): String = getAbsolutePath()
+  override fun toString(): String = getPath()
   actual fun isDirectory(): Boolean = fs.lstatSync(path).isDirectory()
 }
 

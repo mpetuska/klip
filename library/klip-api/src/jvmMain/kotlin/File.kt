@@ -1,4 +1,4 @@
-package dev.petuska.klip
+package dev.petuska.klip.ext
 
 import kotlin.io.deleteRecursively as kDeleteRecursively
 import kotlin.io.readText as kReadText

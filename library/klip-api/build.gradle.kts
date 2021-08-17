@@ -36,5 +36,11 @@ kotlin {
         implementation(kotlin("test-js"))
       }
     }
+
+    all {
+      languageSettings {
+        optIn("kotlin.contracts.ExperimentalContracts")
+      }
+    }
   }
 }

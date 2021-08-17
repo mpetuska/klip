@@ -53,7 +53,7 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
 
   override fun getPluginArtifactForNative(): SubpluginArtifact = SubpluginArtifact(
     groupId = KlipMap.group,
-    artifactId = "${KlipMap.kotlinPluginArtifactId}-native",
+    artifactId = KlipMap.kotlinNativePluginArtifactId,
     version = KlipMap.version,
   )
 
@@ -71,8 +71,10 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
           value = sourceSetRoot.canonicalPath,
         ),
         SubpluginOption(key = KlipOption.Update.name, lazyValue = lazy { extension.update.toString() }),
-      ) + extension.functions.map {
-        SubpluginOption(key = KlipOption.Function.name, value = it)
+      ) + (extension.klipAnnotations + KlipOption.KlipAnnotation.default).map {
+        SubpluginOption(key = KlipOption.KlipAnnotation.name, value = it)
+      } + extension.scopeAnnotations.map {
+        SubpluginOption(key = KlipOption.ScopeAnnotation.name, value = it)
       }
     }
   }

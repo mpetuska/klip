@@ -29,7 +29,8 @@ pluginBundle {
 
 dependencies {
   implementation(project(":plugin:klip-common-plugin"))
-  implementation(kotlin("gradle-plugin-api", "_"))
+  compileOnly(kotlin("gradle-plugin-api"))
 
+  testImplementation(kotlin("gradle-plugin-api"))
   testImplementation(kotlin("test-junit5"))
 }

@@ -2,11 +2,14 @@ package dev.petuska.klip
 
 import kotlin.test.assertEquals
 
-fun assertKlip(actual: Any?, o: Any? = null, path: String? = null, key: String? = null, update: Boolean? = null) {
-  println("KLIP: $actual, $o, $path, $key, $update")
-  requireNotNull(path) { "Klip path should not be null and set by the compiler plugin. Did compiler plugin run?" }
-  requireNotNull(key) { "Klip key should not be null and set by the compiler plugin. Did compiler plugin run?" }
-  requireNotNull(update) { "Klip update should not be null and set by the compiler plugin. Did compiler plugin run?" }
+@Klippable
+fun assertKlip(actual: Any?, path: String? = null, key: String? = null, update: Boolean? = null) {
+  verifyKlippable(path, key, update)
   val klip = KlipManager.klip(update, path, key) { actual.toString() }
   assertEquals(klip, actual)
+}
+
+@Klippable
+fun Any?.assertMatchesKlip(path: String? = null, key: String? = null, update: Boolean? = null) {
+  assertKlip(this, path, key, update)
 }

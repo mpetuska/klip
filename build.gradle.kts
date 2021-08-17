@@ -22,7 +22,6 @@ gradleEnterprise {
 }
 
 kotlin {
-  jvm()
   sourceSets {
     commonMain {
       dependencies {

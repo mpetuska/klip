@@ -15,7 +15,9 @@ import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
+import org.jetbrains.kotlin.ir.util.hasAnnotation
 import org.jetbrains.kotlin.ir.util.kotlinFqName
+import org.jetbrains.kotlin.name.FqName
 import java.io.File
 
 class KlipIrTransformer(
@@ -76,9 +78,8 @@ class KlipIrTransformer(
   }
 
   override fun visitFunctionAccess(expression: IrFunctionAccessExpression): IrExpression {
-    val functionFqName = expression.symbol.owner.kotlinFqName.asString()
     val fn = function
-    if (fn != null && functionFqName in settings.functions) {
+    if (fn != null && settings.klipAnnotations.any { expression.symbol.owner.hasAnnotation(FqName(it)) }) {
       val klipPath = buildKlipPath()
       val klipKey = "${fn.kotlinFqName.asString()}#${index++}"
 

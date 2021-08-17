@@ -1,6 +1,7 @@
 package subpackage
 
 import dev.petuska.klip.assertKlip
+import dev.petuska.klip.assertMatchesKlip
 import kotlin.test.Test
 
 class TestTest {
@@ -12,6 +13,6 @@ class TestTest {
 
   @Test
   fun test1() {
-    assertKlip("2")
+    "2".assertMatchesKlip()
   }
 }

@@ -9,5 +9,6 @@ internal object KlipKeys {
   val KEY_ENABLED = KlipOption.Enabled.key()
   val KEY_ROOT = KlipOption.Root.key()
   val KEY_UPDATE = KlipOption.Update.key()
-  val KEY_FUNCTION = KlipOption.Function.key()
+  val KEY_KLIP_ANNOTATION = KlipOption.KlipAnnotation.key()
+  val KEY_SCOPE_ANNOTATION = KlipOption.ScopeAnnotation.key()
 }

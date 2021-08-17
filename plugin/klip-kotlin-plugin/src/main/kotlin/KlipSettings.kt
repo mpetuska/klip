@@ -5,5 +5,6 @@ import java.io.File
 data class KlipSettings(
   val root: File,
   val update: Boolean,
-  val functions: Collection<String>
+  val klipAnnotations: Collection<String>,
+  val scopeAnnotations: Collection<String>,
 )

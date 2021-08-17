@@ -8,6 +8,7 @@ import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
+import java.io.File
 
 @AutoService(ComponentRegistrar::class)
 class KlipComponentRegistrar : ComponentRegistrar {
@@ -20,9 +21,14 @@ class KlipComponentRegistrar : ComponentRegistrar {
     IrGenerationExtension.registerExtension(
       project,
       KlipIrGenerationExtension(
-        root = configuration[KlipKeys.KEY_ROOT] ?: error("klip plugin requires source root option passed to it"),
-        update = configuration[KlipKeys.KEY_UPDATE],
-        functions = configuration[KlipKeys.KEY_FUNCTION] ?: listOf(),
+        settings = KlipSettings(
+          root = File(
+            configuration[KlipKeys.KEY_ROOT] ?: error("klip plugin requires source root option passed to it")
+          ),
+          update = configuration[KlipKeys.KEY_UPDATE] ?: KlipOption.Update.default,
+          klipAnnotations = configuration[KlipKeys.KEY_KLIP_ANNOTATION] ?: listOf(),
+          scopeAnnotations = configuration[KlipKeys.KEY_SCOPE_ANNOTATION] ?: listOf(),
+        ),
         messageCollector = messageCollector,
       )
     )

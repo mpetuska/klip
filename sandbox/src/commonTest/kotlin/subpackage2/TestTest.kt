@@ -6,26 +6,26 @@ import kotlin.test.Test
 class TestTest2 {
   @Test
   fun test() {
-    assertKlip("zero", "hah")
+    assertKlip("zero")
     assertKlip("one")
   }
 
   @Test
   fun test1() {
-    assertKlip("2", "two")
+    assertKlip("2")
   }
 }
 
 class TestTest3 {
   class Inner {
     fun run() {
-      assertKlip("2", "two")
+      assertKlip("2")
     }
   }
 
   @Test
   fun test() {
-    assertKlip("zero", "hah")
+    assertKlip("zero")
     assertKlip("one")
   }
 

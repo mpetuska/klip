@@ -10,19 +10,11 @@ import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 import org.jetbrains.kotlin.ir.visitors.acceptVoid
-import java.io.File
 
 class KlipIrGenerationExtension(
-  root: String,
-  update: Boolean?,
-  functions: Collection<String>,
+  private val settings: KlipSettings,
   private val messageCollector: MessageCollector,
 ) : IrGenerationExtension {
-  private val settings = KlipSettings(
-    root = File(root),
-    update = update ?: KlipOption.Update.default,
-    functions = functions,
-  )
 
   override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
     for (file in moduleFragment.files) {

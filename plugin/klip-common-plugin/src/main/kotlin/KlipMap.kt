@@ -23,6 +23,10 @@ object KlipMap {
     readFromResource("/klip.kotlinPluginArtifactId")!!
   }
 
+  val kotlinNativePluginArtifactId by lazy {
+    readFromResource("/klip.kotlinNativePluginArtifactId")!!
+  }
+
   val kotlinPluginId by lazy {
     "$group.$kotlinPluginArtifactId"
   }

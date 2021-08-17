@@ -1,4 +1,5 @@
 plugins {
+  id("plugin.common")
   kotlin("multiplatform")
 }
 

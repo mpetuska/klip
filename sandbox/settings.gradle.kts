@@ -12,5 +12,4 @@ plugins {
 
 rootProject.name = "sandbox"
 includeBuild("../")
-includeBuild("../gradle-plugin")
 include(":jvm", "js")

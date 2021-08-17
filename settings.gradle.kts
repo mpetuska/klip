@@ -6,16 +6,16 @@ pluginManagement {
 }
 
 plugins {
-  id("de.fayard.refreshVersions") version "0.10.0"
-  id("com.gradle.enterprise") version "3.6.1"
+  id("de.fayard.refreshVersions") version "0.11.0"
+  id("com.gradle.enterprise") version "3.6.3"
 }
 
 rootProject.name = "klip"
 
-val modules = arrayOf(":core", ":processor")
-modules.forEach {
-  include(it)
-  project(it).apply {
-    name = "${rootProject.name}-$name"
-  }
-}
+include(
+  ":library:klip-api",
+  ":plugin:klip-common-plugin",
+  ":plugin:klip-gradle-plugin",
+  ":plugin:klip-kotlin-plugin",
+  ":plugin:klip-kotlin-plugin:klip-kotlin-plugin-native",
+)

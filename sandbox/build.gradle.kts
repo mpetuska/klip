@@ -12,13 +12,6 @@ gradleEnterprise {
   }
 }
 
-idea {
-  module {
-    isDownloadJavadoc = true
-    isDownloadSources = true
-  }
-}
-
 allprojects {
   apply(plugin = "idea")
   apply(plugin = "org.jlleitschuh.gradle.ktlint")
@@ -30,10 +23,13 @@ allprojects {
     }
   }
 
+  ktlint {
+    version to de.fayard.refreshVersions.core.versionFor("version.ktlint")
+    additionalEditorconfigFile to rootDir.resolve(".editorconfig")
+  }
+
   repositories {
     mavenCentral()
-    google()
-    jcenter()
   }
 }
 
@@ -43,11 +39,30 @@ kotlin {
     useCommonJs()
     nodejs()
   }
+  linuxX64()
   sourceSets {
+    commonTest {
+      dependencies {
+        implementation("dev.petuska:klip-api")
+      }
+    }
     named("jvmTest") {
       dependencies {
-        implementation(kotlin("test-junit"))
+        implementation(kotlin("test-junit5"))
       }
+    }
+    named("jsTest") {
+      dependencies {
+        implementation(kotlin("test-js"))
+      }
+    }
+  }
+}
+
+allprojects {
+  tasks {
+    withType<Test> {
+      useJUnitPlatform()
     }
   }
 }

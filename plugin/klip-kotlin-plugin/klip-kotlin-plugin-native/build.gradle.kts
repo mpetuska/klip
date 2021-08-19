@@ -4,8 +4,12 @@ plugins {
   kotlin("kapt")
 }
 
+ktlint {
+  disabledRules.addAll("import-ordering")
+}
+
 dependencies {
-  api(project(":plugin:klip-common-plugin"))
+//  api(project(":plugin:klip-common-plugin"))
   compileOnly(kotlin("compiler"))
   compileOnly("com.google.auto.service:auto-service-annotations:_")
   kapt("com.google.auto.service:auto-service:_")
@@ -16,11 +20,20 @@ dependencies {
   testImplementation("com.github.tschuchortdev:kotlin-compile-testing:_")
 }
 
-ktlint {
-  disabledRules.addAll("import-ordering")
+kotlin {
+  sourceSets {
+    main {
+      kotlin.source(project(":plugin:klip-common-plugin").sourceSets["main"].allSource)
+    }
+  }
 }
 
 tasks {
+  named("processResources", Copy::class) {
+    val commonProcessResources = project(":plugin:klip-common-plugin").tasks.getByName("processResources", Copy::class)
+    dependsOn(commonProcessResources)
+    from(commonProcessResources.destinationDir)
+  }
   val mainPluginSourceSets = { project(":plugin:klip-kotlin-plugin").sourceSets }
   fun Sync.registerSources(sourceSet: SourceSet, root: File) {
     destinationDir = root
@@ -42,9 +55,11 @@ tasks {
   val syncSourceMain by registering(Sync::class) {
     registerSources(mainPluginSourceSets().main.get(), projectDir.resolve("src/main"))
   }
-  named("compileKotlin") { dependsOn(syncSourceMain) }
-  val syncSourceTest by registering(Sync::class) {
-    registerSources(mainPluginSourceSets().test.get(), projectDir.resolve("src/test"))
+  named("compileKotlin") {
+    dependsOn(syncSourceMain)
   }
-  named("compileTestKotlin") { dependsOn(syncSourceTest) }
+//  val syncSourceTest by registering(Sync::class) {
+//    registerSources(mainPluginSourceSets().test.get(), projectDir.resolve("src/test"))
+//  }
+//  named("compileTestKotlin") { dependsOn(syncSourceTest) }
 }

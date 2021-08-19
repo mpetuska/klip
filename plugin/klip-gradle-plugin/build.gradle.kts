@@ -27,10 +27,20 @@ pluginBundle {
   tags = listOf("multiplatform", "test", "kotlin", "snapshots")
 }
 
-dependencies {
-  implementation(project(":plugin:klip-common-plugin"))
-  compileOnly(kotlin("gradle-plugin-api"))
+kotlin {
+  sourceSets {
+    main {
+      dependencies {
+        implementation(project(":plugin:klip-common-plugin"))
+        compileOnly(kotlin("gradle-plugin-api"))
+      }
+    }
 
-  testImplementation(kotlin("gradle-plugin-api"))
-  testImplementation(kotlin("test-junit5"))
+    test {
+      dependencies {
+        implementation(kotlin("gradle-plugin-api"))
+        implementation(kotlin("test-junit5"))
+      }
+    }
+  }
 }

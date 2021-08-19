@@ -12,7 +12,7 @@ import kotlin.contracts.contract
  * @param path absolute path to the file where klips should be written
  * @param key unique key for the klip withing the given file
  * @param update whether klips should be updated
- * @see [assertKlip]
+ * @see [assertMatchesKlip]
  */
 annotation class Klippable
 

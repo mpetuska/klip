@@ -1,32 +1,32 @@
 package subpackage2
 
-import dev.petuska.klip.assertKlip
+import dev.petuska.klip.assertMatchesKlip
 import kotlin.test.Test
 
 class TestTest2 {
   @Test
   fun test() {
-    assertKlip("zero")
-    assertKlip("one")
+    assertMatchesKlip("zero")
+    assertMatchesKlip("one")
   }
 
   @Test
   fun test1() {
-    assertKlip("2")
+    assertMatchesKlip("2")
   }
 }
 
 class TestTest3 {
   class Inner {
     fun run() {
-      assertKlip("2")
+      assertMatchesKlip("2")
     }
   }
 
   @Test
   fun test() {
-    assertKlip("zero")
-    assertKlip("one")
+    assertMatchesKlip("zero")
+    assertMatchesKlip("one")
   }
 
   @Test

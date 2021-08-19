@@ -7,12 +7,12 @@ import kotlin.test.Test
 class TestTest {
   @Test
   fun test() {
-    assertKlip("zero")
-    assertKlip("one")
+    assertMatchesKlip("zero")
+    assertMatchesKlip("one")
   }
 
   @Test
   fun test1() {
-    "2".assertMatchesKlip()
+    "2".assertKlip()
   }
 }

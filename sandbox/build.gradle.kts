@@ -40,6 +40,9 @@ kotlin {
     nodejs()
   }
   linuxX64()
+  mingwX64()
+  macosX64()
+
   sourceSets {
     commonTest {
       dependencies {

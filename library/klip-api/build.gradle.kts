@@ -39,7 +39,7 @@ kotlin {
 
     all {
       languageSettings {
-        optIn("kotlin.contracts.ExperimentalContracts")
+        useExperimentalAnnotation("kotlin.contracts.ExperimentalContracts")
       }
     }
   }

@@ -10,6 +10,9 @@ import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import java.io.File
 
+/**
+ * Component Registrar responsible for validating command line inputs and registering required IR extensions
+ */
 @AutoService(ComponentRegistrar::class)
 class KlipComponentRegistrar : ComponentRegistrar {
   override fun registerProjectComponents(project: MockProject, configuration: CompilerConfiguration) {

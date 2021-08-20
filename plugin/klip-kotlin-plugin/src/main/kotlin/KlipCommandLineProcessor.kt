@@ -8,6 +8,9 @@ import org.jetbrains.kotlin.compiler.plugin.CliOptionProcessingException
 import org.jetbrains.kotlin.compiler.plugin.CommandLineProcessor
 import org.jetbrains.kotlin.config.CompilerConfiguration
 
+/**
+ * Command line processor responsible for registering and retrieving values passed by gradle plugin
+ */
 @AutoService(CommandLineProcessor::class)
 class KlipCommandLineProcessor : CommandLineProcessor {
   override val pluginId: String = KlipMap.kotlinPluginId

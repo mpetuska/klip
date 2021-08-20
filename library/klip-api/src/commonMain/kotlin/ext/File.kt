@@ -1,7 +1,7 @@
 package dev.petuska.klip.ext
 
 /**
- * Multiplatform wrapper over java.io.File
+ * Multiplatform wrapper over java.io.File API
  */
 public expect class File(path: String) {
   /**

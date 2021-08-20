@@ -18,6 +18,7 @@ public annotation class Klippable
 
 /**
  * Utility function to verify compiler-injected arguments
+ * @throws IllegalArgumentException if the validation fails
  */
 public fun verifyKlippable(path: String?, key: String?, update: Boolean?) {
   contract {

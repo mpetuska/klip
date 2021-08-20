@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 
 /**
- * A simple 'hello world' plugin.
+ * A kotlin gradle sub-plugin to manage klip kotlin compiler plugin
  */
 class KlipPlugin : KotlinCompilerPluginSupportPlugin {
   override fun apply(target: Project) {

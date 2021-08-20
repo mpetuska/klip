@@ -1,5 +1,7 @@
 import de.fayard.refreshVersions.core.versionFor
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 
 plugins {
   id("org.jlleitschuh.gradle.ktlint")
@@ -8,6 +10,7 @@ plugins {
 
 repositories {
   mavenCentral()
+  google()
 }
 
 idea {
@@ -23,12 +26,25 @@ ktlint {
 }
 
 tasks {
-  withType<KotlinCompile> {
-    kotlinOptions {
-      jvmTarget = project.properties["org.gradle.project.targetCompatibility"]!!.toString()
+  tasks.withType(AbstractTestTask::class).configureEach {
+    testLogging {
+      showExceptions = true
+      exceptionFormat = TestExceptionFormat.FULL
     }
   }
   withType<Test> {
     useJUnitPlatform()
+  }
+  register("compile") {
+    dependsOn(withType(AbstractKotlinCompile::class))
+    group = "build"
+  }
+  afterEvaluate {
+    if (tasks.findByName("test") == null) {
+      register("test") {
+        dependsOn(withType(KotlinTest::class))
+        group = "verification"
+      }
+    }
   }
 }

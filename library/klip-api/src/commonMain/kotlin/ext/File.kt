@@ -3,49 +3,49 @@ package dev.petuska.klip.ext
 /**
  * Multiplatform wrapper over java.io.File
  */
-expect class File(path: String) {
+public expect class File(path: String) {
   /**
    * Retrieves parent file
    */
-  fun getParentFile(): File
+  public fun getParentFile(): File
 
   /**
    * Returns local path to this file
    */
-  fun getPath(): String
+  public fun getPath(): String
 
   /**
    * Returns absolute path to this file
    */
-  fun getAbsolutePath(): String
+  public fun getAbsolutePath(): String
 
   /**
    * Recursively makes all directories up to this directory file
    */
-  fun mkdirs(): Boolean
+  public fun mkdirs(): Boolean
 
   /**
    * Checks if the file exsists
    */
-  fun exists(): Boolean
+  public fun exists(): Boolean
 
   /**
    * checks if the file is directory
    */
-  fun isDirectory(): Boolean
+  public fun isDirectory(): Boolean
 }
 
 /**
  * Writes text to file creating it if needed and fully overwriting any previous content
  */
-expect fun File.writeText(text: String)
+public expect fun File.writeText(text: String)
 
 /**
  * Reads this file as text
  */
-expect fun File.readText(): String
+public expect fun File.readText(): String
 
 /**
  * Deletes this file and any subdirectories recursively
  */
-expect fun File.deleteRecursively(): Boolean
+public expect fun File.deleteRecursively(): Boolean

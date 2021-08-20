@@ -1,6 +1,6 @@
 plugins {
   id("plugin.library")
-  id("plugin.publishing")
+  id("plugin.publishing-mpp")
 }
 
 description = "Kotlin multiplatform snapshot (klip) testing. Runtime dependency."
@@ -39,7 +39,7 @@ kotlin {
 
     all {
       languageSettings {
-        useExperimentalAnnotation("kotlin.contracts.ExperimentalContracts")
+        optIn("kotlin.contracts.ExperimentalContracts")
       }
     }
   }

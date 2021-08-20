@@ -5,23 +5,23 @@ internal external fun require(module: String): dynamic
 private val jsPath = require("path")
 private val fs = require("fs")
 
-actual class File actual constructor(private val path: String) {
-  actual fun getAbsolutePath(): String = jsPath.normalize(path)
-  actual fun getPath(): String = path
-  actual fun mkdirs(): Boolean = kotlin.runCatching {
+public actual class File actual constructor(private val path: String) {
+  public actual fun getAbsolutePath(): String = jsPath.normalize(path)
+  public actual fun getPath(): String = path
+  public actual fun mkdirs(): Boolean = kotlin.runCatching {
     fs.mkdirSync(path, jsObject { recursive = true })
   }.isSuccess
 
-  actual fun getParentFile(): File = File(jsPath.dirname(path))
-  actual fun exists(): Boolean = fs.existsSync(path)
+  public actual fun getParentFile(): File = File(jsPath.dirname(path))
+  public actual fun exists(): Boolean = fs.existsSync(path)
 
   override fun toString(): String = getPath()
-  actual fun isDirectory(): Boolean = fs.lstatSync(path).isDirectory()
+  public actual fun isDirectory(): Boolean = fs.lstatSync(path).isDirectory()
 }
 
-actual fun File.writeText(text: String) = fs.writeFileSync(getAbsolutePath(), text, "utf8")
-actual fun File.readText(): String = fs.readFileSync(getAbsolutePath(), "utf8")
-actual fun File.deleteRecursively(): Boolean = runCatching {
+public actual fun File.writeText(text: String): Unit = fs.writeFileSync(getAbsolutePath(), text, "utf8")
+public actual fun File.readText(): String = fs.readFileSync(getAbsolutePath(), "utf8")
+public actual fun File.deleteRecursively(): Boolean = runCatching {
   if (isDirectory()) {
     fs.rmdirSync(getPath(), jsObject { recursive = true })
   } else {

@@ -5,7 +5,7 @@ import dev.petuska.klip.ext.readText
 import dev.petuska.klip.ext.writeText
 import kotlin.native.concurrent.ThreadLocal
 
-typealias Klips = MutableMap<String, String>
+public typealias Klips = MutableMap<String, String>
 
 @ThreadLocal
 internal object KlipManager {

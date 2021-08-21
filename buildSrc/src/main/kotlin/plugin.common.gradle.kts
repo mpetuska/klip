@@ -1,5 +1,7 @@
 import de.fayard.refreshVersions.core.versionFor
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinTest
+import util.by
 
 plugins {
   id("org.jlleitschuh.gradle.ktlint")
@@ -8,6 +10,7 @@ plugins {
 
 repositories {
   mavenCentral()
+  google()
 }
 
 idea {
@@ -18,17 +21,27 @@ idea {
 }
 
 ktlint {
-  version to versionFor("version.ktlint")
+  version by versionFor("version.ktlint")
   additionalEditorconfigFile to rootDir.resolve(".editorconfig")
 }
 
 tasks {
-  withType<KotlinCompile> {
-    kotlinOptions {
-      jvmTarget = project.properties["org.gradle.project.targetCompatibility"]!!.toString()
-    }
-  }
   withType<Test> {
     useJUnitPlatform()
+  }
+
+  afterEvaluate {
+    if (tasks.findByName("compile") == null) {
+      register("compile") {
+        dependsOn(withType(AbstractKotlinCompile::class))
+        group = "build"
+      }
+    }
+    if (tasks.findByName("test") == null) {
+      register("test") {
+        dependsOn(withType(KotlinTest::class))
+        group = "verification"
+      }
+    }
   }
 }

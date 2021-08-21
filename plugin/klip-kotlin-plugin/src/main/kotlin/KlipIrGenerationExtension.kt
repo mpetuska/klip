@@ -11,18 +11,22 @@ import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 import org.jetbrains.kotlin.ir.visitors.acceptVoid
 
+/**
+ * An orchestrator to manage processing flows via transformers.
+ */
 class KlipIrGenerationExtension(
   private val settings: KlipSettings,
   private val messageCollector: MessageCollector,
 ) : IrGenerationExtension {
 
   override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
+    val transformer = KlipIrTransformer(
+      context = pluginContext,
+      messageCollector = messageCollector,
+      settings = settings,
+    )
     for (file in moduleFragment.files) {
-      KlipIrTransformer(
-        context = pluginContext,
-        messageCollector = messageCollector,
-        settings = settings,
-      ).runOnFileInOrder(file)
+      transformer.runOnFileInOrder(file)
     }
   }
 

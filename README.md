@@ -5,53 +5,140 @@
 [![Version maven-central](https://img.shields.io/maven-central/v/dev.petuska/klip-gradle-plugin?logo=apache-maven&style=flat-square)](https://mvnrepository.com/artifact/dev.petuska/klip-gradle-plugin/latest)
 
 # KLIP
+Kotlin Multiplatform snapshot ((c|k)lip) manager for tests. Automatically generates and asserts against a
+persistent `Any::toString()` representation of the object until you explicitly trigger an update. Powered by kotlin
+compiler plugin to inject relevant keys and paths.
 
-Kotlin Multiplatform (pending KSP support) snapshot (klip) manager for tests
+# Support
+The plugin only works on targets using new IR kotlin compiler (which is pretty much all of them since kotlin 1.5 except
+JS that still defaults to legacy compiler).
 
-# Modules
+# Versions
+The current version was built using the following tooling versions and is guaranteed to work with this setup. Given the
+experimental nature of kotlin compiler plugin API, the plugin powering this library is likely to stop working on
+projects using newer/older kotlin versions
+* Kotlin: `1.5.30-RC`
+* Gradle: `7.2.0`
+* JDK: `11`
 
-* core - runtime library
-* processor - ksp-based annotation processor to enable runtime work
-* gradle-plugin - a gradle plugin to manage dependencies, config and ksp
-* sandbox - a preconfigured sandbox to try out the setup without having to publish stuff
+# Targets
+Bellow is a list of currently supported targets and planned targets
+- [x] js
+- [x] jvm
+- [x] linuxX64
+- [x] macosX64
+- [ ] mingwX64
+- [ ] iosArm32
+- [ ] iosArm64
+- [ ] iosX64
+- [ ] watchosX86
+- [ ] watchosX64
+- [ ] watchosArm64
+- [ ] watchosArm32
+- [ ] tvosArm64
+- [ ] tvosX64
+- [ ] macosX64
+- [ ] mingwX64
+- [ ] mingwX86
+
+There's also a subset of targets that you currently cannot run tests on (and as such making the library redundant).
+These targets will use a fallback implementation that throws an error on native api access (since those targets will not
+execute tests) to enable the general library usage in `commonMain` source set. If you have a valid use-case of the
+library for these targets, please raise an issue to discuss a real implementation.
+- [x] androidNativeArm32
+- [x] androidNativeArm64
+- [x] linuxArm32Hfp
+- [x] linuxMips32
+- [x] linuxMipsel32
+- [x] linuxArm64
+- [x] mingwX86
 
 # Usage
-
 1. Apply the plugin
-
 ```kotlin
 plugins {
-  id("dev.petuska.klip") version "<version>"
+  kotlin("multiplatform")
+  id("dev.petuska.klip") version "<<version>>"
+
+  kotlin {
+    sourceSets {
+      commonTest {
+        dependencies {
+          implementation("dev.petuska:klip:<<version>>")
+        }
+      }
+    }
+  }
 }
 ```
-
-2. (Optional) Configure the plugin extension
-
+2. (Optional) Configure the plugin extension (shown with default values). For property descriptions.
+   see [Gradle Properties](#gradle-properties)
 ```kotlin
 klip {
-  root = File("some/custom/sources/root/src") // Unlikely to ever be anything but "./src" (default)
-  update = false // If set to true will overwrite the klips when running tests. Avoid hard-coding this.
+  enabled = true
+  update = false
+  klipAnnotations = setOf("dev.petuska.klip.Klippable") // Takes full control of annotations
+  klipAnnotation("dev.petuska.klip.Klippable") // Appends the annotation to the default ones
+  scopeAnnotations = setOf( // Takes full control of annotations
+    "kotlin.Test",
+    "org.junit.Test",
+    "org.junit.jupiter.api.Test"
+  )
+  scopeAnnotation( // Appends the annotation to the default ones
+    "kotlin.Test",
+    "org.junit.Test",
+    "org.junit.jupiter.api.Test"
+  )
+}
+```
+3. Use provided klip assertions anywhere under one of the `scopeAnnotations`.
+```kotlin
+class MyTest {
+  data class DomainObject(val name: String, val value: String?)
+
+  @Test
+  fun test1() {
+    assertMatchesClip(DomainObject("Dick", "Dickens"))
+    DomainObject("John", "Doe").assertKlip()
+  }
+
+  @Test
+  fun test2() {
+    doAssertions()
+  }
+
+  private fun doAssertions() {
+    assertMatchesClip(DomainObject("Joe", "Mama"))
+    DomainObject("Ben", "Dover").assertKlip()
+  }
 }
 ```
 
-3. Annotate your test classes where you want to use klips with `@dev.petuska.klip.Klippable`
-
-## Properties
-
+## Gradle Properties
 Most of the DSL configuration options can also be set/overridden via gradle properties
-`./gradlew <some-task> -Pprop.name=propValue`, `gradle.properties` or `~/.gradle/gradle.properties`. Bellow is the full
-list of supported properties:
-
-* `klip.root`
-* `klip.update`
+`./gradlew <some-task> -Pprop.name=propValue`, `gradle.properties` or `~/.gradle/gradle.properties`. Environment
+variables are also supported and take precedence over gradle properties. Bellow is the full list of supported
+properties:
+* `klip.enabled (KLIP_ENABLED)` - toggles the compiler processing on/off.
+* `klip.update (KLIP_UPDATE)` - if true, will override and update all previous klips during test run.
+* `klip.klipAnnotations (KLIP_KLIPANNOTATIONS)` - comma separated list of fully qualified names of annotations to
+  process. Only useful when writing your own klippable functions.
+* `klip.scopeAnnotations (KLIP_SCOPEANNOTATIONS` - comma separated list of fully qualified names of test annotations to
+  scope klip keys.
 
 ## Basic Flow
-
-1. Run tests as normal and use generated klip assertions such
-   as `assertKlip(id = "some id unique in test class scope", actual = MyActualValue())`. New klips will always be
-   written to files, whereas existing ones (identified by test class scope and given id) will be read and used for
-   assertions.
+1. Run tests as normal and use generated klip assertions such as `assertMatchesKlip(myObject)`
+   or `myObject.assertKlip()`. New klips will always be written to file, whereas existing ones (identified by test class
+   scope and given id) will be read and used for assertions.
 2. When the actual value changes, tests will fail since they do not match previous klip. In such cases inspect the
    differences and if everything is as expected, re-run test(s) with klip updates enabled. This is done by either
    passing a gradle prop `./gradlew test -Pklip.update`
    or setting an environment variable `KLIP_UPDATE=true ./gradlew test`.
+
+# Modules
+* `:library:klip-api` - main runtime library
+* `:plugin:klip-gradle-plugin` - gradle plugin to manage kotlin compiler plugins
+* `:plugin:klip-common-plugin` - shared code between plugins (should not have any dependencies)
+* `:plugin:klip-kotlin-plugin` - kotlin compiler plugin for jvm & js that does the actual work
+* `:plugin:klip-kotlin-plugin:klip-kotlin-plugin-native` - kotlin compiler plugin for native that does the actual work
+* `sandbox` - a playground to test local changes from consumer end

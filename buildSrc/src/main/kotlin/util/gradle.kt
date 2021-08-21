@@ -4,7 +4,6 @@ import groovy.lang.Closure
 import org.gradle.api.provider.Property
 import java.nio.charset.Charset
 
-
 typealias Lambda<R, V> = R.() -> V
 
 val CI by lazy { System.getenv("CI") == "true" }

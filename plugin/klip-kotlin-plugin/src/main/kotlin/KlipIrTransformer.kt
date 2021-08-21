@@ -20,6 +20,9 @@ import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.name.FqName
 import java.io.File
 
+/**
+ * The main worker-bee of the plugin, actually transforming the "klippable" function calls to pass in required parameters
+ */
 class KlipIrTransformer(
   private val context: IrPluginContext,
   messageCollector: MessageCollector,

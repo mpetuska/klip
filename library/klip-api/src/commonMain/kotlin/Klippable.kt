@@ -14,12 +14,13 @@ import kotlin.contracts.contract
  * @param update whether klips should be updated
  * @see [assertMatchesKlip]
  */
-annotation class Klippable
+public annotation class Klippable
 
 /**
  * Utility function to verify compiler-injected arguments
+ * @throws IllegalArgumentException if the validation fails
  */
-fun verifyKlippable(path: String?, key: String?, update: Boolean?) {
+public fun verifyKlippable(path: String?, key: String?, update: Boolean?) {
   contract {
     returns() implies (path != null)
     returns() implies (key != null)

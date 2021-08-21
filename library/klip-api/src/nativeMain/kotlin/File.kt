@@ -29,7 +29,7 @@ import platform.posix.stat
 /**
  * Multiplatform wrapper over java.io.File
  */
-actual class File actual constructor(private val path: String) {
+public actual class File actual constructor(private val path: String) {
   init {
     require(path.isNotEmpty()) { "Path cannot be empty" }
   }
@@ -37,7 +37,7 @@ actual class File actual constructor(private val path: String) {
   /**
    * Retrieves parent file
    */
-  actual fun getParentFile(): File {
+  public actual fun getParentFile(): File {
     val pPath = path.removeSuffix("/").let { it.removeSuffix(it.substringAfterLast("/")) }.removeSuffix("/")
     return if (pPath.isEmpty() && path != ".") {
       File(".")
@@ -49,19 +49,19 @@ actual class File actual constructor(private val path: String) {
   /**
    * Returns local path to this file
    */
-  actual fun getPath(): String = path
+  public actual fun getPath(): String = path
 
   /**
    * Returns absolute path to this file
    */
-  actual fun getAbsolutePath(): String = memScoped {
+  public actual fun getAbsolutePath(): String = memScoped {
     realpath(path, null)?.toKString() ?: error("Cannot determine absolute path for $path")
   }
 
   /**
    * Recursively makes all directories up to this directory file
    */
-  actual fun mkdirs(): Boolean {
+  public actual fun mkdirs(): Boolean {
     val parent = getParentFile()
     println("${parent.path} ${parent.exists()}")
     if (!parent.exists() && parent.path != "/" && parent.path.isNotEmpty()) {
@@ -74,12 +74,12 @@ actual class File actual constructor(private val path: String) {
   /**
    * Checks if the file exsists
    */
-  actual fun exists(): Boolean = access(path, F_OK) == 0
+  public actual fun exists(): Boolean = access(path, F_OK) == 0
 
   /**
    * checks if the file is directory
    */
-  actual fun isDirectory(): Boolean = memScoped {
+  public actual fun isDirectory(): Boolean = memScoped {
     val stat = alloc<stat>()
     if (stat(path, stat.ptr) != 0) {
       false
@@ -94,7 +94,7 @@ actual class File actual constructor(private val path: String) {
 /**
  * Writes text to file creating it if needed and fully overwriting any previous content
  */
-actual fun File.writeText(text: String) {
+public actual fun File.writeText(text: String) {
   val file = fopen(getPath(), "w") ?: error("Cannot open output file ${getPath()}")
   try {
     memScoped {
@@ -110,7 +110,7 @@ actual fun File.writeText(text: String) {
 /**
  * Reads this file as text
  */
-actual fun File.readText(): String {
+public actual fun File.readText(): String {
   val returnBuffer = StringBuilder()
   val file = fopen(getPath(), "r") ?: error("Cannot open input file ${getPath()}")
 
@@ -134,7 +134,7 @@ actual fun File.readText(): String {
 /**
  * Deletes this file and any subdirectories recursively
  */
-actual fun File.deleteRecursively(): Boolean {
+public actual fun File.deleteRecursively(): Boolean {
   return if (isDirectory()) {
     nftw(
       getPath(),

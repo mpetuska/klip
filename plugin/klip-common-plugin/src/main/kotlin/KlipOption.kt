@@ -1,11 +1,18 @@
 package dev.petuska.klip.plugin
 
+/**
+ * Internal-use class containing information about command line options passed by gradle plugin to kotlin plugin
+ */
 sealed class KlipOption<T>(
   val name: String,
   val valueDescription: String,
   val description: String,
   val default: T,
 ) {
+
+  /**
+   * Toggles the compiler processing on/off
+   */
   object Enabled : KlipOption<Boolean>(
     name = "enabled",
     valueDescription = "<true|false>",
@@ -13,6 +20,9 @@ sealed class KlipOption<T>(
     default = true,
   )
 
+  /**
+   * Specified the kotlin sources root to be used to build klip paths
+   */
   object Root : KlipOption<String?>(
     name = "root",
     valueDescription = "<path>",
@@ -20,6 +30,9 @@ sealed class KlipOption<T>(
     default = null,
   )
 
+  /**
+   * Value passed to "klippable" functions to indicate that klips should be updated
+   */
   object Update : KlipOption<Boolean>(
     name = "update",
     valueDescription = "<true|false>",
@@ -27,6 +40,9 @@ sealed class KlipOption<T>(
     default = false,
   )
 
+  /**
+   * Registers an annotation to be used to identify "klippable" functions
+   */
   object KlipAnnotation : KlipOption<List<String>>(
     name = "annotation",
     valueDescription = "<fully qualified annotation name>",
@@ -34,6 +50,10 @@ sealed class KlipOption<T>(
     default = listOf("${KlipMap.group}.${KlipMap.name}.Klippable"),
   )
 
+  /**
+   * Registers an annotation to be used to identify "scope" functions
+   * under which "klippable" annotation detection should happen
+   */
   object ScopeAnnotation : KlipOption<List<String>>(
     name = "annotation",
     valueDescription = "<fully qualified annotation name>",

@@ -63,11 +63,9 @@ kotlin {
   windowsHostTargets.onlyPublishIf { !CI || HostManager.hostIsMingw }
 
   mainHostTargets.onlyBuildIf {
-    it.inputs.property("project.mainOS", project.property("project.mainOS"))
     !CI || isMainHost
   }
   (mainHostTargets + Named { "kotlinMultiplatform" }).onlyPublishIf {
-    it.inputs.property("project.mainOS", project.property("project.mainOS"))
     !CI || isMainHost
   }
 }

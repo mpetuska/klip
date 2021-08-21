@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile
 import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.target.HostManager
-import util.hostFamily
+import util.buildHost
 
 plugins {
   kotlin("multiplatform")
@@ -87,12 +87,12 @@ tasks {
   }
   withType<CInteropProcess> {
     onlyIf {
-      konanTarget.hostFamily == HostManager.host.family
+      konanTarget.buildHost == HostManager.host.family
     }
   }
   withType<AbstractKotlinNativeCompile<*, *>> {
     onlyIf {
-      compilation.konanTarget.hostFamily == HostManager.host.family
+      compilation.konanTarget.buildHost == HostManager.host.family
     }
   }
 }

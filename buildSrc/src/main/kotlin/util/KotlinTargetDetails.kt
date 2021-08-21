@@ -39,7 +39,7 @@ enum class KotlinTargetDetails(
   MINGW_X32("mingwX86", false),
 }
 
-val KonanTarget.hostFamily: Family
+val KonanTarget.buildHost: Family
   get() = when (this) {
     KonanTarget.ANDROID_X64,
     KonanTarget.ANDROID_X86,

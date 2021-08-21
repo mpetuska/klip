@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.HostManager
 import util.CI
-import util.hostFamily
+import util.buildHost
 
 plugins {
   kotlin("multiplatform")
@@ -41,9 +41,9 @@ kotlin {
   }
 
   val nativeTargets = targets.withType<KotlinNativeTarget>()
-  val windowsHostTargets = nativeTargets.filter { it.konanTarget.hostFamily == Family.MINGW }
-  val linuxHostTargets = nativeTargets.filter { it.konanTarget.hostFamily == Family.LINUX }
-  val osxHostTargets = nativeTargets.filter { it.konanTarget.hostFamily == Family.OSX }
+  val windowsHostTargets = nativeTargets.filter { it.konanTarget.buildHost == Family.MINGW }
+  val linuxHostTargets = nativeTargets.filter { it.konanTarget.buildHost == Family.LINUX }
+  val osxHostTargets = nativeTargets.filter { it.konanTarget.buildHost == Family.OSX }
   val mainHostTargets = targets.filter { it !in nativeTargets } + Named { "kotlinMultiplatform" }
   logger.info("Linux host targets: $linuxHostTargets")
   logger.info("OSX host targets: $osxHostTargets")

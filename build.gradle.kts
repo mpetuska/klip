@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.konan.target.HostManager
 import util.CI
 
 plugins {
@@ -8,6 +9,9 @@ plugins {
 }
 
 println("CI $CI")
+println("Is Linux ${HostManager.hostIsLinux}")
+println("Is OSX ${HostManager.hostIsMac}")
+println("Is MINGW ${HostManager.hostIsMingw}")
 
 gitHooks {
   setHooks(

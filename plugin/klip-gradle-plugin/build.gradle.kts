@@ -34,8 +34,8 @@ pluginBundle {
 kotlin {
   sourceSets {
     main {
+      kotlin.source(project(":plugin:klip-common-plugin").sourceSets["main"].allSource)
       dependencies {
-        implementation(project(":plugin:klip-common-plugin"))
         compileOnly(kotlin("gradle-plugin-api"))
       }
     }
@@ -46,5 +46,13 @@ kotlin {
         implementation(kotlin("test-junit5"))
       }
     }
+  }
+}
+
+tasks {
+  named("processResources", Copy::class) {
+    val commonProcessResources = project(":plugin:klip-common-plugin").tasks.getByName("processResources", Copy::class)
+    dependsOn(commonProcessResources)
+    from(commonProcessResources.destinationDir)
   }
 }

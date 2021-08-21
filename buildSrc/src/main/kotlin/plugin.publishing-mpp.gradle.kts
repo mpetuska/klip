@@ -64,6 +64,12 @@ kotlin {
   windowsHostTargets.onlyPublishIf { !CI || HostManager.hostIsMingw }
 
   val isMainHost = HostManager.simpleOsName().equals("${project.properties["project.mainOS"]}", true)
-  mainHostTargets.onlyBuildIf { !CI || isMainHost }
-  (mainHostTargets + Named { "kotlinMultiplatform" }).onlyPublishIf { !CI || isMainHost }
+  mainHostTargets.onlyBuildIf {
+    it.inputs.property("project.mainOS", project.property("project.mainOS"))
+    !CI || isMainHost
+  }
+  (mainHostTargets + Named { "kotlinMultiplatform" }).onlyPublishIf {
+    it.inputs.property("project.mainOS", project.property("project.mainOS"))
+    !CI || isMainHost
+  }
 }

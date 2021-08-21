@@ -25,7 +25,8 @@ tasks {
       )
     }
   }
-  named("clean") {
+  val cleanMavenLocal by registering {
+    group = "build"
     doLast {
       val groupRepo =
         file("${System.getProperty("user.home")}/.m2/repository/${project.group.toString().replace(".", "/")}")
@@ -33,6 +34,9 @@ tasks {
         groupRepo.resolve(it.artifactId).deleteRecursively()
       }
     }
+  }
+  named("clean") {
+    dependsOn(cleanMavenLocal)
   }
 }
 

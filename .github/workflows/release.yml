@@ -17,12 +17,12 @@ on:
         description: Should we skip publishing artefacts to Maven Central
         required: false
         default: "y"
-      skipGradlePluginPortal:
-        description: Should we skip publishing to Gradle Plugin Portal
-        required: false
-        default: "y"
       skipGitHub:
         description: Should we skip publishing artefacts to GitHub Packages
+        required: false
+        default: "y"
+      skipGradlePluginPortal:
+        description: Should we skip publishing to Gradle Plugin Portal
         required: false
         default: "y"
   release:
@@ -223,7 +223,7 @@ jobs:
 
       - name: Gradle Publish to ${{ matrix.repository.name }}
         if: ${{ matrix.repository.enabled == true }}
-        run: ./gradlew ${{ matrix.repository.tasks }} --info -Pversion=${VERSION//v} --scan
+        run: ./gradlew ${{ matrix.repository.tasks }} -Pversion=${VERSION//v} --scan
 
 
   release-GradlePluginPortal:

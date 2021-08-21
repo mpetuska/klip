@@ -13,6 +13,10 @@ on:
         description: Should we skip releasing GitHub pages
         required: false
         default: "y"
+      skipGradlePluginPortal:
+        description: Should we skip publishing to Gradle Plugin Portal
+        required: false
+        default: "y"
       skipGitHub:
         description: Should we skip publishing artefacts to GitHub Packages
         required: false
@@ -162,13 +166,13 @@ jobs:
           msystem: MINGW64
           update: true
           path-type: inherit
-#          install: >-
-#            tar
-#            make
-#            mingw-w64-x86_64-gcc
-#            mingw-w64-x86_64-cmake
-#            mingw-w64-x86_64-extra-cmake-modules
-#            mingw64/mingw-w64-x86_64-cyrus-sasl
+      #          install: >-
+      #            tar
+      #            make
+      #            mingw-w64-x86_64-gcc
+      #            mingw-w64-x86_64-cmake
+      #            mingw-w64-x86_64-extra-cmake-modules
+      #            mingw64/mingw-w64-x86_64-cyrus-sasl
 
       - name: Restore libmongoc cache
         if: ${{ matrix.repository.enabled == true }}
@@ -220,6 +224,44 @@ jobs:
       - name: Gradle Publish to ${{ matrix.repository.name }}
         if: ${{ matrix.repository.enabled == true }}
         run: ./gradlew ${{ matrix.repository.tasks }} --info -Pversion=${VERSION//v} --scan
+
+
+  release-GradlePluginPortal:
+    name: "Release to GradlePluginPortal"
+    env:
+      ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+      ORG_GRADLE_PROJECT_signingKeyId: ${{ secrets.SIGNING_KEY_ID }}
+      ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+    runs-on: ubuntu-latest
+    needs: [ build, release-Artefacts ]
+    if: ${{ github.event.inputs.skipGradlePluginPortal != 'y' }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Restore Gradle cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Resolve Version
+        run: |
+          VERSION=${VERSION:=${{ github.event.inputs.version }}}
+          echo "VERSION=${VERSION/v}" >> $GITHUB_ENV
+
+      - name: Publish plugin to Gradle Plugin Portal
+        shell: bash
+        run: |
+          ./gradlew publishPlugins -Pgradle.publish.key="${{ secrets.GRADLE_PUBLISH_KEY }}" -Pgradle.publish.secret="${{ secrets.GRADLE_PUBLISH_SECRET }}" -Pversion="${VERSION}"
 
   release-Dokka:
     runs-on: ubuntu-latest

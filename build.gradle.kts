@@ -1,9 +1,13 @@
+import util.CI
+
 plugins {
   id("com.github.jakemarsden.git-hooks")
   id("plugin.library")
   id("plugin.publishing")
   id("plugin.publishing-nexus")
 }
+
+println("CI $CI")
 
 gitHooks {
   setHooks(

@@ -3,6 +3,8 @@ plugins {
   id("plugin.publishing-jvm")
 }
 
+description = "Kotlin compiler plugin to manage KLIP snapshots for jvm & js"
+
 java {
   withSourcesJar()
 }
@@ -16,6 +18,16 @@ dependencies {
   testImplementation(kotlin("test-junit5"))
   testImplementation(kotlin("compiler-embeddable"))
   testImplementation("com.github.tschuchortdev:kotlin-compile-testing:_")
+}
+
+publishing {
+  publications {
+    create(name, MavenPublication::class.java) {
+      artifactId = name
+      artifact(tasks.jar)
+      artifact(tasks.kotlinSourcesJar)
+    }
+  }
 }
 
 kotlin {

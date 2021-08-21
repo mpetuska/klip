@@ -5,9 +5,7 @@ plugins {
   id("plugin.publishing-jvm")
 }
 
-description = """
-    Gradle plugin to manage KLIP snapshots, processors and dependencies
-""".trimIndent()
+description = """Gradle plugin to manage KLIP snapshots, processors and dependencies"""
 
 java {
   withSourcesJar()

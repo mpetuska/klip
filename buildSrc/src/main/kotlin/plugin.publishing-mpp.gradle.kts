@@ -4,12 +4,11 @@ import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.HostManager
 import util.CI
 import util.buildHost
+import util.isMainHost
 
 plugins {
   kotlin("multiplatform")
-  id("plugin.common")
   id("plugin.publishing")
-  id("org.jetbrains.dokka")
 }
 
 kotlin {
@@ -63,7 +62,6 @@ kotlin {
   windowsHostTargets.onlyBuildIf { !CI || HostManager.hostIsMingw }
   windowsHostTargets.onlyPublishIf { !CI || HostManager.hostIsMingw }
 
-  val isMainHost = HostManager.simpleOsName().equals("${project.properties["project.mainOS"]}", true)
   mainHostTargets.onlyBuildIf {
     it.inputs.property("project.mainOS", project.property("project.mainOS"))
     !CI || isMainHost

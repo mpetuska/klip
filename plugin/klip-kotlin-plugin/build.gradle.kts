@@ -1,7 +1,6 @@
 plugins {
-  id("plugin.publishing")
-  kotlin("jvm")
   kotlin("kapt")
+  id("plugin.publishing-jvm")
 }
 
 java {

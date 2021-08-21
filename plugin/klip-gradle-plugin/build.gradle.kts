@@ -1,9 +1,8 @@
 plugins {
-  kotlin("jvm")
   kotlin("kapt")
-  id("plugin.publishing")
   id("com.gradle.plugin-publish")
   `java-gradle-plugin`
+  id("plugin.publishing-jvm")
 }
 
 description = """

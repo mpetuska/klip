@@ -1,3 +1,7 @@
+import gradle.kotlin.dsl.accessors._22fb0f66704d76c1f3b70c84bc95bb50.publishing
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.konan.target.HostManager
 import util.Git
 import util.by
 
@@ -49,7 +53,44 @@ signing {
   }
 }
 
+val isMainHost = HostManager.simpleOsName().equals("${project.properties["project.mainOS"]}", true)
+tasks {
+  withType<KotlinCompile> {
+    onlyIf
+  }
+}
+
 publishing {
+  fun Collection<KotlinTarget>.onlyBuildIf(enabled: Spec<in Task>) {
+    forEach {
+      it.compilations.all {
+        compileKotlinTask.onlyIf(enabled)
+      }
+    }
+  }
+
+  fun Collection<Named>.onlyPublishIf(enabled: Spec<in Task>) {
+    val publications: Collection<String> = map { it.name }
+    afterEvaluate {
+      publishing {
+        publications {
+          matching { it.name in publications }.all {
+            val targetPublication = this@all
+            tasks.withType<AbstractPublishToMaven>()
+              .matching { it.publication == targetPublication }
+              .configureEach {
+                onlyIf(enabled)
+              }
+            tasks.withType<GenerateModuleMetadata>()
+              .matching { it.publication.get() == targetPublication }
+              .configureEach {
+                onlyIf(enabled)
+              }
+          }
+        }
+      }
+    }
+  }
   publications {
     val ghOwnerId: String = project.properties["gh.owner.id"]!!.toString()
     val ghOwnerName: String = project.properties["gh.owner.name"]!!.toString()

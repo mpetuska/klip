@@ -1,7 +1,9 @@
 package util
 
 import groovy.lang.Closure
+import org.gradle.api.Project
 import org.gradle.api.provider.Property
+import org.jetbrains.kotlin.konan.target.HostManager
 import java.nio.charset.Charset
 
 typealias Lambda<R, V> = R.() -> V
@@ -36,3 +38,5 @@ fun execAndCapture(cmd: String): String? {
     child.inputStream.readAllBytes().toString(Charset.defaultCharset()).trim()
   } else null
 }
+
+val Project.isMainHost: Boolean get() = HostManager.simpleOsName().equals("${properties["project.mainOS"]}", true)

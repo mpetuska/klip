@@ -38,11 +38,6 @@ kotlin {
               .configureEach {
                 onlyIf(enabled)
               }
-            tasks.withType<PublishToMavenRepository>()
-              .matching { it.publication == targetPublication }
-              .configureEach {
-                onlyIf(enabled)
-              }
           }
         }
       }

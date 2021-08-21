@@ -1,17 +1,9 @@
-import org.jetbrains.kotlin.konan.target.HostManager
-import util.CI
-
 plugins {
   id("com.github.jakemarsden.git-hooks")
   id("plugin.library")
-  id("plugin.publishing")
+  id("plugin.publishing-mpp")
   id("plugin.publishing-nexus")
 }
-
-println("CI $CI")
-println("Is Linux ${HostManager.hostIsLinux}")
-println("Is OSX ${HostManager.hostIsMac}")
-println("Is MINGW ${HostManager.hostIsMingw}")
 
 gitHooks {
   setHooks(

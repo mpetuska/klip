@@ -6,7 +6,7 @@ import java.nio.charset.Charset
 
 typealias Lambda<R, V> = R.() -> V
 
-val CI by lazy { ("true".equals(System.getenv("CI"), true)).also { println("==============> CI=$it <==============") } }
+val CI by lazy { "true".equals(System.getenv("CI"), true) }
 
 fun <R, V> Lambda<R, V>.toClosure(owner: Any? = null, thisObj: Any? = null) = object : Closure<V>(owner, thisObj) {
   @Suppress("UNCHECKED_CAST")

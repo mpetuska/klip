@@ -1,6 +1,6 @@
 package util
 
-import org.jetbrains.kotlin.konan.target.HostManager
+import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.KonanTarget
 
 
@@ -39,7 +39,7 @@ enum class KotlinTargetDetails(
   MINGW_X32("mingwX86", false),
 }
 
-val KonanTarget.isHostFamily: Boolean
+val KonanTarget.hostFamily: Family
   get() = when (this) {
     KonanTarget.ANDROID_X64,
     KonanTarget.ANDROID_X86,
@@ -49,10 +49,10 @@ val KonanTarget.isHostFamily: Boolean
     KonanTarget.LINUX_ARM32_HFP,
     KonanTarget.LINUX_MIPS32,
     KonanTarget.LINUX_MIPSEL32,
-    KonanTarget.LINUX_X64 -> HostManager.hostIsLinux
+    KonanTarget.LINUX_X64 -> Family.LINUX
 
     KonanTarget.MINGW_X86,
-    KonanTarget.MINGW_X64 -> HostManager.hostIsMingw
+    KonanTarget.MINGW_X64 -> Family.MINGW
 
     KonanTarget.IOS_ARM32,
     KonanTarget.IOS_ARM64,
@@ -67,9 +67,8 @@ val KonanTarget.isHostFamily: Boolean
     KonanTarget.TVOS_X64,
     KonanTarget.TVOS_SIMULATOR_ARM64,
     KonanTarget.MACOS_X64,
-    KonanTarget.MACOS_ARM64 -> HostManager.hostIsMac
-    else -> {
-      println("Target $this not supported")
-      false
-    }
+    KonanTarget.MACOS_ARM64 -> Family.OSX
+
+    KonanTarget.WASM32 -> throw IllegalStateException("Target $this not supported")
+    is KonanTarget.ZEPHYR -> throw IllegalStateException("Target $this not supported")
   }

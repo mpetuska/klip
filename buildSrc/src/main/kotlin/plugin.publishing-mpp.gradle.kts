@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.HostManager
 import util.CI
+import util.hostFamily
 
 plugins {
   kotlin("multiplatform")
@@ -40,15 +41,15 @@ kotlin {
   }
 
   val nativeTargets = targets.withType<KotlinNativeTarget>()
-  val windowsHostTargets = nativeTargets.filter { it.konanTarget.family == Family.MINGW }
-  val linuxHostTargets =
-    nativeTargets.filter { it.konanTarget.family == Family.LINUX || it.konanTarget.family == Family.ANDROID }
-  val osxHostTargets = nativeTargets.filter { it.konanTarget.family.isAppleFamily }
+  val windowsHostTargets = nativeTargets.filter { it.konanTarget.hostFamily == Family.MINGW }
+  val linuxHostTargets = nativeTargets.filter { it.konanTarget.hostFamily == Family.LINUX }
+  val osxHostTargets = nativeTargets.filter { it.konanTarget.hostFamily == Family.OSX }
   val mainHostTargets = targets.filter { it !in nativeTargets } + Named { "kotlinMultiplatform" }
   logger.info("Linux host targets: $linuxHostTargets")
   logger.info("OSX host targets: $osxHostTargets")
   logger.info("Windows host targets: $windowsHostTargets")
   logger.info("Main host targets: $mainHostTargets")
+
   linuxHostTargets.onlyPublishIf { !CI || HostManager.hostIsLinux }
   osxHostTargets.onlyPublishIf { !CI || HostManager.hostIsMac }
   windowsHostTargets.onlyPublishIf { !CI || HostManager.hostIsMingw }

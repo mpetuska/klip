@@ -9,11 +9,66 @@ Kotlin Multiplatform snapshot ((c|k)lip) manager for tests. Automatically genera
 persistent `Any::toString()` representation of the object until you explicitly trigger an update. Powered by kotlin
 compiler plugin to inject relevant keys and paths.
 
+# Support
+The plugin only works on targets using new IR kotlin compiler (which is pretty much all of them since kotlin 1.5 except
+JS that still defaults to legacy compiler).
+
+# Versions
+The current version was built using the following tooling versions and is guaranteed to work with this setup. Given the
+experimental nature of kotlin compiler plugin API, the plugin powering this library is likely to stop working on
+projects using newer/older kotlin versions
+* Kotlin: `1.5.30-RC`
+* Gradle: `7.2.0`
+* JDK: `11`
+
+# Targets
+Bellow is a list of currently supported targets and planned targets
+- [x] js
+- [x] jvm
+- [x] linuxX64
+- [x] mingwX64
+- [x] macosX64
+- [ ] iosArm32
+- [ ] iosArm64
+- [ ] iosX64
+- [ ] watchosX86
+- [ ] watchosX64
+- [ ] watchosArm64
+- [ ] watchosArm32
+- [ ] tvosArm64
+- [ ] tvosX64
+- [ ] macosX64
+- [ ] mingwX64
+- [ ] mingwX86
+
+There's also a subset of targets that you currently cannot run tests on (and as such making the library redundant).
+These targets will use a fallback implementation that throws an error on native api access (since those targets will not
+execute tests) to enable the general library usage in `commonMain` source set. If you have a valid use-case of the
+library for these targets, please raise an issue to discuss a real implementation.
+- [x] androidNativeArm32
+- [x] androidNativeArm64
+- [x] linuxArm32Hfp
+- [x] linuxMips32
+- [x] linuxMipsel32
+- [x] linuxArm64
+- [x] mingwX86
+
 # Usage
 1. Apply the plugin
 ```kotlin
 plugins {
+  kotlin("multiplatform")
   id("dev.petuska.klip") version "<<version>>"
+
+  kotlin {
+    sourceSets {
+      commonTest {
+        dependencies {
+          implementation("dev.petuska:klip:<<version>>")
+        }
+      }
+    }
+  }
 }
 ```
 2. (Optional) Configure the plugin extension (shown with default values). For property descriptions.

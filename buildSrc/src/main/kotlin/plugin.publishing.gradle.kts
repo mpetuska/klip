@@ -63,8 +63,8 @@ publishing {
       artifact(tasks["javadocJar"])
       pom {
         name by project.name
-        url by "https://github.com/$ghOwnerId/${project.name}"
-        description by rootProject.description
+        url by "https://github.com/$ghOwnerId/${rootProject.name}"
+        description by project.description
 
         licenses {
           license {
@@ -75,15 +75,15 @@ publishing {
 
         developers {
           developer {
-            id to ghOwnerId
-            name to ghOwnerName
-            email to ghOwnerEmail
+            id by ghOwnerId
+            name by ghOwnerName
+            email by ghOwnerEmail
           }
         }
 
         scm {
-          connection by "scm:git:git@github.com:$ghOwnerId/${project.name}.git"
-          url by "https://github.com/$ghOwnerId/${project.name}"
+          connection by "scm:git:git@github.com:$ghOwnerId/${rootProject.name}.git"
+          url by "https://github.com/$ghOwnerId/${rootProject.name}"
           tag by Git.headCommitHash
         }
       }

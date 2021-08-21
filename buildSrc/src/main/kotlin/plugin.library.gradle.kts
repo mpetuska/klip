@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile
 import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.konan.target.HostManager
+import util.isHostFamily
 
 plugins {
   kotlin("multiplatform")
@@ -21,27 +21,56 @@ kotlin {
   linuxX64()
   mingwX64()
 
+//  To be implemented
+//  iosArm32()
+//  iosArm64()
+//  iosX64()
+//  watchosX86()
+//  watchosX64()
+//  watchosArm64()
+//  watchosArm32()
+//  tvosArm64()
+//  tvosX64()
+
+  // Fallback Targets
+  val fallbackTargets = setOf(
+    androidNativeArm32(),
+    androidNativeArm64(),
+    mingwX86(),
+    linuxArm32Hfp(),
+    linuxMips32(),
+    linuxMipsel32(),
+    linuxArm64(),
+  )
+
   sourceSets {
-    val commonMain by getting {
-      dependencies {
-        api("org.jetbrains.kotlinx:kotlinx-coroutines-core:_")
-      }
-    }
+    val commonMain by getting
     val commonTest by getting {
       dependencies {
         implementation(kotlin("test"))
         implementation(kotlin("test-annotations-common"))
       }
     }
+    val fallbackMain by creating {
+      dependsOn(commonMain)
+    }
     val nativeMain by creating {
       dependsOn(commonMain)
+    }
+    val fallbackTest by creating {
+      dependsOn(commonTest)
     }
     val nativeTest by creating {
       dependsOn(commonTest)
     }
     targets.withType<KotlinNativeTarget> {
-      compilations["main"].defaultSourceSet.dependsOn(nativeMain)
-      compilations["test"].defaultSourceSet.dependsOn(nativeTest)
+      if (this in fallbackTargets) {
+        compilations["main"].defaultSourceSet.dependsOn(fallbackMain)
+        compilations["test"].defaultSourceSet.dependsOn(fallbackTest)
+      } else {
+        compilations["main"].defaultSourceSet.dependsOn(nativeMain)
+        compilations["test"].defaultSourceSet.dependsOn(nativeTest)
+      }
     }
   }
 }
@@ -56,12 +85,12 @@ tasks {
   }
   withType<CInteropProcess> {
     onlyIf {
-      konanTarget == HostManager.host
+      konanTarget.isHostFamily
     }
   }
   withType<AbstractKotlinNativeCompile<*, *>> {
     onlyIf {
-      compilation.konanTarget == HostManager.host
+      compilation.konanTarget.isHostFamily
     }
   }
 }

@@ -43,6 +43,15 @@ kotlin {
   mingwX64()
   macosX64()
 
+  // Fallback Targets
+  androidNativeArm32()
+  androidNativeArm64()
+  mingwX86()
+  linuxArm32Hfp()
+  linuxMips32()
+  linuxMipsel32()
+  linuxArm64()
+
   sourceSets {
     commonTest {
       dependencies {

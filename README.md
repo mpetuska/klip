@@ -82,13 +82,10 @@ klip {
   scopeAnnotations = setOf( // Takes full control of annotations
     "kotlin.Test",
     "org.junit.Test",
-    "org.junit.jupiter.api.Test"
+    "org.junit.jupiter.api.Test",
+    "org.testng.annotations.Test"
   )
-  scopeAnnotation( // Appends the annotation to the default ones
-    "kotlin.Test",
-    "org.junit.Test",
-    "org.junit.jupiter.api.Test"
-  )
+  scopeAnnotation("kotlin.Test") // Appends the annotation to the default ones
 }
 ```
 3. Use provided klip assertions anywhere under one of the `scopeAnnotations`.

@@ -61,7 +61,8 @@ sealed class KlipOption<T>(
     default = listOf(
       "kotlin.Test",
       "org.junit.Test",
-      "org.junit.jupiter.api.Test"
+      "org.junit.jupiter.api.Test",
+      "org.testng.annotations.Test"
     ),
   )
 }

@@ -5,7 +5,7 @@ package dev.petuska.klip.plugin
  */
 object KlipMap {
   private fun readFromResource(path: String): String? {
-    return this::class.java.getResource(path).readText()
+    return this::class.java.getResource(path)?.readText()
   }
 
   /**

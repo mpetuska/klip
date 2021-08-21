@@ -51,7 +51,7 @@ publishing {
     val ghOwnerName: String = project.properties["gh.owner.name"]!!.toString()
     val ghOwnerEmail: String = project.properties["gh.owner.email"]!!.toString()
     repositories {
-      maven("https://maven.pkg.github.com/$ghOwnerId/${project.name}") {
+      maven("https://maven.pkg.github.com/$ghOwnerId/${rootProject.name}") {
         name = "GitHub"
         credentials {
           username = System.getenv("GH_USERNAME")

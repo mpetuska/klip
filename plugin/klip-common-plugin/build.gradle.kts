@@ -1,6 +1,10 @@
 plugins {
   kotlin("jvm")
-  id("plugin.publishing")
+  id("plugin.common")
+}
+
+java {
+  withSourcesJar()
 }
 
 tasks {

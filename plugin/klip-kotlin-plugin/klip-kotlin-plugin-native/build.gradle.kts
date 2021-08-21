@@ -4,12 +4,15 @@ plugins {
   kotlin("kapt")
 }
 
+java {
+  withSourcesJar()
+}
+
 ktlint {
   disabledRules.addAll("import-ordering")
 }
 
 dependencies {
-//  api(project(":plugin:klip-common-plugin"))
   compileOnly(kotlin("compiler"))
   compileOnly("com.google.auto.service:auto-service-annotations:_")
   kapt("com.google.auto.service:auto-service:_")

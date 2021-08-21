@@ -22,7 +22,7 @@ idea {
 
 ktlint {
   version by versionFor("version.ktlint")
-  additionalEditorconfigFile to rootDir.resolve(".editorconfig")
+  additionalEditorconfigFile.set(rootDir.resolve(".editorconfig"))
 }
 
 tasks {

@@ -10,6 +10,10 @@ description = """
     Gradle plugin to manage KLIP snapshots, processors and dependencies
 """.trimIndent()
 
+java {
+  withSourcesJar()
+}
+
 gradlePlugin {
   plugins {
     create(name) {

@@ -19,7 +19,8 @@ kotlin {
   }
   macosX64()
   linuxX64()
-  mingwX64()
+//  TODO https://github.com/mpetuska/klip/pull/4/checks?check_run_id=3386785439#step:8:255
+//  mingwX64()
 
 //  To be implemented
 //  iosArm32()

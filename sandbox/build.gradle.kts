@@ -40,8 +40,8 @@ kotlin {
     nodejs()
   }
   linuxX64()
-  mingwX64()
   macosX64()
+//  mingwX64()
 
   // Fallback Targets
   androidNativeArm32()

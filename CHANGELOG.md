@@ -10,7 +10,7 @@
 * Implemented a kotlin compiler plugin to fully support MPP
 * New gradle plugin architecture building on top of kotlin gradle plugin sub-plugins API
 * Reworked runtime library to make use of new compiler plugin features
-* Added support for jvm, js, linuxX64, mingwX64 and macosX64 targets (remaining targets are coming!)
+* Added support for jvm, js, linuxX64 and macosX64 targets (remaining targets are coming!)
 * New marker artefact `dev.petuska:klip:0.1.0` to conveniently bring all future runtime modules under one umbrella
 * GH actions to support MPP testing and publishing
 * Published additional fallback targets that cannot run tests to expand usage scope in `commonMain`

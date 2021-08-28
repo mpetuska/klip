@@ -3,6 +3,7 @@ plugins {
   id("com.gradle.plugin-publish")
   `java-gradle-plugin`
   id("plugin.publishing-jvm")
+  id("plugin.build-config-jvm")
 }
 
 description = """Gradle plugin to manage KLIP snapshots, processors and dependencies"""
@@ -31,7 +32,6 @@ pluginBundle {
 kotlin {
   sourceSets {
     main {
-      kotlin.source(project(":plugin:klip-common-plugin").sourceSets["main"].allSource)
       dependencies {
         compileOnly(kotlin("gradle-plugin-api"))
       }
@@ -43,13 +43,5 @@ kotlin {
         implementation(kotlin("test-junit5"))
       }
     }
-  }
-}
-
-tasks {
-  named("processResources", Copy::class) {
-    val commonProcessResources = project(":plugin:klip-common-plugin").tasks.getByName("processResources", Copy::class)
-    dependsOn(commonProcessResources)
-    from(commonProcessResources.destinationDir)
   }
 }

@@ -1,6 +1,6 @@
 plugins {
   id("com.github.jakemarsden.git-hooks")
-  id("plugin.library")
+  id("plugin.library-mpp")
   id("plugin.publishing-nexus")
   id("plugin.publishing-mpp")
 }

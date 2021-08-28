@@ -2,7 +2,7 @@ package dev.petuska.klip.plugin
 
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
-import dev.petuska.klip.plugin.test.compile
+import dev.petuska.klip.plugin.test.Compiler
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.reflect.full.memberExtensionFunctions
@@ -12,34 +12,26 @@ import kotlin.test.assertEquals
 class KlipPluginITest {
   @Test
   fun works() {
-    val result = compile(
-      SourceFile.kotlin(
-        "annotations.kt",
-        """
-        package test
-        
-        annotation class Klippable
-        annotation class CustomKlippable        
-        """.trimIndent()
-      ),
+    val result = Compiler.compile(
       SourceFile.kotlin(
         "main.kt",
-        """        
+        """     
+        import dev.petuska.klip.int.KlipContext
         class Main {
-          @test.Klippable
-          fun klip(value: Any?, path: String? = null, key: String? = null, update: Boolean? = null): String {
+          @${Compiler.klipAnnotations[0]}
+          fun klip(value: Any?, _context: KlipContext? = null): String = with(_context!!) {
             return listOf(value, path, key, update).joinToString()
+          }          
+          
+          @${Compiler.klipAnnotations[1]}
+          fun Any?.klip2(_context: KlipContext? = null): String = with(_context!!){
+            return listOf(this@klip2, path, key, update).joinToString()
           }
           
-          
-          @test.CustomKlippable
-          fun Any?.klip2(path: String? = null, key: String? = null, update: Boolean? = null): String {
-            return listOf(this, path, key, update).joinToString()
-          }
-          
-          @org.junit.jupiter.api.Test
+          @${Compiler.scopeAnnotations[0]}
           fun testKlip(value: Any?) = klip(value)
-          @org.junit.jupiter.api.Test
+        
+          @${Compiler.scopeAnnotations[1]}
           fun Any?.testKlip2() = klip2()
         }
         """.trimIndent()
@@ -50,7 +42,7 @@ class KlipPluginITest {
     val instance = kClazz.getConstructor().newInstance()
     val testKlip = kClazz.kotlin.memberFunctions.find { it.name == "testKlip" }!!
     val testKlip2 = kClazz.kotlin.memberExtensionFunctions.find { it.name == "testKlip2" }!!
-    val klipPath = File("build/tmp/src/commonMain/klips/sources/main.kt.klip").canonicalPath
+    val klipPath = File("${Compiler.kotlinRoot}/sources/__klips__/main.kt.klip").canonicalPath
     assertEquals(
       "Argument, $klipPath, Main.testKlip#0, false",
       testKlip.call(instance, "Argument")

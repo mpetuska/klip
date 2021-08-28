@@ -1,3 +1,23 @@
+# v0.2.0
+## Versions
+* Kotlin: `1.5.30`
+* Gradle: `7.2.0`
+* JDK: `11`
+
+## Changes
+* Reworked how klip settings are injected. Those will now be injected via a single argument of
+  custom `dev.petuska.klip.int.KlipContext` type. This should prevent ambiguities with other arguments and helps to
+  better identify injection target.
+* Compiler plugin rework to be less aggressive. Now will only run if the plugin is enabled
+  AND `dev.petuska.klip.int.KlipContext` class is detected (i.e. runtime dependency is added)
+* Bumped kotlin to release version
+* Got rid of `klip-common-plugin` module as it cannot be consumed by native plugin (replaced by build-configs plugin)
+* Moved some classes and packages around for cleaner structure
+* `MingwX64` support added
+* `root` internal compiler option removed
+* `*.klip` file resolution changed to work with relative paths to source files. Those will now be put
+  in `${sourceFilePath}/__klips__/${sourceFileName}.klip`
+
 # v0.1.0
 ## Versions
 * Kotlin: `1.5.30-RC`

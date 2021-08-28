@@ -27,13 +27,6 @@ tasks {
     destinationDir = root
     from(sourceSet.kotlin.sourceDirectories) {
       into("kotlin")
-      filter {
-        // Replace shadowed imports from plugin module
-        when (it) {
-          "import org.jetbrains.kotlin.com.intellij.mock.MockProject" -> "import com.intellij.mock.MockProject"
-          else -> it
-        }
-      }
     }
     from(sourceSet.resources) {
       into("resources")

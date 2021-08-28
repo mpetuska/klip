@@ -17,7 +17,7 @@ JS that still defaults to legacy compiler).
 The current version was built using the following tooling versions and is guaranteed to work with this setup. Given the
 experimental nature of kotlin compiler plugin API, the plugin powering this library is likely to stop working on
 projects using newer/older kotlin versions
-* Kotlin: `1.5.30-RC`
+* Kotlin: `1.5.30`
 * Gradle: `7.2.0`
 * JDK: `11`
 
@@ -26,20 +26,21 @@ Bellow is a list of currently supported targets and planned targets
 - [x] js
 - [x] jvm
 - [x] linuxX64
+- [x] mingwX64
 - [x] macosX64
-- [ ] mingwX64
+- [ ] macosArm64
 - [ ] iosArm32
 - [ ] iosArm64
+- [ ] iosSimulatorArm64
 - [ ] iosX64
 - [ ] watchosX86
 - [ ] watchosX64
 - [ ] watchosArm64
+- [ ] watchosSimulatorArm64
 - [ ] watchosArm32
 - [ ] tvosArm64
+- [ ] tvosSimulatorArm64
 - [ ] tvosX64
-- [ ] macosX64
-- [ ] mingwX64
-- [ ] mingwX86
 
 There's also a subset of targets that you currently cannot run tests on (and as such making the library redundant).
 These targets will use a fallback implementation that throws an error on native api access (since those targets will not
@@ -80,12 +81,12 @@ klip {
   klipAnnotations = setOf("dev.petuska.klip.Klippable") // Takes full control of annotations
   klipAnnotation("dev.petuska.klip.Klippable") // Appends the annotation to the default ones
   scopeAnnotations = setOf( // Takes full control of annotations
-    "kotlin.Test",
+    "kotlin.test.Test",
     "org.junit.Test",
     "org.junit.jupiter.api.Test",
     "org.testng.annotations.Test"
   )
-  scopeAnnotation("kotlin.Test") // Appends the annotation to the default ones
+  scopeAnnotation("kotlin.test.Test") // Appends the annotation to the default ones
 }
 ```
 3. Use provided klip assertions anywhere under one of the `scopeAnnotations`.
@@ -135,7 +136,6 @@ properties:
 # Modules
 * `:library:klip-api` - main runtime library
 * `:plugin:klip-gradle-plugin` - gradle plugin to manage kotlin compiler plugins
-* `:plugin:klip-common-plugin` - shared code between plugins (should not have any dependencies)
 * `:plugin:klip-kotlin-plugin` - kotlin compiler plugin for jvm & js that does the actual work
 * `:plugin:klip-kotlin-plugin:klip-kotlin-plugin-native` - kotlin compiler plugin for native that does the actual work
 * `sandbox` - a playground to test local changes from consumer end

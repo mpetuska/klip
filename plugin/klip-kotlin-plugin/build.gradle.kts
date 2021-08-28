@@ -1,6 +1,7 @@
 plugins {
   kotlin("kapt")
   id("plugin.publishing-jvm")
+  id("plugin.build-config-jvm")
 }
 
 description = "Kotlin compiler plugin to manage KLIP snapshots for jvm & js"
@@ -18,6 +19,7 @@ dependencies {
   testImplementation(kotlin("test-junit5"))
   testImplementation(kotlin("compiler-embeddable"))
   testImplementation("com.github.tschuchortdev:kotlin-compile-testing:_")
+  testImplementation(project(":library:klip-api"))
 }
 
 publishing {
@@ -27,21 +29,5 @@ publishing {
       artifact(tasks.jar)
       artifact(tasks.kotlinSourcesJar)
     }
-  }
-}
-
-kotlin {
-  sourceSets {
-    main {
-      kotlin.source(project(":plugin:klip-common-plugin").sourceSets["main"].allSource)
-    }
-  }
-}
-
-tasks {
-  named("processResources", Copy::class) {
-    val commonProcessResources = project(":plugin:klip-common-plugin").tasks.getByName("processResources", Copy::class)
-    dependsOn(commonProcessResources)
-    from(commonProcessResources.destinationDir)
   }
 }

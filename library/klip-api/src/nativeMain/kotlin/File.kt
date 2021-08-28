@@ -29,16 +29,20 @@ import platform.posix.stat
 /**
  * Multiplatform wrapper over java.io.File
  */
-public actual class File actual constructor(private val path: String) {
+public actual class File actual constructor(path: String) {
+  private val path: String
+
   init {
     require(path.isNotEmpty()) { "Path cannot be empty" }
+    this.path = cleanupPath(path)
   }
 
   /**
    * Retrieves parent file
    */
   public actual fun getParentFile(): File {
-    val pPath = path.removeSuffix("/").let { it.removeSuffix(it.substringAfterLast("/")) }.removeSuffix("/")
+    val pPath =
+      path.removeSuffix(separator).let { it.removeSuffix(it.substringAfterLast(separator)) }.removeSuffix(separator)
     return if (pPath.isEmpty() && path != ".") {
       File(".")
     } else {
@@ -64,7 +68,7 @@ public actual class File actual constructor(private val path: String) {
   public actual fun mkdirs(): Boolean {
     val parent = getParentFile()
     println("${parent.path} ${parent.exists()}")
-    if (!parent.exists() && parent.path != "/" && parent.path.isNotEmpty()) {
+    if (!parent.exists() && parent.path != separator && parent.path.isNotEmpty()) {
       parent.mkdirs()
     }
 
@@ -88,7 +92,7 @@ public actual class File actual constructor(private val path: String) {
     }
   }
 
-  override fun toString(): String = getPath()
+  actual override fun toString(): String = getPath()
 }
 
 /**

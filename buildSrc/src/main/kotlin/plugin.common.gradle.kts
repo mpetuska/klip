@@ -37,8 +37,8 @@ tasks {
         group = "build"
       }
     }
-    if (tasks.findByName("test") == null) {
-      register("test") {
+    if (tasks.findByName("allTests") == null) {
+      register("allTests") {
         dependsOn(withType(KotlinTest::class))
         group = "verification"
       }

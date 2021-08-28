@@ -40,7 +40,8 @@ public actual class File actual constructor(private val path: String) {
    * checks if the file is directory
    */
   public actual fun isDirectory(): Boolean = fs.lstatSync(path).isDirectory()
-  override fun toString(): String = getPath()
+
+  actual override fun toString(): String = getPath()
 }
 
 /**
@@ -63,3 +64,8 @@ public actual fun File.deleteRecursively(): Boolean = runCatching {
     fs.unlinkSync(getPath())
   }
 }.isSuccess
+
+/**
+ * Native file separator for the platform (thanks a bunch, windows...)
+ */
+public actual val File.separator: String get() = jsPath.sep

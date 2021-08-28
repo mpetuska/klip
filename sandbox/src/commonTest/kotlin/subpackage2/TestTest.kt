@@ -1,6 +1,6 @@
 package subpackage2
 
-import dev.petuska.klip.assertMatchesKlip
+import dev.petuska.klip.assert.assertMatchesKlip
 import kotlin.test.Test
 
 class TestTest2 {

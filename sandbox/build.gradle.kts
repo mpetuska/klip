@@ -1,3 +1,5 @@
+import de.fayard.refreshVersions.core.versionFor
+
 plugins {
   id("dev.petuska.klip")
   kotlin("multiplatform")
@@ -24,7 +26,7 @@ allprojects {
   }
 
   ktlint {
-    version to de.fayard.refreshVersions.core.versionFor("version.ktlint")
+    version to versionFor("version.ktlint")
     additionalEditorconfigFile to rootDir.resolve(".editorconfig")
   }
 
@@ -41,7 +43,8 @@ kotlin {
   }
   linuxX64()
   macosX64()
-//  mingwX64()
+  macosArm64()
+  mingwX64()
 
   // Fallback Targets
   androidNativeArm32()

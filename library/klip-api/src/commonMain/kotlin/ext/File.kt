@@ -25,15 +25,22 @@ public expect class File(path: String) {
   public fun mkdirs(): Boolean
 
   /**
-   * Checks if the file exsists
+   * Checks if the file exists
    */
   public fun exists(): Boolean
 
   /**
-   * checks if the file is directory
+   * Checks if the file is directory
    */
   public fun isDirectory(): Boolean
+
+  override fun toString(): String
 }
+
+/**
+ * Native file separator for the platform (thanks a bunch, windows...)
+ */
+public expect val File.separator: String
 
 /**
  * Writes text to file creating it if needed and fully overwriting any previous content

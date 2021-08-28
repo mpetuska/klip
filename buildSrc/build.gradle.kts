@@ -13,4 +13,5 @@ dependencies {
   implementation("org.jetbrains.kotlin:kotlin-serialization:_")
   implementation("org.jlleitschuh.gradle:ktlint-gradle:_")
   implementation("io.github.gradle-nexus:publish-plugin:_")
+  implementation("com.github.gmazzo:gradle-buildconfig-plugin:_")
 }

@@ -1,6 +1,7 @@
 package dev.petuska.klip.plugin
 
 import dev.petuska.klip.plugin.delegate.propertyDelegate
+import dev.petuska.klip.plugin.util.KlipOption
 import org.gradle.api.Project
 
 /**
@@ -51,7 +52,7 @@ open class KlipExtension(project: Project) {
     /**
      * Extension name
      */
-    val NAME = KlipMap.name
+    const val NAME = dev.petuska.klip.plugin.config.NAME
   }
 }
 

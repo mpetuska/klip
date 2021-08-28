@@ -1,11 +1,16 @@
 package dev.petuska.klip.plugin
 
+import dev.petuska.klip.plugin.config.GROUP
+import dev.petuska.klip.plugin.config.KOTLIN_NATIVE_PLUGIN_ARTEFACT_ID
+import dev.petuska.klip.plugin.config.KOTLIN_PLUGIN_ARTEFACT_ID
+import dev.petuska.klip.plugin.config.KOTLIN_PLUGIN_ID
+import dev.petuska.klip.plugin.config.VERSION
+import dev.petuska.klip.plugin.util.KlipOption
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.testing.Test
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 
@@ -24,16 +29,6 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
     }
   }
 
-  private fun Project.configureTarget(
-    extension: KlipExtension,
-    target: KotlinTarget
-  ) {
-    target.compilations.forEach {
-      val sourceSetRoot = it.defaultSourceSet.kotlin.sourceDirectories.first()
-      it.defaultSourceSet.resources.srcDir(sourceSetRoot.resolve("../klips"))
-    }
-  }
-
   private fun Project.createExtension() = extensions.findByType(KlipExtension::class.java) ?: extensions.create(
     KlipExtension.NAME,
     KlipExtension::class.java,
@@ -43,35 +38,29 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
   override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean =
     kotlinCompilation.target.project.plugins.hasPlugin(KlipPlugin::class.java)
 
-  override fun getCompilerPluginId(): String = KlipMap.kotlinPluginId
+  override fun getCompilerPluginId(): String = KOTLIN_PLUGIN_ID
 
   override fun getPluginArtifact(): SubpluginArtifact = SubpluginArtifact(
-    groupId = KlipMap.group,
-    artifactId = KlipMap.kotlinPluginArtifactId,
-    version = KlipMap.version,
+    groupId = GROUP,
+    artifactId = KOTLIN_PLUGIN_ARTEFACT_ID,
+    version = VERSION,
   )
 
   override fun getPluginArtifactForNative(): SubpluginArtifact = SubpluginArtifact(
-    groupId = KlipMap.group,
-    artifactId = KlipMap.kotlinNativePluginArtifactId,
-    version = KlipMap.version,
+    groupId = GROUP,
+    artifactId = KOTLIN_NATIVE_PLUGIN_ARTEFACT_ID,
+    version = VERSION,
   )
 
   override fun applyToCompilation(kotlinCompilation: KotlinCompilation<*>): Provider<List<SubpluginOption>> {
     val project = kotlinCompilation.target.project
     val extension = project.klip
-    val sourceSetRoot = kotlinCompilation.defaultSourceSet.kotlin.sourceDirectories.first()
-    kotlinCompilation.defaultSourceSet.resources.srcDir(sourceSetRoot.resolve("../klips"))
 
     return project.provider {
       listOf(
         SubpluginOption(key = KlipOption.Enabled.name, lazyValue = lazy { extension.enabled.toString() }),
-        SubpluginOption(
-          key = KlipOption.Root.name,
-          value = sourceSetRoot.canonicalPath,
-        ),
         SubpluginOption(key = KlipOption.Update.name, lazyValue = lazy { extension.update.toString() }),
-      ) + (extension.klipAnnotations + KlipOption.KlipAnnotation.default).map {
+      ) + extension.klipAnnotations.map {
         SubpluginOption(key = KlipOption.KlipAnnotation.name, value = it)
       } + extension.scopeAnnotations.map {
         SubpluginOption(key = KlipOption.ScopeAnnotation.name, value = it)

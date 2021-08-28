@@ -5,6 +5,7 @@ import util.isMainHost
 plugins {
   kotlin("jvm")
   id("plugin.publishing")
+  id("com.github.gmazzo.buildconfig")
 }
 
 val mainHostSpec: Spec<in Task> = Spec { !CI || isMainHost }

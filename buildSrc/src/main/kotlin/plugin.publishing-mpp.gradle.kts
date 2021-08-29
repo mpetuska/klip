@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.HostManager
 import util.CI
+import util.SANDBOX
 import util.buildHost
 import util.isMainHost
 
@@ -63,9 +64,9 @@ kotlin {
   windowsHostTargets.onlyPublishIf { !CI || HostManager.hostIsMingw }
 
   mainHostTargets.onlyBuildIf {
-    !CI || isMainHost
+    !CI || SANDBOX || isMainHost
   }
   (mainHostTargets + Named { "kotlinMultiplatform" }).onlyPublishIf {
-    !CI || isMainHost
+    !CI || SANDBOX || isMainHost
   }
 }

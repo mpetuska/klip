@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import util.CI
+import util.SANDBOX
 import util.isMainHost
 
 plugins {
@@ -8,7 +9,7 @@ plugins {
   id("com.github.gmazzo.buildconfig")
 }
 
-val mainHostSpec: Spec<in Task> = Spec { !CI || isMainHost }
+val mainHostSpec: Spec<in Task> = Spec { !CI || SANDBOX || isMainHost }
 
 tasks {
   withType<KotlinCompile> {

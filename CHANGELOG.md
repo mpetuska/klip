@@ -13,7 +13,7 @@
 * Bumped kotlin to release version
 * Got rid of `klip-common-plugin` module as it cannot be consumed by native plugin (replaced by build-configs plugin)
 * Moved some classes and packages around for cleaner structure
-* `MingwX64` support added
+* `MingwX64` and `macosArm64` support added
 * `root` internal compiler option removed
 * `*.klip` file resolution changed to work with relative paths to source files. Those will now be put
   in `${sourceFilePath}/__klips__/${sourceFileName}.klip`

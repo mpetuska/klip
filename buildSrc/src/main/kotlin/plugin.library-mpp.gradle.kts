@@ -64,11 +64,17 @@ kotlin {
     val nativeMain by creating {
       dependsOn(commonMain)
     }
+    val mingwMain by creating {
+      dependsOn(nativeMain)
+    }
     val unixMain by creating {
       dependsOn(nativeMain)
     }
-    val mingwMain by creating {
-      dependsOn(nativeMain)
+    val linuxMain by creating {
+      dependsOn(unixMain)
+    }
+    val appleMain by creating {
+      dependsOn(unixMain)
     }
 
     val fallbackTest by creating {
@@ -77,11 +83,17 @@ kotlin {
     val nativeTest by creating {
       dependsOn(commonTest)
     }
+    val mingwTest by creating {
+      dependsOn(nativeTest)
+    }
     val unixTest by creating {
       dependsOn(nativeTest)
     }
-    val mingwTest by creating {
-      dependsOn(nativeTest)
+    val linuxTest by creating {
+      dependsOn(unixTest)
+    }
+    val appleTest by creating {
+      dependsOn(unixTest)
     }
 
     targets.withType<KotlinNativeTarget> {
@@ -96,9 +108,13 @@ kotlin {
           main.dependsOn(mingwMain)
           test.dependsOn(mingwTest)
         }
+        konanTarget.family.isAppleFamily -> {
+          main.dependsOn(appleMain)
+          test.dependsOn(appleTest)
+        }
         else -> {
-          main.dependsOn(unixMain)
-          test.dependsOn(unixTest)
+          main.dependsOn(linuxMain)
+          test.dependsOn(linuxTest)
         }
       }
     }

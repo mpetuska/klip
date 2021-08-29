@@ -54,14 +54,14 @@ kotlin {
   logger.info("Windows host targets: $windowsHostTargets")
   logger.info("Main host targets: $mainHostTargets")
 
-  linuxHostTargets.onlyBuildIf { !CI || HostManager.hostIsLinux }
-  linuxHostTargets.onlyPublishIf { !CI || HostManager.hostIsLinux }
+  linuxHostTargets.onlyBuildIf { !CI || SANDBOX || HostManager.hostIsLinux }
+  linuxHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsLinux }
 
-  osxHostTargets.onlyBuildIf { !CI || HostManager.hostIsMac }
-  osxHostTargets.onlyPublishIf { !CI || HostManager.hostIsMac }
+  osxHostTargets.onlyBuildIf { !CI || SANDBOX || HostManager.hostIsMac }
+  osxHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsMac }
 
-  windowsHostTargets.onlyBuildIf { !CI || HostManager.hostIsMingw }
-  windowsHostTargets.onlyPublishIf { !CI || HostManager.hostIsMingw }
+  windowsHostTargets.onlyBuildIf { !CI || SANDBOX || HostManager.hostIsMingw }
+  windowsHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsMingw }
 
   mainHostTargets.onlyBuildIf {
     !CI || SANDBOX || isMainHost

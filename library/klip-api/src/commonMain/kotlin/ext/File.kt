@@ -43,6 +43,11 @@ public expect class File(path: String) {
 public expect val File.separator: String
 
 /**
+ * Native newline separator for the platform (thanks a bunch, windows...)
+ */
+public expect val File.newline: String
+
+/**
  * Writes text to file creating it if needed and fully overwriting any previous content
  */
 public expect fun File.writeText(text: String)

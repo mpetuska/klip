@@ -69,3 +69,8 @@ public actual fun File.deleteRecursively(): Boolean = runCatching {
  * Native file separator for the platform (thanks a bunch, windows...)
  */
 public actual val File.separator: String get() = jsPath.sep
+
+/**
+ * Native newline separator for the platform (thanks a bunch, windows...)
+ */
+public actual val File.newline: String get() = require("os").EOL

@@ -1,6 +1,7 @@
 package dev.petuska.klip.int
 
 import dev.petuska.klip.ext.File
+import dev.petuska.klip.ext.newline
 import dev.petuska.klip.ext.readText
 import dev.petuska.klip.ext.writeText
 import kotlin.native.concurrent.ThreadLocal
@@ -20,7 +21,7 @@ public object KlipManager {
   private fun loadKlips(path: String) = klipMatrix[path] ?: run {
     val klips = read(path)?.split(SEPARATOR_KLIPS)?.filter(String::isNotEmpty)?.associate { kl ->
       val split = kl.split(SEPARATOR_KEY)
-      require(split.size == 2 && !split[0].startsWith("\n")) {
+      require(split.size == 2 && !split[0].startsWith(File(".").newline)) {
         "Corrupted klip at $path:${
         split.getOrNull(0)?.substringAfter(SEPARATOR)
         }"

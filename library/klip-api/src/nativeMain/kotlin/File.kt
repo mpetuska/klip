@@ -1,6 +1,7 @@
 package dev.petuska.klip.ext
 
 import kotlinx.cinterop.ByteVar
+import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.allocArray
 import kotlinx.cinterop.convert
@@ -19,10 +20,8 @@ import platform.posix.fclose
 import platform.posix.fgets
 import platform.posix.fopen
 import platform.posix.fputs
-import platform.posix.mkdir
 import platform.posix.nftw
 import platform.posix.perror
-import platform.posix.realpath
 import platform.posix.remove
 import platform.posix.stat
 
@@ -59,7 +58,7 @@ public actual class File actual constructor(path: String) {
    * Returns absolute path to this file
    */
   public actual fun getAbsolutePath(): String = memScoped {
-    realpath(path, null)?.toKString() ?: error("Cannot determine absolute path for $path")
+    mppRealpath(path)?.toKString() ?: error("Cannot determine absolute path for $path")
   }
 
   /**
@@ -72,7 +71,7 @@ public actual class File actual constructor(path: String) {
       parent.mkdirs()
     }
 
-    return mkdir(path, S_IRWXU) == 0
+    return mppMkdir(path, S_IRWXU) == 0
   }
 
   /**
@@ -155,3 +154,7 @@ public actual fun File.deleteRecursively(): Boolean {
     remove(getPath())
   } == 0
 }
+
+internal expect fun mppMkdir(path: String, permissions: Int): Int
+
+internal expect fun mppRealpath(path: String): CPointer<ByteVar>?

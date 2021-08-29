@@ -13,18 +13,17 @@ public typealias Klips = MutableMap<String, String>
  */
 @ThreadLocal
 public object KlipManager {
+  private val newline = File(".").newline
   private const val SEPARATOR = ":::::>>"
-  private const val SEPARATOR_KEY = "$SEPARATOR\n"
-  private const val SEPARATOR_KLIPS = "\n$SEPARATOR"
+  private val SEPARATOR_KEY = "$SEPARATOR$newline"
+  private val SEPARATOR_KLIPS = "$newline$SEPARATOR"
   private val klipMatrix = mutableMapOf<String, Klips>()
 
   private fun loadKlips(path: String) = klipMatrix[path] ?: run {
     val klips = read(path)?.split(SEPARATOR_KLIPS)?.filter(String::isNotEmpty)?.associate { kl ->
       val split = kl.split(SEPARATOR_KEY)
-      require(split.size == 2 && !split[0].startsWith(File(".").newline)) {
-        "Corrupted klip at $path:${
-        split.getOrNull(0)?.substringAfter(SEPARATOR)
-        }"
+      require(split.size == 2 && !split[0].startsWith(newline)) {
+        "Corrupted klip at $path:${split.getOrNull(0)?.substringAfter(SEPARATOR)}"
       }
       val (k, v) = split
       k to v

@@ -28,7 +28,8 @@ import org.jetbrains.kotlin.util.Logger
 import java.io.File
 
 /**
- * The main worker-bee of the plugin, actually transforming the "klippable" function calls to pass in required parameters
+ * The main worker-bee of the plugin, responsible for actually transforming the "klippable"
+ * function calls to pass in required parameters
  */
 class KlippableFnIrTransformer(
   private val context: IrPluginContext,

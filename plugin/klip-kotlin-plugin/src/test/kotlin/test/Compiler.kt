@@ -11,8 +11,8 @@ import java.io.File
 
 object Compiler {
   val kotlinRoot = File("build/tmp/src/commonMain/kotlin")
-  val enabled = "true"
-  val update = "false"
+  const val enabled = "true"
+  const val update = "false"
   val klipAnnotations = listOf(
     "test.Klippable",
     "test.CustomKlippable"

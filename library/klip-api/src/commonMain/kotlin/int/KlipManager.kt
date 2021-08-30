@@ -98,7 +98,8 @@ public object KlipManager {
    * Writes or returns klip depending on the working mode.
    * @param context [KlipContext] containing metadata about the klip
    * @param source a provider for a string representation to persist
-   * @return read klip if it exists and [KlipContext.update]` == false` or persisted value that was provided by [source] otherwise
+   * @return read klip if it exists and [KlipContext.update]` == false`
+   * or persisted value that was provided by [source] otherwise
    */
   public fun klip(context: KlipContext, source: () -> String): String = with(context) {
     return if (update) {

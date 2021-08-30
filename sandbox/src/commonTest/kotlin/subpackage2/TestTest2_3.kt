@@ -34,4 +34,3 @@ class TestTest3 {
     Inner().run()
   }
 }
-

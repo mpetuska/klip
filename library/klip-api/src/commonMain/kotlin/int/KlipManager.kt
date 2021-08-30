@@ -1,7 +1,6 @@
 package dev.petuska.klip.int
 
 import dev.petuska.klip.ext.File
-import dev.petuska.klip.ext.newline
 import dev.petuska.klip.ext.readText
 import dev.petuska.klip.ext.writeText
 import kotlin.native.concurrent.ThreadLocal

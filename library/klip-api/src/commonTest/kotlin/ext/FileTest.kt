@@ -1,17 +1,27 @@
 package dev.petuska.klip.ext
 
-import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class FileTest {
-  private val testDir = File("test-dir")
+  private val testDir = File("build/test-dir/FileTest")
 
-  @AfterTest
+  @BeforeTest
   fun cleanUp() {
     testDir.deleteRecursively()
+  }
+
+  @Test
+  fun deleteRecursively() {
+    val file = File(testDir.getPath())
+    assertFalse(file.exists())
+    file.mkdirs()
+    assertTrue(file.exists())
+    require(file.deleteRecursively()) { "Error during recursive deletion" }
+    assertFalse(file.exists())
   }
 
   @Test
@@ -23,14 +33,14 @@ class FileTest {
   @Test
   fun getPath() {
     val file = File("$testDir/ok.kt")
-    assertEquals(file.getPath(), "$testDir/ok.kt")
+    assertEquals(file.getPath(), "$testDir${testDir.separator}ok.kt")
   }
 
   @Test
   fun getAbsolutePath() {
     val file = File("$testDir/ok.kt")
     file.mkdirs()
-    assertEquals(file.getAbsolutePath(), "${file.getParentFile().getAbsolutePath()}/ok.kt")
+    assertEquals(file.getAbsolutePath(), "${file.getParentFile().getAbsolutePath()}${testDir.separator}ok.kt")
   }
 
   @Test
@@ -46,15 +56,5 @@ class FileTest {
     assertFalse(file.exists())
     file.mkdirs()
     assertTrue(file.exists())
-  }
-
-  @Test
-  fun deleteRecursively() {
-    val file = File(testDir.getPath())
-    assertFalse(file.exists())
-    file.mkdirs()
-    assertTrue(file.exists())
-    file.deleteRecursively()
-    assertFalse(file.exists())
   }
 }

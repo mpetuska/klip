@@ -8,7 +8,13 @@ private val fs = require("fs")
 /**
  * Multiplatform wrapper over java.io.File API
  */
-public actual class File actual constructor(private val path: String) {
+public actual class File actual constructor(path: String) {
+  private val path: String
+
+  init {
+    this.path = cleanupPath(path)
+  }
+
   /**
    * Returns absolute path to this file
    */

@@ -22,6 +22,7 @@ import platform.posix.fputs
 import platform.posix.nftw
 import platform.posix.perror
 import platform.posix.remove
+import platform.posix.rmdir
 import platform.posix.stat
 
 /**
@@ -65,7 +66,6 @@ public actual class File actual constructor(path: String) {
    */
   public actual fun mkdirs(): Boolean {
     val parent = getParentFile()
-    println("${parent.path} ${parent.exists()}")
     if (!parent.exists() && parent.path != separator && parent.path.isNotEmpty()) {
       parent.mkdirs()
     }
@@ -141,9 +141,26 @@ public actual fun File.deleteRecursively(): Boolean {
     nftw(
       getPath(),
       staticCFunction { fpath, _, _, _ ->
-        remove(fpath?.toKString()).also {
-          if (it != 0) {
-            perror(fpath?.toKString())
+        val spath = fpath?.toKString()
+        val isDir = memScoped {
+          val stat = alloc<stat>()
+          if (stat(spath, stat.ptr) != 0) {
+            false
+          } else {
+            S_IFDIR == (stat.st_mode and S_IFMT.convert()).convert<Int>()
+          }
+        }
+        if (isDir) {
+          rmdir(spath).also {
+            if (it != 0) {
+              perror("Directory removal error[$it]: $spath")
+            }
+          }
+        } else {
+          remove(spath).also {
+            if (it != 0) {
+              perror("File removal error[$it]: $spath")
+            }
           }
         }
       },

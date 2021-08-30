@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.HostManager
+import util.CI
 import util.SANDBOX
 import util.buildHost
 
@@ -131,12 +132,12 @@ tasks {
   }
   withType<CInteropProcess> {
     onlyIf {
-      SANDBOX || konanTarget.buildHost == HostManager.host.family
+      !CI || SANDBOX || konanTarget.buildHost == HostManager.host.family
     }
   }
   withType<AbstractKotlinNativeCompile<*, *>> {
     onlyIf {
-      SANDBOX || compilation.konanTarget.buildHost == HostManager.host.family
+      !CI || SANDBOX || compilation.konanTarget.buildHost == HostManager.host.family
     }
   }
 }

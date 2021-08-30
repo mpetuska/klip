@@ -13,7 +13,7 @@ public actual fun File.deleteRecursively(): Boolean = kDeleteRecursively()
 /**
  * Native file separator for the platform (thanks a bunch, windows...)
  */
-public actual val File.separator: String get() = File.pathSeparator
+public actual val File.separator: String get() = File.separator
 
 /**
  * Native newline separator for the platform (thanks a bunch, windows...)

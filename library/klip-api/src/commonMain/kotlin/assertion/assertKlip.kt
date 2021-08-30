@@ -1,4 +1,4 @@
-package dev.petuska.klip.assert
+package dev.petuska.klip.assertion
 
 import dev.petuska.klip.Klippable
 import dev.petuska.klip.int.KlipContext
@@ -15,7 +15,7 @@ import kotlin.test.assertEquals
 public fun assertMatchesKlip(actual: Any?, _context: KlipContext? = null) {
   _context.validate()
   val klip = KlipManager.klip(_context) { actual.toString() }
-  assertEquals(klip, actual)
+  assertEquals(klip, actual, "Value does not match its klip")
 }
 
 /**

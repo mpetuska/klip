@@ -27,20 +27,20 @@ class FileTest {
   @Test
   fun getParentFile() {
     val file = File("$testDir/ok.kt")
-    assertEquals(file.getParentFile().getPath(), testDir.getPath())
+    assertEquals(testDir.getPath(), file.getParentFile().getPath())
   }
 
   @Test
   fun getPath() {
     val file = File("$testDir/ok.kt")
-    assertEquals(file.getPath(), "$testDir${testDir.separator}ok.kt")
+    assertEquals("$testDir${testDir.separator}ok.kt", file.getPath())
   }
 
   @Test
   fun getAbsolutePath() {
     val file = File("$testDir/ok.kt")
     file.mkdirs()
-    assertEquals(file.getAbsolutePath(), "${file.getParentFile().getAbsolutePath()}${testDir.separator}ok.kt")
+    assertEquals("${file.getParentFile().getAbsolutePath()}${testDir.separator}ok.kt", file.getAbsolutePath())
   }
 
   @Test

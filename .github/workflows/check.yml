@@ -78,6 +78,12 @@ jobs:
       - name: Gradle Check
         run: ./gradlew check --scan
 
+      - name: Gradle Check Sandbox
+        env:
+          SANDBOX: true
+        working-directory: sandbox
+        run: ./gradlew check --scan
+
       - uses: actions/upload-artifact@v2
         if: ${{ always() }}
         with:

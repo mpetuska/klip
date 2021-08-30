@@ -19,6 +19,7 @@ import platform.posix.fclose
 import platform.posix.fgets
 import platform.posix.fopen
 import platform.posix.fputs
+import platform.posix.getcwd
 import platform.posix.nftw
 import platform.posix.perror
 import platform.posix.remove
@@ -29,20 +30,21 @@ import platform.posix.stat
  * Multiplatform wrapper over java.io.File
  */
 public actual class File actual constructor(path: String) {
-  private val path: String
+  private val _path: String
 
   init {
     require(path.isNotEmpty()) { "Path cannot be empty" }
-    this.path = cleanupPath(path)
+    this._path = cleanupPath(path)
   }
 
   /**
    * Retrieves parent file
    */
   public actual fun getParentFile(): File {
-    val pPath =
-      path.removeSuffix(separator).let { it.removeSuffix(it.substringAfterLast(separator)) }.removeSuffix(separator)
-    return if (pPath.isEmpty() && path != ".") {
+    val pPath = _path.removeSuffix(separator)
+      .let { it.removeSuffix(it.substringAfterLast(separator)) }
+      .removeSuffix(separator)
+    return if (pPath.isEmpty() && _path != ".") {
       File(".")
     } else {
       File(pPath)
@@ -52,38 +54,44 @@ public actual class File actual constructor(path: String) {
   /**
    * Returns local path to this file
    */
-  public actual fun getPath(): String = path
+  public actual fun getPath(): String = _path
 
   /**
    * Returns absolute path to this file
    */
-  public actual fun getAbsolutePath(): String =
-    mppGetAbsolutePath()
-
+  public actual fun getAbsolutePath(): String {
+    return if (isRooted) {
+      _path
+    } else {
+      memScoped {
+        "${getcwd(null, 0)!!.toKString()}$separator$_path"
+      }
+    }
+  }
 
   /**
    * Recursively makes all directories up to this directory file
    */
   public actual fun mkdirs(): Boolean {
     val parent = getParentFile()
-    if (!parent.exists() && parent.path != separator && parent.path.isNotEmpty()) {
+    if (!parent.exists() && parent._path != separator && parent._path.isNotEmpty()) {
       parent.mkdirs()
     }
 
-    return mppMkdir(path, S_IRWXU) == 0
+    return mppMkdir(_path, S_IRWXU) == 0
   }
 
   /**
-   * Checks if the file exsists
+   * Checks if the file exists
    */
-  public actual fun exists(): Boolean = access(path, F_OK) == 0
+  public actual fun exists(): Boolean = access(_path, F_OK) == 0
 
   /**
    * checks if the file is directory
    */
   public actual fun isDirectory(): Boolean = memScoped {
     val stat = alloc<stat>()
-    if (stat(path, stat.ptr) != 0) {
+    if (stat(_path, stat.ptr) != 0) {
       false
     } else {
       S_IFDIR == (stat.st_mode and S_IFMT.convert()).convert<Int>()
@@ -173,4 +181,7 @@ public actual fun File.deleteRecursively(): Boolean {
 
 internal expect fun mppMkdir(path: String, permissions: Int): Int
 
-internal expect fun File.mppGetAbsolutePath(): String
+/**
+ * Checks if file path is starting from root (thanks a bunch, windows...)
+ */
+internal expect val File.isRooted: Boolean

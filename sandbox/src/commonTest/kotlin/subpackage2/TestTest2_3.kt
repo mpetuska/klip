@@ -1,6 +1,6 @@
 package subpackage2
 
-import dev.petuska.klip.assert.assertMatchesKlip
+import dev.petuska.klip.assertion.assertMatchesKlip
 import kotlin.test.Test
 
 class TestTest2 {
@@ -34,3 +34,4 @@ class TestTest3 {
     Inner().run()
   }
 }
+

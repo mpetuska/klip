@@ -18,10 +18,10 @@ public object KlipManager {
   private val klipMatrix = mutableMapOf<String, Klips>()
 
   private fun loadKlips(path: String) = klipMatrix[path] ?: run {
-    val klips = read(path)?.replace("\n\r", "\n")?.split(SEPARATOR_KLIPS)?.filter(String::isNotEmpty)?.associate { kl ->
+    val klips = read(path)?.replace("\r\n", "\n")?.split(SEPARATOR_KLIPS)?.filter(String::isNotEmpty)?.associate { kl ->
       val split = kl.split(SEPARATOR_KEY)
       require(split.size == 2 && !split[0].startsWith("\n")) {
-        "Corrupted klip at $path:${split.getOrNull(0)?.substringAfter(SEPARATOR)}"
+        "Corrupted klip at $path:${split.getOrNull(0)?.substringBefore(SEPARATOR)}"
       }
       val (k, v) = split
       k to v

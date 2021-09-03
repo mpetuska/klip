@@ -28,7 +28,7 @@ Bellow is a list of currently supported targets and planned targets
 - [x] linuxX64
 - [x] mingwX64
 - [x] macosX64
-- [ ] macosArm64
+- [x] macosArm64
 - [ ] iosArm32
 - [ ] iosArm64
 - [ ] iosSimulatorArm64

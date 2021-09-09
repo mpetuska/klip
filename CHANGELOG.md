@@ -1,9 +1,17 @@
+# WIP
+## Versions
+* Kotlin: `1.5.30`
+* Gradle: `7.2.0`
+* JDK: `11`
+## Changes
+* Nothing yet
+
+
 # v0.2.0
 ## Versions
 * Kotlin: `1.5.30`
 * Gradle: `7.2.0`
 * JDK: `11`
-
 ## Changes
 * Reworked how klip settings are injected. Those will now be injected via a single argument of
   custom `dev.petuska.klip.int.KlipContext` type. This should prevent ambiguities with other arguments and helps to
@@ -18,12 +26,12 @@
 * `*.klip` file resolution changed to work with relative paths to source files. Those will now be put
   in `${sourceFilePath}/__klips__/${sourceFileName}.klip`
 
+
 # v0.1.0
 ## Versions
 * Kotlin: `1.5.30-RC`
 * Gradle: `7.2.0`
 * JDK: `11`
-
 ## Changes
 * Full rework of the previous preview version, restructuring the codebase and getting rid of ksp and kotlinx-nodejs
   (due to it still only being available at JCenter)
@@ -42,12 +50,12 @@
   * linuxArm64
   * mingwX86
 
+
 # v0.0.1
 ## Versions
 * Kotlin: `1.5.10`
 * Gradle: `7.0.0`
 * JDK: `11`
-
 ## Changes
 * Initial implementation of gradle plugin, runtime library and ksp-based processor supporting JVM
 * Basic, yet flaky klip assertions.

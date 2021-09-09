@@ -1,4 +1,3 @@
-import gradle.kotlin.dsl.accessors._22fb0f66704d76c1f3b70c84bc95bb50.publishing
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.target.HostManager

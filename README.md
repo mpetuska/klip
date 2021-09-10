@@ -29,18 +29,18 @@ Bellow is a list of currently supported targets and planned targets
 - [x] mingwX64
 - [x] macosX64
 - [x] macosArm64
-- [ ] iosArm32
-- [ ] iosArm64
-- [ ] iosSimulatorArm64
-- [ ] iosX64
-- [ ] watchosX86
-- [ ] watchosX64
-- [ ] watchosArm64
-- [ ] watchosSimulatorArm64
-- [ ] watchosArm32
-- [ ] tvosArm64
-- [ ] tvosSimulatorArm64
-- [ ] tvosX64
+- [x] iosArm32
+- [x] iosArm64
+- [x] iosSimulatorArm64
+- [x] iosX64
+- [x] watchosX86
+- [x] watchosX64
+- [x] watchosArm64
+- [x] watchosSimulatorArm64
+- [x] watchosArm32
+- [x] tvosArm64
+- [x] tvosSimulatorArm64
+- [x] tvosX64
 
 There's also a subset of targets that you currently cannot run tests on (and as such making the library redundant).
 These targets will use a fallback implementation that throws an error on native api access (since those targets will not

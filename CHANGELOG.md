@@ -4,7 +4,20 @@
 * Gradle: `7.2.0`
 * JDK: `11`
 ## Changes
-* Nothing yet
+* Remaining apple targets added
+  - [x] iosArm32
+  - [x] iosArm64
+  - [x] iosSimulatorArm64
+  - [x] iosX64
+  - [x] watchosX86
+  - [x] watchosX64
+  - [x] watchosArm64
+  - [x] watchosSimulatorArm64
+  - [x] watchosArm32
+  - [x] tvosArm64
+  - [x] tvosSimulatorArm64
+  - [x] tvosX64
+* Per-target sandbox test to better assert correctness
 
 
 # v0.2.0

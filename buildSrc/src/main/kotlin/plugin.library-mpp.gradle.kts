@@ -25,20 +25,18 @@ kotlin {
   macosArm64()
   linuxX64()
   mingwX64()
-
-//  To be implemented
-//  iosArm32()
-//  iosArm64()
-//  iosX64()
-//  iosSimulatorArm64()
-//  watchosX86()
-//  watchosX64()
-//  watchosArm64()
-//  watchosArm32()
-//  watchosSimulatorArm64()
-//  tvosArm64()
-//  tvosX64()
-//  tvosSimulatorArm64()
+  iosArm32()
+  iosArm64()
+  iosX64()
+  iosSimulatorArm64()
+  watchosX86()
+  watchosX64()
+  watchosArm64()
+  watchosArm32()
+  watchosSimulatorArm64()
+  tvosArm64()
+  tvosX64()
+  tvosSimulatorArm64()
 
   // Fallback Targets
   val fallbackTargets = setOf(

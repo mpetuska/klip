@@ -1,4 +1,6 @@
 import de.fayard.refreshVersions.core.versionFor
+import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 
 plugins {
   id("dev.petuska.klip")
@@ -33,6 +35,22 @@ allprojects {
   repositories {
     mavenCentral()
   }
+  tasks {
+    afterEvaluate {
+      if (tasks.findByName("compile") == null) {
+        register("compile") {
+          dependsOn(withType(AbstractKotlinCompile::class))
+          group = "build"
+        }
+      }
+      if (tasks.findByName("allTests") == null) {
+        register("allTests") {
+          dependsOn(withType(KotlinTest::class))
+          group = "verification"
+        }
+      }
+    }
+  }
 }
 
 kotlin {
@@ -45,6 +63,18 @@ kotlin {
   macosX64()
   macosArm64()
   mingwX64()
+  iosArm32()
+  iosArm64()
+  iosX64()
+  iosSimulatorArm64()
+  watchosX86()
+  watchosX64()
+  watchosArm64()
+  watchosArm32()
+  watchosSimulatorArm64()
+  tvosArm64()
+  tvosX64()
+  tvosSimulatorArm64()
 
   // Fallback Targets
   androidNativeArm32()

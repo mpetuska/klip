@@ -1,3 +1,5 @@
+package sandbox.test
+
 import dev.petuska.klip.api.assertKlip
 import dev.petuska.klip.api.assertMatchesKlip
 import kotlin.test.Test

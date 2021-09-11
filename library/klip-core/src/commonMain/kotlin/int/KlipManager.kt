@@ -13,19 +13,27 @@ public typealias Klips = MutableMap<String, String>
 @ThreadLocal
 public object KlipManager {
   private const val SEPARATOR = ":::::>>"
-  private val SEPARATOR_KEY = "$SEPARATOR\n"
-  private val SEPARATOR_KLIPS = "\n$SEPARATOR"
+  private const val SEPARATOR_KEY = "$SEPARATOR\n"
+  private const val SEPARATOR_KLIPS = "\n$SEPARATOR"
+  private const val SEPARATOR_SOF = "$SEPARATOR KLIPS $SEPARATOR"
+  private const val SEPARATOR_EOF = "\n$SEPARATOR$SEPARATOR$SEPARATOR\n"
   private val klipMatrix = mutableMapOf<String, Klips>()
 
   private fun loadKlips(path: String) = klipMatrix[path] ?: run {
-    val klips = read(path)?.replace("\r\n", "\n")?.split(SEPARATOR_KLIPS)?.filter(String::isNotEmpty)?.associate { kl ->
-      val split = kl.split(SEPARATOR_KEY)
-      require(split.size == 2 && !split[0].startsWith("\n")) {
-        "Corrupted klip at $path:${split.getOrNull(0)?.substringBefore(SEPARATOR)}"
-      }
-      val (k, v) = split
-      k to v
-    }?.toMutableMap() ?: mutableMapOf()
+    val klips = read(path)
+      ?.replace("\r\n", "\n")
+      ?.removePrefix(SEPARATOR_SOF)
+      ?.removeSuffix(SEPARATOR_EOF)
+      ?.split(SEPARATOR_KLIPS)
+      ?.filter(String::isNotEmpty)
+      ?.associate { kl ->
+        val split = kl.split(SEPARATOR_KEY)
+        require(split.size == 2 && !split[0].startsWith("\n")) {
+          "Corrupted klip at $path:${split.getOrNull(0)?.substringBefore(SEPARATOR)}"
+        }
+        val (k, v) = split
+        k to v
+      }?.toMutableMap() ?: mutableMapOf()
     klips.also {
       klipMatrix[path] = it
     }
@@ -34,13 +42,17 @@ public object KlipManager {
   private fun saveKlips(path: String, klips: Klips) {
     klipMatrix[path]?.putAll(klips) ?: run { klipMatrix[path] = klips }
     write(path) {
-      (klipMatrix[path] ?: mutableMapOf()).entries.joinToString(separator = "") { (k, v) -> stringifyKlip(k) { v } }
+      (klipMatrix[path] ?: mutableMapOf()).entries.joinToString(
+        separator = "",
+        prefix = SEPARATOR_SOF,
+        postfix = SEPARATOR_EOF
+      ) { (k, v) -> stringifyKlip(k) { v } }
     }
   }
 
   private fun write(path: String, source: () -> String): String {
     return File(path).run {
-      getParentFile().mkdirs()
+      getParentFile()?.mkdirs()
       source().also { writeText(it) }
     }
   }

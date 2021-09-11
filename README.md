@@ -23,7 +23,7 @@ projects using newer/older kotlin versions.
 
 # Targets
 Bellow is a list of currently supported targets and planned targets:
-- [ ] android
+- [x] android
 - [x] js
 - [x] jvm
 - [x] linuxX64

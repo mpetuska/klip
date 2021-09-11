@@ -4,7 +4,8 @@
 * Gradle: `7.2.0`
 * JDK: `11`
 ## Changes
-* Remaining apple targets added
+* Remaining android and apple targets added
+  - [x] android
   - [x] iosArm32
   - [x] iosArm64
   - [x] iosSimulatorArm64

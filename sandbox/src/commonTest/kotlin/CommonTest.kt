@@ -1,9 +1,9 @@
-package subpackage2
+package sandbox.test
 
 import dev.petuska.klip.api.assertMatchesKlip
 import kotlin.test.Test
 
-class TestTest2 {
+class CommonTest {
   @Test
   fun test() {
     assertMatchesKlip("zero")
@@ -16,7 +16,7 @@ class TestTest2 {
   }
 }
 
-class TestTest3 {
+class AnotherCommonTest {
   class Inner {
     fun run() {
       assertMatchesKlip("2")

@@ -1,6 +1,7 @@
 package dev.petuska.klip.plugin.delegate
 
 import org.gradle.api.Project
+import java.util.Locale
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -10,22 +11,20 @@ internal class PropertyDelegate<V>(
   private val converter: (String) -> V?,
   private val default: V
 ) : ReadWriteProperty<Any, V> {
-  private fun <T> Project.propertyOrNull(name: String): T? = if (hasProperty(name)) {
-    @Suppress("UNCHECKED_CAST")
-    property(name) as? T
+  private fun Project.propertyOrNull(name: String): String? = if (hasProperty(name)) {
+    property(name)?.toString()
   } else null
 
   private var value: V? = null
 
   override fun getValue(thisRef: Any, property: KProperty<*>): V {
-    value = value ?: project.propertyOrNull<V>(property.buildPropertyName()) ?: System.getenv(property.buildEnvName())
+    value = value ?: (project.propertyOrNull(property.buildPropertyName()) ?: System.getenv(property.buildEnvName()))
       ?.toString()?.let(converter)
     return value ?: default
   }
 
   override fun setValue(thisRef: Any, property: KProperty<*>, value: V) {
-    this.value = project.propertyOrNull<V>(property.buildPropertyName()) ?: System.getenv(property.buildEnvName())
-      ?.toString()?.let(converter) ?: value
+    this.value = value
   }
 
   private fun KProperty<*>.buildPropertyName(): String {
@@ -35,7 +34,7 @@ internal class PropertyDelegate<V>(
   }
 
   private fun KProperty<*>.buildEnvName(): String {
-    return buildPropertyName().replace("[- .]".toRegex(), "_").toUpperCase()
+    return buildPropertyName().replace("[- .]".toRegex(), "_").uppercase(Locale.getDefault())
   }
 
   companion object {

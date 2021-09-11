@@ -4,11 +4,12 @@ plugins {
 
 repositories {
   mavenCentral()
+  google()
 }
 
 dependencies {
-//  implementation("com.android.library:com.android.library.gradle.plugin:_")
 //  implementation("io.kotest:kotest-framework-multiplatform-plugin-gradle:_")
+  implementation("com.android.tools.build:gradle:_")
   implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:_")
   implementation("org.jetbrains.dokka:dokka-gradle-plugin:_")
   implementation("org.jetbrains.kotlin:kotlin-serialization:_")

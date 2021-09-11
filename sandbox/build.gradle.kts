@@ -6,6 +6,7 @@ plugins {
   id("dev.petuska.klip")
   kotlin("multiplatform")
   id("org.jlleitschuh.gradle.ktlint")
+  id("com.android.library")
   idea
 }
 
@@ -13,6 +14,14 @@ gradleEnterprise {
   buildScan {
     termsOfServiceUrl = "https://gradle.com/terms-of-service"
     termsOfServiceAgree = "yes"
+  }
+}
+
+android {
+  compileSdkVersion(31)
+  defaultConfig {
+    minSdkVersion(1)
+    targetSdkVersion(31)
   }
 }
 
@@ -34,6 +43,7 @@ allprojects {
 
   repositories {
     mavenCentral()
+    google()
   }
   tasks {
     afterEvaluate {
@@ -54,6 +64,7 @@ allprojects {
 }
 
 kotlin {
+  android()
   jvm()
   js {
     useCommonJs()
@@ -91,23 +102,20 @@ kotlin {
         implementation("dev.petuska:klip-api")
       }
     }
+    named("androidTest") {
+      dependencies {
+        implementation(kotlin("test-junit"))
+      }
+    }
     named("jvmTest") {
       dependencies {
-        implementation(kotlin("test-junit5"))
+        implementation(kotlin("test-junit"))
       }
     }
     named("jsTest") {
       dependencies {
         implementation(kotlin("test-js"))
       }
-    }
-  }
-}
-
-allprojects {
-  tasks {
-    withType<Test> {
-      useJUnitPlatform()
     }
   }
 }

@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile
 import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.HostManager
 import util.CI
@@ -11,11 +10,24 @@ import util.buildHost
 plugins {
   kotlin("multiplatform")
   kotlin("plugin.serialization")
+  id("com.android.library")
   id("plugin.common")
+}
+
+android {
+  compileSdkVersion(31)
+  defaultConfig {
+    minSdkVersion(1)
+    targetSdkVersion(31)
+  }
 }
 
 kotlin {
   explicitApi()
+
+  android {
+    publishLibraryVariants("release", "debug")
+  }
   jvm()
   js {
     useCommonJs()
@@ -121,13 +133,6 @@ kotlin {
 }
 
 tasks {
-  project.properties["org.gradle.project.targetCompatibility"]?.toString()?.let {
-    withType<KotlinCompile> {
-      kotlinOptions {
-        jvmTarget = it
-      }
-    }
-  }
   withType<CInteropProcess> {
     onlyIf {
       !CI || SANDBOX || konanTarget.buildHost == HostManager.host.family

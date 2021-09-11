@@ -40,12 +40,12 @@ public actual class File actual constructor(path: String) {
   /**
    * Retrieves parent file
    */
-  public actual fun getParentFile(): File {
+  public actual fun getParentFile(): File? {
     val pPath = _path.removeSuffix(separator)
       .let { it.removeSuffix(it.substringAfterLast(separator)) }
       .removeSuffix(separator)
-    return if (pPath.isEmpty() && _path != ".") {
-      File(".")
+    return if (pPath.isEmpty()) {
+      null
     } else {
       File(pPath)
     }
@@ -74,7 +74,7 @@ public actual class File actual constructor(path: String) {
    */
   public actual fun mkdirs(): Boolean {
     val parent = getParentFile()
-    if (!parent.exists() && parent._path != separator && parent._path.isNotEmpty()) {
+    if (parent != null && !parent.exists() && parent._path != separator && parent._path.isNotEmpty()) {
       parent.mkdirs()
     }
 

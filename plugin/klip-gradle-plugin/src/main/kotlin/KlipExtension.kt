@@ -11,18 +11,22 @@ open class KlipExtension(project: Project) {
   /**
    * Whether plugin is enabled
    */
-  var enabled by project.propertyDelegate(default = KlipOption.Enabled.default) { it.toBoolean() }
+  var enabled: Boolean by project.propertyDelegate(default = KlipOption.Enabled.default) { it.toBoolean() }
 
   /**
    * Whether the klips should be updated
    */
-  var update by project.propertyDelegate(default = KlipOption.Update.default) { it.toBoolean() }
+  var update: Boolean by project.propertyDelegate(default = KlipOption.Update.default) { it.toBoolean() }
 
   /**
    * Fully qualified annotation names to register for compiler processing and path injection.
    * Setting this property gives you full control over the annotations and overrides the default ones.
    */
-  var klipAnnotations by project.propertyDelegate(default = KlipOption.KlipAnnotation.default) { it.split(",").toSet() }
+  var klipAnnotations: Collection<String> by project.propertyDelegate(default = KlipOption.KlipAnnotation.default) {
+    it.split(
+      ","
+    ).toSet()
+  }
 
   /**
    * Register an annotation for compiler processing and path injection
@@ -36,7 +40,7 @@ open class KlipExtension(project: Project) {
    * Fully qualified annotation names to register function scopes for compiler klip detection and processing
    * Setting this property gives you full control over the annotations and overrides the default ones.
    */
-  var scopeAnnotations by project.propertyDelegate(default = KlipOption.ScopeAnnotation.default) {
+  var scopeAnnotations: Collection<String> by project.propertyDelegate(default = KlipOption.ScopeAnnotation.default) {
     it.split(",").toSet()
   }
 

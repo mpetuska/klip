@@ -12,7 +12,7 @@ kotlin {
     test {
       dependencies {
         implementation("dev.petuska:klip-api")
-        implementation(kotlin("test-junit5"))
+        implementation(kotlin("test-junit"))
       }
     }
   }

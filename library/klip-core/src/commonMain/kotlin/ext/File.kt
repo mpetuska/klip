@@ -7,7 +7,7 @@ public expect class File(path: String) {
   /**
    * Retrieves parent file
    */
-  public fun getParentFile(): File
+  public fun getParentFile(): File?
 
   /**
    * Returns local path to this file

@@ -35,7 +35,12 @@ public actual class File actual constructor(path: String) {
   /**
    * Retrieves parent file
    */
-  public actual fun getParentFile(): File = File(jsPath.dirname(path))
+  public actual fun getParentFile(): File? {
+    val p = jsPath.dirname(path)
+    return if (p != null && p != undefined) {
+      File(p)
+    } else null
+  }
 
   /**
    * Checks if the file exsists

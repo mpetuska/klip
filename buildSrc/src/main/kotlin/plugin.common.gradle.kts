@@ -1,5 +1,6 @@
 import de.fayard.refreshVersions.core.versionFor
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 import util.by
 
@@ -10,6 +11,7 @@ plugins {
 
 repositories {
   mavenCentral()
+  google()
 }
 
 idea {
@@ -25,10 +27,13 @@ ktlint {
 }
 
 tasks {
-  withType<Test> {
-    useJUnitPlatform()
+  project.properties["org.gradle.project.targetCompatibility"]?.toString()?.let {
+    withType<KotlinCompile> {
+      kotlinOptions {
+        jvmTarget = it
+      }
+    }
   }
-
   afterEvaluate {
     if (tasks.findByName("compile") == null) {
       register("compile") {

@@ -11,7 +11,7 @@ public actual class File actual constructor(private val path: String) {
   /**
    * Retrieves parent file
    */
-  public actual fun getParentFile(): File = TODO()
+  public actual fun getParentFile(): File? = TODO()
 
   /**
    * Returns local path to this file

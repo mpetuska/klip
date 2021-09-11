@@ -22,6 +22,8 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
     with(target) {
       val extension = createExtension()
       tasks.withType(Test::class.java) {
+        it.inputs.property("klip.update", "${extension.update}")
+        it.inputs.property("klip.enabled", "${extension.enabled}")
         if (extension.update) {
           it.environment("KLIP_UPDATE", "${true}")
         }

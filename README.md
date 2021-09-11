@@ -16,13 +16,13 @@ JS that still defaults to legacy compiler).
 # Versions
 The current version was built using the following tooling versions and is guaranteed to work with this setup. Given the
 experimental nature of kotlin compiler plugin API, the plugin powering this library is likely to stop working on
-projects using newer/older kotlin versions
+projects using newer/older kotlin versions.
 * Kotlin: `1.5.30`
 * Gradle: `7.2.0`
 * JDK: `11`
 
 # Targets
-Bellow is a list of currently supported targets and planned targets
+Bellow is a list of currently supported targets and planned targets:
 - [ ] android
 - [x] js
 - [x] jvm
@@ -56,7 +56,7 @@ library for these targets, please raise an issue to discuss a real implementatio
 - [x] mingwX86
 
 # Usage
-1. Apply the plugin
+1. Apply the plugin and add a runtime dependency.
 ```kotlin
 plugins {
   kotlin("multiplatform")
@@ -77,8 +77,8 @@ plugins {
    see [Gradle Properties](#gradle-properties)
 ```kotlin
 klip {
-  enabled = true
-  update = false
+  enabled = true // Turns the compiler plugin on/off
+  update = false // Whether to overwrite the existing klips while running tests
   klipAnnotations = setOf("dev.petuska.klip.core.Klippable") // Takes full control of annotations
   klipAnnotation("dev.petuska.klip.core.Klippable") // Appends the annotation to the default ones
   scopeAnnotations = setOf( // Takes full control of annotations

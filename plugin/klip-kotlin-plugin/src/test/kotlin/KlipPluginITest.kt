@@ -16,15 +16,16 @@ class KlipPluginITest {
       SourceFile.kotlin(
         "main.kt",
         """     
-        import dev.petuska.klip.int.KlipContext
+        import dev.petuska.klip.core.int.KlipContext
+        
         class Main {
           @${Compiler.klipAnnotations[0]}
-          fun klip(value: Any?, _context: KlipContext? = null): String = with(_context!!) {
+          fun klip(value: Any?, _context: KlipContext? = null): String = with(_context ?: error("No KlipContext")) {
             return listOf(value, path, key, update).joinToString()
           }          
           
           @${Compiler.klipAnnotations[1]}
-          fun Any?.klip2(_context: KlipContext? = null): String = with(_context!!){
+          fun Any?.klip2(_context: KlipContext? = null): String = with(_context ?: error("No KlipContext")) {
             return listOf(this@klip2, path, key, update).joinToString()
           }
           

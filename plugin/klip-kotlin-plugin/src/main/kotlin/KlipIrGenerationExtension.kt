@@ -21,7 +21,7 @@ class KlipIrGenerationExtension(
   private val settings: KlipSettings,
   private val logger: Logger,
 ) : IrGenerationExtension {
-  private val contextFqName = FqName("dev.petuska.klip.int.KlipContext")
+  private val contextFqName = FqName("dev.petuska.klip.core.int.KlipContext")
 
   override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
     val klipContextClass = pluginContext.referenceClass(contextFqName)

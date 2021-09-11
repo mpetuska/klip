@@ -18,6 +18,8 @@
   - [x] tvosSimulatorArm64
   - [x] tvosX64
 * Per-target sandbox test to better assert correctness
+* Previous `klip-api` module split into `klip-core` and `klip-api` to better isolate responsibilities. `klip-core` is
+  bare minimum required for the plugin to work, whereas `klip-api` provides all the assertions and other DLS utilities.
 
 
 # v0.2.0

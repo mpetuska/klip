@@ -1,8 +1,5 @@
 package dev.petuska.klip.plugin.util
 
-import dev.petuska.klip.plugin.config.GROUP
-import dev.petuska.klip.plugin.config.NAME
-
 /**
  * Internal-use class containing information about command line options passed by gradle plugin to kotlin plugin
  */
@@ -32,7 +29,7 @@ sealed class KlipOption<T>(
    */
   object KlipAnnotation : KlipOption<List<String>>(
     name = "klipAnnotation",
-    default = listOf("$GROUP.$NAME.Klippable"),
+    default = listOf("dev.petuska.klip.core.Klippable"),
   )
 
   /**

@@ -23,6 +23,7 @@ projects using newer/older kotlin versions
 
 # Targets
 Bellow is a list of currently supported targets and planned targets
+- [ ] android
 - [x] js
 - [x] jvm
 - [x] linuxX64
@@ -78,8 +79,8 @@ plugins {
 klip {
   enabled = true
   update = false
-  klipAnnotations = setOf("dev.petuska.klip.Klippable") // Takes full control of annotations
-  klipAnnotation("dev.petuska.klip.Klippable") // Appends the annotation to the default ones
+  klipAnnotations = setOf("dev.petuska.klip.core.Klippable") // Takes full control of annotations
+  klipAnnotation("dev.petuska.klip.core.Klippable") // Appends the annotation to the default ones
   scopeAnnotations = setOf( // Takes full control of annotations
     "kotlin.test.Test",
     "org.junit.Test",
@@ -96,7 +97,7 @@ class MyTest {
 
   @Test
   fun test1() {
-    assertMatchesClip(DomainObject("Dick", "Dickens"))
+    assertMatchesKlip(DomainObject("Dick", "Dickens"))
     DomainObject("John", "Doe").assertKlip()
   }
 
@@ -106,7 +107,7 @@ class MyTest {
   }
 
   private fun doAssertions() {
-    assertMatchesClip(DomainObject("Joe", "Mama"))
+    assertMatchesKlip(DomainObject("Joe", "Mama"))
     DomainObject("Ben", "Dover").assertKlip()
   }
 }
@@ -134,7 +135,8 @@ properties:
    or setting an environment variable `KLIP_UPDATE=true ./gradlew test`.
 
 # Modules
-* `:library:klip-api` - main runtime library
+* `:library:klip-core` - main runtime library
+* `:library:klip-api` - assertion api and utility DSLs
 * `:plugin:klip-gradle-plugin` - gradle plugin to manage kotlin compiler plugins
 * `:plugin:klip-kotlin-plugin` - kotlin compiler plugin for jvm & js that does the actual work
 * `:plugin:klip-kotlin-plugin:klip-kotlin-plugin-native` - kotlin compiler plugin for native that does the actual work

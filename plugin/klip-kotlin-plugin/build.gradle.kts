@@ -19,7 +19,7 @@ dependencies {
   testImplementation(kotlin("test-junit5"))
   testImplementation(kotlin("compiler-embeddable"))
   testImplementation("com.github.tschuchortdev:kotlin-compile-testing:_")
-  testImplementation(project(":library:klip-api"))
+  testImplementation(project(":library:klip-core"))
 }
 
 publishing {

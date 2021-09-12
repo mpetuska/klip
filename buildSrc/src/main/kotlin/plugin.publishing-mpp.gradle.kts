@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.HostManager
@@ -49,10 +50,18 @@ kotlin {
   val linuxHostTargets = nativeTargets.filter { it.konanTarget.buildHost == Family.LINUX }
   val osxHostTargets = nativeTargets.filter { it.konanTarget.buildHost == Family.OSX }
   val mainHostTargets = targets.filter { it !in nativeTargets }
+  val androidTargets = targets.withType<KotlinAndroidTarget>()
   logger.info("Linux host targets: $linuxHostTargets")
   logger.info("OSX host targets: $osxHostTargets")
   logger.info("Windows host targets: $windowsHostTargets")
   logger.info("Main host targets: $mainHostTargets")
+  logger.info("Android targets: $androidTargets")
+
+  androidTargets.forEach {
+    if (!CI || SANDBOX || isMainHost) {
+      it.publishLibraryVariants("release", "debug")
+    }
+  }
 
   linuxHostTargets.onlyBuildIf { !CI || SANDBOX || HostManager.hostIsLinux }
   linuxHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsLinux }

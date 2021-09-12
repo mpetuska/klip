@@ -25,9 +25,7 @@ android {
 kotlin {
   explicitApi()
 
-  android {
-    publishLibraryVariants("release", "debug")
-  }
+  android()
   jvm()
   js {
     useCommonJs()

@@ -9,10 +9,6 @@ java {
   withSourcesJar()
 }
 
-ktlint {
-  disabledRules.addAll("import-ordering")
-}
-
 dependencies {
   compileOnly(kotlin("compiler"))
   compileOnly("com.google.auto.service:auto-service-annotations:_")
@@ -59,8 +55,12 @@ tasks {
   named("compileKotlin") {
     dependsOn(syncSourceMain)
   }
-//  val syncSourceTest by registering(Sync::class) {
-//    registerSources(mainPluginSourceSets().test.get(), projectDir.resolve("src/test"))
-//  }
-//  named("compileTestKotlin") { dependsOn(syncSourceTest) }
+  named("clean") {
+    doLast {
+      projectDir.resolve("src").delete()
+    }
+  }
+  withType<org.jlleitschuh.gradle.ktlint.tasks.GenerateReportsTask> {
+    enabled = false
+  }
 }

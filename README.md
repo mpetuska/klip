@@ -116,7 +116,7 @@ class MyTest {
 ## Gradle Properties
 Most of the DSL configuration options can also be set/overridden via gradle properties
 `./gradlew <some-task> -Pprop.name=propValue`, `gradle.properties` or `~/.gradle/gradle.properties`. Environment
-variables are also supported and take precedence over gradle properties. Bellow is the full list of supported
+variables are also supported, however gradle properties take precedence over them. Bellow is the full list of supported
 properties:
 * `klip.enabled (KLIP_ENABLED)` - toggles the compiler processing on/off.
 * `klip.update (KLIP_UPDATE)` - if true, will override and update all previous klips during test run.

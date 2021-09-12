@@ -1,4 +1,4 @@
-# WIP
+# 0.2.1
 ## Versions
 * Kotlin: `1.5.30`
 * Gradle: `7.2.0`

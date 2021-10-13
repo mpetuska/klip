@@ -17,7 +17,7 @@ JS that still defaults to legacy compiler).
 The current version was built using the following tooling versions and is guaranteed to work with this setup. Given the
 experimental nature of kotlin compiler plugin API, the plugin powering this library is likely to stop working on
 projects using newer/older kotlin versions.
-* Kotlin: `1.5.30`
+* Kotlin: `1.5.31`
 * Gradle: `7.2.0`
 * JDK: `11`
 

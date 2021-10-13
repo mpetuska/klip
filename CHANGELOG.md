@@ -1,3 +1,12 @@
+# 0.2.2
+## Versions
+* Kotlin: `1.5.31`
+* Gradle: `7.2.0`
+* JDK: `11`
+## Changes
+* Fix assertion functions to properly compare `Any?::toString()` representations
+* Bump kotlin version to `1.5.31`
+
 # 0.2.1
 ## Versions
 * Kotlin: `1.5.30`

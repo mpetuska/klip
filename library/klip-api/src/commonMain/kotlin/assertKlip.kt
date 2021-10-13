@@ -14,8 +14,9 @@ import kotlin.test.assertEquals
 @Klippable
 public fun assertMatchesKlip(actual: Any?, _context: KlipContext? = null) {
   _context.validate()
-  val klip = KlipManager.klip(_context) { actual.toString() }
-  assertEquals(klip, actual, "Value does not match its klip")
+  val actualStr = actual.toString()
+  val klip = KlipManager.klip(_context) { actualStr }
+  assertEquals(klip, actualStr, "Value does not match its klip")
 }
 
 /**

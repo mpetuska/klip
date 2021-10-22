@@ -1,6 +1,7 @@
 package dev.petuska.klip.plugin.transformer
 
 import dev.petuska.klip.plugin.util.KlipSettings
+import java.io.File
 import org.jetbrains.kotlin.backend.common.FileLoweringPass
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -25,17 +26,16 @@ import org.jetbrains.kotlin.ir.util.hasAnnotation
 import org.jetbrains.kotlin.ir.util.isNullConst
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.util.Logger
-import java.io.File
 
 /**
- * The main worker-bee of the plugin, responsible for actually transforming the "klippable"
- * function calls to pass in required parameters
+ * The main worker-bee of the plugin, responsible for actually transforming the "klippable" function
+ * calls to pass in required parameters
  */
 class KlippableFnIrTransformer(
-  private val context: IrPluginContext,
-  private val logger: Logger,
-  private val settings: KlipSettings,
-  private val klipContextClass: IrClassSymbol,
+    private val context: IrPluginContext,
+    private val logger: Logger,
+    private val settings: KlipSettings,
+    private val klipContextClass: IrClassSymbol,
 ) : IrElementTransformerVoidWithContext(), FileLoweringPass {
   private var index: Int = 0
   private lateinit var klipPath: String
@@ -67,19 +67,18 @@ class KlippableFnIrTransformer(
     if (fn != null && settings.klipAnnotations.any { expression.symbol.owner.hasAnnotation(it) }) {
       val klipKey = "${fn.kotlinFqName.asString()}#${index++}"
 
-      val irBuilder = DeclarationIrBuilder(
-        context,
-        expression.symbol
-      )
+      val irBuilder = DeclarationIrBuilder(context, expression.symbol)
 
       val param: IrValueParameter? =
-        expression.symbol.owner.valueParameters.find { it.type.classOrNull == klipContextClass }
-      if (param != null && expression.getArgumentsWithIr().none { (p, v) -> p == param && !v.isNullConst() }) {
-        val klipContextConstructorCall = irBuilder.irCall(klipContextClass.constructors.first()).apply {
-          putValueArgument(0, irBuilder.irString(path))
-          putValueArgument(1, irBuilder.irString(klipKey))
-          putValueArgument(2, irBuilder.irBoolean(settings.update))
-        }
+          expression.symbol.owner.valueParameters.find { it.type.classOrNull == klipContextClass }
+      if (param != null &&
+          expression.getArgumentsWithIr().none { (p, v) -> p == param && !v.isNullConst() }) {
+        val klipContextConstructorCall =
+            irBuilder.irCall(klipContextClass.constructors.first()).apply {
+              putValueArgument(0, irBuilder.irString(path))
+              putValueArgument(1, irBuilder.irString(klipKey))
+              putValueArgument(2, irBuilder.irBoolean(settings.update))
+            }
         expression.putArgument(param, klipContextConstructorCall)
       }
     }

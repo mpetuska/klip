@@ -13,23 +13,32 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.name.FqName
 
 /**
- * Component Registrar responsible for validating command line inputs and registering required IR extensions
+ * Component Registrar responsible for validating command line inputs and registering required IR
+ * extensions
  */
 @AutoService(ComponentRegistrar::class)
 class KlipComponentRegistrar : ComponentRegistrar {
-  override fun registerProjectComponents(project: MockProject, configuration: CompilerConfiguration) {
-    val messageCollector = configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
+  override fun registerProjectComponents(
+      project: MockProject,
+      configuration: CompilerConfiguration
+  ) {
+    val messageCollector =
+        configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
     IrGenerationExtension.registerExtension(
-      project,
-      KlipIrGenerationExtension(
-        settings = KlipSettings(
-          enabled = configuration[KlipOption.Enabled.key] == true,
-          update = configuration[KlipOption.Update.key] == true,
-          klipAnnotations = configuration[KlipOption.KlipAnnotation.key]?.map { FqName(it) } ?: listOf(),
-          scopeAnnotations = configuration[KlipOption.ScopeAnnotation.key]?.map { FqName(it) } ?: listOf(),
-        ),
-        logger = messageCollectorLogger(messageCollector),
-      )
-    )
+        project,
+        KlipIrGenerationExtension(
+            settings =
+                KlipSettings(
+                    enabled = configuration[KlipOption.Enabled.key] == true,
+                    update = configuration[KlipOption.Update.key] == true,
+                    klipAnnotations =
+                        configuration[KlipOption.KlipAnnotation.key]?.map { FqName(it) }
+                            ?: listOf(),
+                    scopeAnnotations =
+                        configuration[KlipOption.ScopeAnnotation.key]?.map { FqName(it) }
+                            ?: listOf(),
+                ),
+            logger = messageCollectorLogger(messageCollector),
+        ))
   }
 }

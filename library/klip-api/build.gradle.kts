@@ -7,15 +7,7 @@ description = "Kotlin multiplatform snapshot (klip) testing. API dependency."
 
 kotlin {
   sourceSets {
-    val commonMain by getting {
-      dependencies {
-        api(project(":library:klip-core"))
-      }
-    }
-    all {
-      languageSettings {
-        optIn("kotlin.contracts.ExperimentalContracts")
-      }
-    }
+    val commonMain by getting { dependencies { api(project(":library:klip-core")) } }
+    all { languageSettings { optIn("kotlin.contracts.ExperimentalContracts") } }
   }
 }

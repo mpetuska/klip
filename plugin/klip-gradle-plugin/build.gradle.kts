@@ -8,9 +8,7 @@ plugins {
 
 description = """Gradle plugin to manage KLIP snapshots, processors and dependencies"""
 
-java {
-  withSourcesJar()
-}
+java { withSourcesJar() }
 
 gradlePlugin {
   plugins {
@@ -31,11 +29,7 @@ pluginBundle {
 
 kotlin {
   sourceSets {
-    main {
-      dependencies {
-        compileOnly(kotlin("gradle-plugin-api"))
-      }
-    }
+    main { dependencies { compileOnly(kotlin("gradle-plugin-api")) } }
 
     test {
       dependencies {

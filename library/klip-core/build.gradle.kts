@@ -13,10 +13,6 @@ kotlin {
         api(kotlin("test-annotations-common"))
       }
     }
-    all {
-      languageSettings {
-        optIn("kotlin.contracts.ExperimentalContracts")
-      }
-    }
+    all { languageSettings { optIn("kotlin.contracts.ExperimentalContracts") } }
   }
 }

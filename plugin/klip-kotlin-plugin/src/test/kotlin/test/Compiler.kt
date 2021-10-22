@@ -13,42 +13,43 @@ object Compiler {
   val kotlinRoot = File("build/tmp/src/commonMain/kotlin")
   const val enabled = "true"
   const val update = "false"
-  val klipAnnotations = listOf(
-    "test.Klippable",
-    "test.CustomKlippable"
-  )
-  val scopeAnnotations = listOf(
-    "test.Test",
-    "test.CustomTest"
-  )
+  val klipAnnotations = listOf("test.Klippable", "test.CustomKlippable")
+  val scopeAnnotations = listOf("test.Test", "test.CustomTest")
 
-  private val annotationsFile = SourceFile.kotlin(
-    "annotations.kt",
-    """
+  private val annotationsFile =
+      SourceFile.kotlin(
+          "annotations.kt",
+          """
     package test
     annotation class Klippable
     annotation class CustomKlippable 
     annotation class Test
     annotation class CustomTest
-    """.trimIndent()
-  )
+    """.trimIndent())
 
   fun compile(
-    vararg sourceFiles: SourceFile,
+      vararg sourceFiles: SourceFile,
   ): KotlinCompilation.Result {
-    return KotlinCompilation().apply {
-      sources = sourceFiles.toList() + annotationsFile
-      useIR = true
-      compilerPlugins = listOf(KlipComponentRegistrar())
-      commandLineProcessors = listOf(KlipCommandLineProcessor())
-      inheritClassPath = true
-      workingDir = kotlinRoot
-      pluginOptions = listOf(
-        PluginOption(KOTLIN_PLUGIN_ID, KlipOption.Enabled.name, enabled),
-        PluginOption(KOTLIN_PLUGIN_ID, KlipOption.Update.name, update),
-        *klipAnnotations.map { PluginOption(KOTLIN_PLUGIN_ID, KlipOption.KlipAnnotation.name, it) }.toTypedArray(),
-        *scopeAnnotations.map { PluginOption(KOTLIN_PLUGIN_ID, KlipOption.ScopeAnnotation.name, it) }.toTypedArray(),
-      )
-    }.compile()
+    return KotlinCompilation()
+        .apply {
+          sources = sourceFiles.toList() + annotationsFile
+          useIR = true
+          compilerPlugins = listOf(KlipComponentRegistrar())
+          commandLineProcessors = listOf(KlipCommandLineProcessor())
+          inheritClassPath = true
+          workingDir = kotlinRoot
+          pluginOptions =
+              listOf(
+                  PluginOption(KOTLIN_PLUGIN_ID, KlipOption.Enabled.name, enabled),
+                  PluginOption(KOTLIN_PLUGIN_ID, KlipOption.Update.name, update),
+                  *klipAnnotations
+                      .map { PluginOption(KOTLIN_PLUGIN_ID, KlipOption.KlipAnnotation.name, it) }
+                      .toTypedArray(),
+                  *scopeAnnotations
+                      .map { PluginOption(KOTLIN_PLUGIN_ID, KlipOption.ScopeAnnotation.name, it) }
+                      .toTypedArray(),
+              )
+        }
+        .compile()
   }
 }

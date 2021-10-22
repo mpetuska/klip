@@ -5,9 +5,7 @@ plugins {
 
 description = "Kotlin compiler plugin to manage KLIP snapshots for native targets"
 
-java {
-  withSourcesJar()
-}
+java { withSourcesJar() }
 
 dependencies {
   compileOnly(kotlin("compiler"))
@@ -39,28 +37,19 @@ tasks {
       filter {
         // Replace shadowed imports from plugin module
         when (it) {
-          "import org.jetbrains.kotlin.com.intellij.mock.MockProject" -> "import com.intellij.mock.MockProject"
+          "import org.jetbrains.kotlin.com.intellij.mock.MockProject" ->
+              "import com.intellij.mock.MockProject"
           else -> it
         }
       }
     }
-    from(sourceSet.resources) {
-      into("resources")
-    }
+    from(sourceSet.resources) { into("resources") }
   }
 
   val syncSourceMain by registering(Sync::class) {
     registerSources(mainPluginSourceSets().main.get(), projectDir.resolve("src/main"))
   }
-  named("compileKotlin") {
-    dependsOn(syncSourceMain)
-  }
-  named("clean") {
-    doLast {
-      projectDir.resolve("src").delete()
-    }
-  }
-  withType<org.jlleitschuh.gradle.ktlint.tasks.GenerateReportsTask> {
-    enabled = false
-  }
+  named("compileKotlin") { dependsOn(syncSourceMain) }
+  named("clean") { doLast { projectDir.resolve("src").delete() } }
+  withType<com.diffplug.gradle.spotless.SpotlessCheck> { enabled = false }
 }

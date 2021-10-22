@@ -6,9 +6,7 @@ plugins {
 
 description = "Kotlin compiler plugin to manage KLIP snapshots for jvm & js"
 
-java {
-  withSourcesJar()
-}
+java { withSourcesJar() }
 
 dependencies {
   compileOnly(kotlin("compiler-embeddable"))

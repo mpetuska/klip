@@ -6,12 +6,17 @@ import dev.petuska.klip.core.int.KlipManager
 import dev.petuska.klip.core.validate
 import kotlin.test.assertEquals
 
+@DslMarker
+@Retention(AnnotationRetention.SOURCE)
+internal annotation class KlipDsl
+
 /**
  * Asserts that the given object matches its respective klip
  * @param actual value to assert
  * @param _context [KlipContext] injected by the compiler with details about the klip file
  */
 @Klippable
+@KlipDsl
 public fun assertMatchesKlip(actual: Any?, _context: KlipContext? = null) {
   _context.validate()
   val actualStr = actual.toString()
@@ -25,6 +30,7 @@ public fun assertMatchesKlip(actual: Any?, _context: KlipContext? = null) {
  * @param _context [KlipContext] injected by the compiler with details about the klip file
  */
 @Klippable
+@KlipDsl
 public fun Any?.assertKlip(_context: KlipContext? = null) {
   assertMatchesKlip(this, _context)
 }

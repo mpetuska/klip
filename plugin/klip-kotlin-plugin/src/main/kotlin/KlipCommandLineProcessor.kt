@@ -16,45 +16,46 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 class KlipCommandLineProcessor : CommandLineProcessor {
   override val pluginId: String = KOTLIN_PLUGIN_ID
 
-  override val pluginOptions: Collection<CliOption> = setOf(
-    CliOption(
-      optionName = KlipOption.Enabled.name,
-      valueDescription = KlipOption.Enabled.valueDescription,
-      description = KlipOption.Enabled.description,
-      required = true
-    ),
-    CliOption(
-      optionName = KlipOption.Update.name,
-      valueDescription = KlipOption.Update.valueDescription,
-      description = KlipOption.Update.description,
-      required = true
-    ),
-    CliOption(
-      optionName = KlipOption.KlipAnnotation.name,
-      valueDescription = KlipOption.KlipAnnotation.valueDescription,
-      description = KlipOption.KlipAnnotation.description,
-      allowMultipleOccurrences = true,
-      required = false,
-    ),
-    CliOption(
-      optionName = KlipOption.ScopeAnnotation.name,
-      valueDescription = KlipOption.ScopeAnnotation.valueDescription,
-      description = KlipOption.ScopeAnnotation.description,
-      allowMultipleOccurrences = true,
-      required = false,
-    ),
-  )
+  override val pluginOptions: Collection<CliOption> =
+      setOf(
+          CliOption(
+              optionName = KlipOption.Enabled.name,
+              valueDescription = KlipOption.Enabled.valueDescription,
+              description = KlipOption.Enabled.description,
+              required = true),
+          CliOption(
+              optionName = KlipOption.Update.name,
+              valueDescription = KlipOption.Update.valueDescription,
+              description = KlipOption.Update.description,
+              required = true),
+          CliOption(
+              optionName = KlipOption.KlipAnnotation.name,
+              valueDescription = KlipOption.KlipAnnotation.valueDescription,
+              description = KlipOption.KlipAnnotation.description,
+              allowMultipleOccurrences = true,
+              required = false,
+          ),
+          CliOption(
+              optionName = KlipOption.ScopeAnnotation.name,
+              valueDescription = KlipOption.ScopeAnnotation.valueDescription,
+              description = KlipOption.ScopeAnnotation.description,
+              allowMultipleOccurrences = true,
+              required = false,
+          ),
+      )
 
   override fun processOption(
-    option: AbstractCliOption,
-    value: String,
-    configuration: CompilerConfiguration
+      option: AbstractCliOption,
+      value: String,
+      configuration: CompilerConfiguration
   ) {
     when (option.optionName) {
       KlipOption.Enabled.name -> configuration.put(KlipOption.Enabled.key, value.toBoolean())
       KlipOption.Update.name -> configuration.put(KlipOption.Update.key, value.toBoolean())
-      KlipOption.KlipAnnotation.name -> configuration.appendList(KlipOption.KlipAnnotation.key, value)
-      KlipOption.ScopeAnnotation.name -> configuration.appendList(KlipOption.ScopeAnnotation.key, value)
+      KlipOption.KlipAnnotation.name ->
+          configuration.appendList(KlipOption.KlipAnnotation.key, value)
+      KlipOption.ScopeAnnotation.name ->
+          configuration.appendList(KlipOption.ScopeAnnotation.key, value)
       else -> throw CliOptionProcessingException("Unknown option: ${option.optionName}")
     }
   }

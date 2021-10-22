@@ -14,9 +14,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
 import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 
-/**
- * A kotlin gradle sub-plugin to manage klip kotlin compiler plugin
- */
+/** A kotlin gradle sub-plugin to manage klip kotlin compiler plugin */
 class KlipPlugin : KotlinCompilerPluginSupportPlugin {
   override fun apply(target: Project) {
     with(target) {
@@ -31,42 +29,48 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
     }
   }
 
-  private fun Project.createExtension() = extensions.findByType(KlipExtension::class.java) ?: extensions.create(
-    KlipExtension.NAME,
-    KlipExtension::class.java,
-    this@createExtension
-  )
+  private fun Project.createExtension() =
+      extensions.findByType(KlipExtension::class.java)
+          ?: extensions.create(KlipExtension.NAME, KlipExtension::class.java, this@createExtension)
 
   override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean =
-    kotlinCompilation.target.project.plugins.hasPlugin(KlipPlugin::class.java)
+      kotlinCompilation.target.project.plugins.hasPlugin(KlipPlugin::class.java)
 
   override fun getCompilerPluginId(): String = KOTLIN_PLUGIN_ID
 
-  override fun getPluginArtifact(): SubpluginArtifact = SubpluginArtifact(
-    groupId = GROUP,
-    artifactId = KOTLIN_PLUGIN_ARTEFACT_ID,
-    version = VERSION,
-  )
+  override fun getPluginArtifact(): SubpluginArtifact =
+      SubpluginArtifact(
+          groupId = GROUP,
+          artifactId = KOTLIN_PLUGIN_ARTEFACT_ID,
+          version = VERSION,
+      )
 
-  override fun getPluginArtifactForNative(): SubpluginArtifact = SubpluginArtifact(
-    groupId = GROUP,
-    artifactId = KOTLIN_NATIVE_PLUGIN_ARTEFACT_ID,
-    version = VERSION,
-  )
+  override fun getPluginArtifactForNative(): SubpluginArtifact =
+      SubpluginArtifact(
+          groupId = GROUP,
+          artifactId = KOTLIN_NATIVE_PLUGIN_ARTEFACT_ID,
+          version = VERSION,
+      )
 
-  override fun applyToCompilation(kotlinCompilation: KotlinCompilation<*>): Provider<List<SubpluginOption>> {
+  override fun applyToCompilation(
+      kotlinCompilation: KotlinCompilation<*>
+  ): Provider<List<SubpluginOption>> {
     val project = kotlinCompilation.target.project
     val extension = project.klip
 
     return project.provider {
       listOf(
-        SubpluginOption(key = KlipOption.Enabled.name, lazyValue = lazy { extension.enabled.toString() }),
-        SubpluginOption(key = KlipOption.Update.name, lazyValue = lazy { extension.update.toString() }),
-      ) + extension.klipAnnotations.map {
-        SubpluginOption(key = KlipOption.KlipAnnotation.name, value = it)
-      } + extension.scopeAnnotations.map {
-        SubpluginOption(key = KlipOption.ScopeAnnotation.name, value = it)
-      }
+          SubpluginOption(
+              key = KlipOption.Enabled.name, lazyValue = lazy { extension.enabled.toString() }),
+          SubpluginOption(
+              key = KlipOption.Update.name, lazyValue = lazy { extension.update.toString() }),
+      ) +
+          extension.klipAnnotations.map {
+            SubpluginOption(key = KlipOption.KlipAnnotation.name, value = it)
+          } +
+          extension.scopeAnnotations.map {
+            SubpluginOption(key = KlipOption.ScopeAnnotation.name, value = it)
+          }
     }
   }
 }

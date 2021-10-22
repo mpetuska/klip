@@ -5,14 +5,7 @@ plugins {
   id("plugin.publishing-mpp")
 }
 
-gitHooks {
-  setHooks(
-    mapOf(
-      "pre-commit" to "ktlintFormat",
-      "pre-push" to "ktlintCheck"
-    )
-  )
-}
+gitHooks { setHooks(mapOf("pre-commit" to "spotlessApply", "pre-push" to "spotlessCheck")) }
 
 gradleEnterprise {
   buildScan {
@@ -24,11 +17,7 @@ gradleEnterprise {
 kotlin {
   sourceSets {
     commonMain {
-      dependencies {
-        subprojects.filter { it.path.startsWith(":library:") }.forEach {
-          api(it)
-        }
-      }
+      dependencies { subprojects.filter { it.path.startsWith(":library:") }.forEach { api(it) } }
     }
   }
 }

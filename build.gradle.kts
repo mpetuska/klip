@@ -1,11 +1,11 @@
 plugins {
-  id("com.github.jakemarsden.git-hooks")
+  if (System.getenv("CI") == null) {
+    id("plugin.git-hooks")
+  }
   id("plugin.library-mpp")
   id("plugin.publishing-nexus")
   id("plugin.publishing-mpp")
 }
-
-gitHooks { setHooks(mapOf("pre-commit" to "spotlessApply", "pre-push" to "spotlessCheck")) }
 
 gradleEnterprise {
   buildScan {

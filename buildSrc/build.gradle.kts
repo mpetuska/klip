@@ -16,4 +16,5 @@ dependencies {
   implementation("com.diffplug.spotless:spotless-plugin-gradle:_")
   implementation("io.github.gradle-nexus:publish-plugin:_")
   implementation("com.github.gmazzo:gradle-buildconfig-plugin:_")
+  implementation("com.github.jakemarsden:git-hooks-gradle-plugin:_")
 }

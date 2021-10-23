@@ -13,9 +13,9 @@ plugins {
 rootProject.name = "klip"
 
 include(
-  ":library:klip-core",
-  ":library:klip-api",
-  ":plugin:klip-gradle-plugin",
-  ":plugin:klip-kotlin-plugin",
-  ":plugin:klip-kotlin-plugin-native",
+    ":library:klip-core",
+    ":library:klip-api",
+    ":plugin:klip-gradle-plugin",
+    ":plugin:klip-kotlin-plugin",
+    ":plugin:klip-kotlin-plugin-native",
 )

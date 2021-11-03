@@ -1,9 +1,9 @@
 plugins {
-  kotlin("kapt")
   id("com.gradle.plugin-publish")
   `java-gradle-plugin`
   id("plugin.publishing-jvm")
   id("plugin.build-config-jvm")
+  kotlin("kapt")
 }
 
 description = """Gradle plugin to manage KLIP snapshots, processors and dependencies"""

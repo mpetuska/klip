@@ -1,0 +1,8 @@
+:::::>> KLIPS :::::>>
+:::::>>type=TEXT:::::>>io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerContext.Then(test one)#0:::::>>
+kotest zero
+:::::>>type=TEXT:::::>>io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerContext.Then(test one)#1:::::>>
+kotest one
+:::::>>type=TEXT:::::>>io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerContext.Then(test two)#0:::::>>
+kotest 2
+:::::>>:::::>>:::::>>

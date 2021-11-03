@@ -48,6 +48,22 @@ open class KlipExtension(project: Project) {
     scopeAnnotations += fqName
   }
 
+  /**
+   * Fully qualified function names to register function scopes for compiler klip detection and
+   * processing Setting this property gives you full control over the functions and overrides the
+   * default ones.
+   */
+  var scopeFunctions: Collection<String> by project.propertyDelegate(
+      default = KlipOption.ScopeFunction.default) { it.split(",").toSet() }
+
+  /**
+   * Register a function for function scopes for compiler klip detection and processing
+   * @param fqName fully qualified function name to register
+   */
+  fun scopeFunction(fqName: String) {
+    scopeFunctions += fqName
+  }
+
   companion object {
     /** Extension name */
     const val NAME = dev.petuska.klip.plugin.config.NAME

@@ -42,6 +42,28 @@ sealed class KlipOption<T>(
                   "kotlin.test.Test",
                   "org.junit.Test",
                   "org.junit.jupiter.api.Test",
-                  "org.testng.annotations.Test"),
+                  "org.testng.annotations.Test",
+                  "io.kotest.core.spec.style.AnnotationSpec.Test",
+              ),
+      )
+
+  /**
+   * Registers a function to be used to identify "scope" functions under which "klippable"
+   * annotation detection should happen
+   */
+  object ScopeFunction :
+      KlipOption<List<String>>(
+          name = "scopeFunction",
+          default =
+              listOf(
+                  "io.kotest.core.spec.style.scopes.FunSpecRootContext.test",
+                  "io.kotest.core.spec.style.scopes.DescribeSpecContainerContext.it",
+                  "io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerContext.Then",
+                  "io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerContext.then",
+                  "io.kotest.core.spec.style.scopes.WordSpecShouldContainerContext.invoke",
+                  "io.kotest.core.spec.style.scopes.FreeSpecContainerContext.invoke",
+                  "io.kotest.core.spec.style.scopes.FeatureSpecContainerContext.scenario",
+                  "io.kotest.core.spec.style.scopes.ExpectSpecContainerContext.expect",
+              ),
       )
 }

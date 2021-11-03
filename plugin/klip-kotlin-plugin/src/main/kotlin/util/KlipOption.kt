@@ -48,4 +48,16 @@ sealed class KlipOption<T>(
           description =
               "annotation to register function scope for compiler klip detection and processing",
       )
+
+  /**
+   * Registers a function to be used to identify "scope" functions under which "klippable" function
+   * detection should happen
+   */
+  object ScopeFunction :
+      KlipOption<List<String>>(
+          name = "scopeFunction",
+          valueDescription = "<fully qualified function name>",
+          description =
+              "function to register function scope for compiler klip detection and processing",
+      )
 }

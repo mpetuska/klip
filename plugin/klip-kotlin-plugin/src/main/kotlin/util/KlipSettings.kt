@@ -8,4 +8,5 @@ data class KlipSettings(
     val update: Boolean,
     val klipAnnotations: Collection<FqName>,
     val scopeAnnotations: Collection<FqName>,
+    val scopeFunctions: Collection<FqName>,
 )

@@ -34,7 +34,7 @@ internal class PropertyDelegate<V>(
 
   private fun KProperty<*>.buildPropertyName(): String {
     return "$PROP_BASE${
-    prefix?.removeSuffix(".")?.removePrefix(".")?.let { ".$it" } ?: ""
+      prefix?.removeSuffix(".")?.removePrefix(".")?.let { ".$it" } ?: ""
     }.$name"
   }
 

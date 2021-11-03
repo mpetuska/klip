@@ -1,0 +1,8 @@
+:::::>> KLIPS :::::>>
+:::::>>type=TEXT:::::>>io.kotest.core.spec.style.scopes.ExpectSpecContainerContext.expect(test one)#0:::::>>
+kotest zero
+:::::>>type=TEXT:::::>>io.kotest.core.spec.style.scopes.ExpectSpecContainerContext.expect(test one)#1:::::>>
+kotest one
+:::::>>type=TEXT:::::>>io.kotest.core.spec.style.scopes.ExpectSpecContainerContext.expect(test two)#0:::::>>
+kotest 2
+:::::>>:::::>>:::::>>

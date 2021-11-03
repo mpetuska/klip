@@ -11,8 +11,8 @@ kotlin {
   sourceSets {
     test {
       dependencies {
-        implementation("dev.petuska:klip-api")
-        implementation(kotlin("test-junit"))
+        implementation("dev.petuska:klip")
+        implementation(kotlin("test-junit5"))
       }
     }
   }

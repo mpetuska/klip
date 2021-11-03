@@ -1,6 +1,6 @@
 plugins {
-  kotlin("kapt")
   id("plugin.publishing-jvm")
+  kotlin("kapt")
 }
 
 description = "Kotlin compiler plugin to manage KLIP snapshots for native targets"

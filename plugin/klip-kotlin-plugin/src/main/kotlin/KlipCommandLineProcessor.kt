@@ -42,6 +42,13 @@ class KlipCommandLineProcessor : CommandLineProcessor {
               allowMultipleOccurrences = true,
               required = false,
           ),
+          CliOption(
+              optionName = KlipOption.ScopeFunction.name,
+              valueDescription = KlipOption.ScopeFunction.valueDescription,
+              description = KlipOption.ScopeFunction.description,
+              allowMultipleOccurrences = true,
+              required = false,
+          ),
       )
 
   override fun processOption(
@@ -56,6 +63,7 @@ class KlipCommandLineProcessor : CommandLineProcessor {
           configuration.appendList(KlipOption.KlipAnnotation.key, value)
       KlipOption.ScopeAnnotation.name ->
           configuration.appendList(KlipOption.ScopeAnnotation.key, value)
+      KlipOption.ScopeFunction.name -> configuration.appendList(KlipOption.ScopeFunction.key, value)
       else -> throw CliOptionProcessingException("Unknown option: ${option.optionName}")
     }
   }

@@ -22,9 +22,7 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
       tasks.withType(Test::class.java) {
         it.inputs.property("klip.update", "${extension.update}")
         it.inputs.property("klip.enabled", "${extension.enabled}")
-        if (extension.update) {
-          it.environment("KLIP_UPDATE", "${true}")
-        }
+        it.environment("KLIP_UPDATE", "${extension.update}")
       }
     }
   }
@@ -70,6 +68,9 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
           } +
           extension.scopeAnnotations.map {
             SubpluginOption(key = KlipOption.ScopeAnnotation.name, value = it)
+          } +
+          extension.scopeFunctions.map {
+            SubpluginOption(key = KlipOption.ScopeFunction.name, value = it)
           }
     }
   }

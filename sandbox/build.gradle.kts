@@ -1,11 +1,9 @@
-import de.fayard.refreshVersions.core.versionFor
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 
 plugins {
   id("dev.petuska.klip")
+  id("io.kotest.multiplatform") version "5.0.0.5"
   kotlin("multiplatform")
-  id("org.jlleitschuh.gradle.ktlint")
   id("com.android.library")
   idea
 }
@@ -27,18 +25,12 @@ android {
 
 allprojects {
   apply(plugin = "idea")
-  apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
   idea {
     module {
       isDownloadJavadoc = true
       isDownloadSources = true
     }
-  }
-
-  ktlint {
-    version to versionFor("version.ktlint")
-    additionalEditorconfigFile to rootDir.resolve(".editorconfig")
   }
 
   repositories {
@@ -53,9 +45,12 @@ allprojects {
           group = "build"
         }
       }
+      val testTasks = withType<Test> {
+        useJUnitPlatform()
+      }
       if (tasks.findByName("allTests") == null) {
         register("allTests") {
-          dependsOn(withType(KotlinTest::class))
+          dependsOn(testTasks)
           group = "verification"
         }
       }
@@ -99,17 +94,22 @@ kotlin {
   sourceSets {
     commonTest {
       dependencies {
-        implementation("dev.petuska:klip-api")
+        implementation("dev.petuska:klip")
+        implementation(kotlin("test-common"))
+        implementation(kotlin("test-annotations-common"))
       }
     }
     named("androidTest") {
       dependencies {
-        implementation(kotlin("test-junit"))
+        implementation(kotlin("test-junit5"))
+        implementation("io.kotest:kotest-runner-junit5:_")
       }
     }
     named("jvmTest") {
       dependencies {
-        implementation(kotlin("test-junit"))
+        implementation(kotlin("test-junit5"))
+        implementation("io.kotest:kotest-framework-engine:_")
+        implementation("io.kotest:kotest-runner-junit5:_")
       }
     }
     named("jsTest") {

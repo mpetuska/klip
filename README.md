@@ -11,13 +11,13 @@ compiler plugin to inject relevant keys and paths.
 
 # Support
 The plugin only works on targets using new IR kotlin compiler (which is pretty much all of them since kotlin 1.5 except
-JS that still defaults to legacy compiler).
+JS which still defaults to legacy compiler).
 
 # Versions
 The current version was built using the following tooling versions and is guaranteed to work with this setup. Given the
 experimental nature of kotlin compiler plugin API, the plugin powering this library is likely to stop working on
 projects using newer/older kotlin versions.
-* Kotlin: `1.5.31`
+* Kotlin: `1.6.0`
 * Gradle: `7.2.0`
 * JDK: `11`
 
@@ -81,16 +81,30 @@ klip {
   update = false // Whether to overwrite the existing klips while running tests
   klipAnnotations = setOf("dev.petuska.klip.core.Klippable") // Takes full control of annotations
   klipAnnotation("dev.petuska.klip.core.Klippable") // Appends the annotation to the default ones
-  scopeAnnotations = setOf( // Takes full control of annotations
+  scopeAnnotations = setOf(
+    // Takes full control of annotations
     "kotlin.test.Test",
     "org.junit.Test",
     "org.junit.jupiter.api.Test",
-    "org.testng.annotations.Test"
+    "org.testng.annotations.Test",
+    "io.kotest.core.spec.style.AnnotationSpec.Test",
   )
   scopeAnnotation("kotlin.test.Test") // Appends the annotation to the default ones
+  scopeFunctions = setOf(
+    // Takes full control of functions
+    "io.kotest.core.spec.style.scopes.FunSpecRootContext.test",
+    "io.kotest.core.spec.style.scopes.DescribeSpecContainerContext.it",
+    "io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerContext.Then",
+    "io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerContext.then",
+    "io.kotest.core.spec.style.scopes.WordSpecShouldContainerContext.invoke",
+    "io.kotest.core.spec.style.scopes.FreeSpecContainerContext.invoke",
+    "io.kotest.core.spec.style.scopes.FeatureSpecContainerContext.scenario",
+    "io.kotest.core.spec.style.scopes.ExpectSpecContainerContext.expect",
+  )
+  scopeFunction("io.kotest.core.spec.style.scopes.FunSpecRootContext.test") // Appends the function to the default ones
 }
 ```
-3. Use provided klip assertions anywhere under one of the `scopeAnnotations`.
+3. Use provided klip assertions anywhere under one of the `scopeAnnotations` or `scopeFunctions`.
 ```kotlin
 class MyTest {
   data class DomainObject(val name: String, val value: String?)
@@ -124,6 +138,8 @@ properties:
   process. Only useful when writing your own klippable functions.
 * `klip.scopeAnnotations (KLIP_SCOPEANNOTATIONS` - comma separated list of fully qualified names of test annotations to
   scope klip keys.
+* `klip.scopeFunctions (KLIP_SCOPEFUNCTIONS` - comma separated list of fully qualified names of test functions to scope
+  klip keys.
 
 ## Basic Flow
 1. Run tests as normal and use generated klip assertions such as `assertMatchesKlip(myObject)`

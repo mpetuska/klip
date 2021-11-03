@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.IrStatement
+import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.builders.irBoolean
 import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irString
@@ -15,17 +16,20 @@ import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.declarations.path
+import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
 import org.jetbrains.kotlin.ir.expressions.putArgument
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.types.classOrNull
+import org.jetbrains.kotlin.ir.types.isString
 import org.jetbrains.kotlin.ir.util.constructors
 import org.jetbrains.kotlin.ir.util.getArgumentsWithIr
 import org.jetbrains.kotlin.ir.util.hasAnnotation
 import org.jetbrains.kotlin.ir.util.isNullConst
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.util.Logger
+import org.jetbrains.kotlin.utils.addToStdlib.cast
 
 /**
  * The main worker-bee of the plugin, responsible for actually transforming the "klippable" function
@@ -39,7 +43,8 @@ class KlippableFnIrTransformer(
 ) : IrElementTransformerVoidWithContext(), FileLoweringPass {
   private var index: Int = 0
   private lateinit var klipPath: String
-  private var function: IrFunction? = null
+  private var scope: IrFunction? = null
+  private var scopeName: String? = null
 
   private val newDeclarations = mutableListOf<IrDeclaration>()
 
@@ -47,26 +52,52 @@ class KlippableFnIrTransformer(
     val filePath = File(irFile.path)
     klipPath = filePath.parentFile.resolve("__klips__/${filePath.name}.klip").canonicalPath
     index = 0
+    scope = null
+    scopeName = null
 
     irFile.transformChildrenVoid()
     irFile.declarations.addAll(newDeclarations.filter { it.parent == irFile })
   }
 
-  override fun visitFunctionNew(declaration: IrFunction): IrStatement {
-    if (settings.scopeAnnotations.any { declaration.hasAnnotation(it) }) {
-      function = declaration
+  private fun findScopeFunction(declaration: IrFunction): IrFunction? {
+    if (settings.scopeFunctions.any {
+      declaration.kotlinFqName == it || declaration.realOverrideTarget.kotlinFqName == it
+    } ||
+        settings.scopeAnnotations.any {
+          declaration.hasAnnotation(it) || declaration.realOverrideTarget.hasAnnotation(it)
+        }) {
+      scope = declaration
       index = 0
     }
+    return scope
+  }
+
+  override fun visitFunctionNew(declaration: IrFunction): IrStatement {
+    findScopeFunction(declaration)
     return super.visitFunctionNew(declaration)
   }
 
   override fun visitFunctionAccess(expression: IrFunctionAccessExpression): IrExpression {
-    val fn = function
+    val fn = scope ?: findScopeFunction(expression.symbol.owner)
+    fn?.let { _ ->
+      val foundParam =
+          fn.valueParameters.find { it.name.asString() == "name" && it.type.isString() }
+              ?: fn.extensionReceiverParameter?.takeIf { it.type.isString() }
+      val foundArg =
+          foundParam?.let { nameArg ->
+            expression.getArgumentsWithIr().find { (arg, _) -> arg == nameArg }?.second
+          }
+
+      foundArg?.takeIf { it is IrConst<*> }?.cast<IrConst<*>>()?.value?.toString()?.let {
+        scopeName = it
+        index = 0
+      }
+    }
     val path = klipPath
 
     if (fn != null && settings.klipAnnotations.any { expression.symbol.owner.hasAnnotation(it) }) {
-      val klipKey = "${fn.kotlinFqName.asString()}#${index++}"
-
+      val tName = scopeName?.let { "($it)" } ?: ""
+      val klipKey = "${fn.kotlinFqName.asString()}${tName}#${index++}"
       val irBuilder = DeclarationIrBuilder(context, expression.symbol)
 
       val param: IrValueParameter? =

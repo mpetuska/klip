@@ -1,3 +1,14 @@
+# 0.3.0
+## Versions
+* Kotlin: `1.6.0`
+* Gradle: `7.2.0`
+* JDK: `11`
+## Changes
+* New config option `scopeFunctions` to allow registering scopes by qualified function names.
+* Kotest support
+* Klip attributes support. Useless for now, but opens up a world of potential improvements in the future.
+* Bump kotlin version to `1.6.0`
+
 # 0.2.2
 ## Versions
 * Kotlin: `1.5.31`

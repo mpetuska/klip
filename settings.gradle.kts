@@ -10,9 +10,7 @@ plugins {
   id("com.gradle.enterprise") version "3.7.1"
 }
 
-refreshVersions {
-  extraArtifactVersionKeyRules(file("versions.rules"))
-}
+refreshVersions { extraArtifactVersionKeyRules(file("versions.rules")) }
 
 rootProject.name = "klip"
 

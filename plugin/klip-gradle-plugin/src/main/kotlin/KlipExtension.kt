@@ -7,22 +7,22 @@ import org.gradle.api.Project
 /** Gradle extension to manage klip plugin properties */
 open class KlipExtension(project: Project) {
   /** Whether plugin is enabled */
-  var enabled: Boolean by project.propertyDelegate(default = KlipOption.Enabled.default) {
-    it.toBoolean()
-  }
+  var enabled: Boolean by
+      project.propertyDelegate(default = KlipOption.Enabled.default) { it.toBoolean() }
 
   /** Whether the klips should be updated */
-  var update: Boolean by project.propertyDelegate(default = KlipOption.Update.default) {
-    it.toBoolean()
-  }
+  var update: Boolean by
+      project.propertyDelegate(default = KlipOption.Update.default) { it.toBoolean() }
 
   /**
    * Fully qualified annotation names to register for compiler processing and path injection.
    * Setting this property gives you full control over the annotations and overrides the default
    * ones.
    */
-  var klipAnnotations: Collection<String> by project.propertyDelegate(
-      default = KlipOption.KlipAnnotation.default) { it.split(",").toSet() }
+  var klipAnnotations: Collection<String> by
+      project.propertyDelegate(default = KlipOption.KlipAnnotation.default) {
+        it.split(",").toSet()
+      }
 
   /**
    * Register an annotation for compiler processing and path injection
@@ -37,8 +37,10 @@ open class KlipExtension(project: Project) {
    * processing Setting this property gives you full control over the annotations and overrides the
    * default ones.
    */
-  var scopeAnnotations: Collection<String> by project.propertyDelegate(
-      default = KlipOption.ScopeAnnotation.default) { it.split(",").toSet() }
+  var scopeAnnotations: Collection<String> by
+      project.propertyDelegate(default = KlipOption.ScopeAnnotation.default) {
+        it.split(",").toSet()
+      }
 
   /**
    * Register an annotation for function scopes for compiler klip detection and processing
@@ -53,8 +55,8 @@ open class KlipExtension(project: Project) {
    * processing Setting this property gives you full control over the functions and overrides the
    * default ones.
    */
-  var scopeFunctions: Collection<String> by project.propertyDelegate(
-      default = KlipOption.ScopeFunction.default) { it.split(",").toSet() }
+  var scopeFunctions: Collection<String> by
+      project.propertyDelegate(default = KlipOption.ScopeFunction.default) { it.split(",").toSet() }
 
   /**
    * Register a function for function scopes for compiler klip detection and processing

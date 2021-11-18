@@ -46,9 +46,10 @@ tasks {
     from(sourceSet.resources) { into("resources") }
   }
 
-  val syncSourceMain by registering(Sync::class) {
-    registerSources(mainPluginSourceSets().main.get(), projectDir.resolve("src/main"))
-  }
+  val syncSourceMain by
+      registering(Sync::class) {
+        registerSources(mainPluginSourceSets().main.get(), projectDir.resolve("src/main"))
+      }
   named("compileKotlin") { dependsOn(syncSourceMain) }
   named("clean") { doLast { projectDir.resolve("src").delete() } }
   withType<com.diffplug.gradle.spotless.SpotlessCheck> { enabled = false }

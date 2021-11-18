@@ -1,8 +1,8 @@
 :::::>> KLIPS :::::>>
-:::::>>sandbox.test.LinuxX64Test.test#0:::::>>
+:::::>>type=TEXT:::::>>sandbox.test.LinuxX64Test.test#0:::::>>
 zero
-:::::>>sandbox.test.LinuxX64Test.test#1:::::>>
+:::::>>type=TEXT:::::>>sandbox.test.LinuxX64Test.test#1:::::>>
 one
-:::::>>sandbox.test.LinuxX64Test.test1#0:::::>>
+:::::>>type=TEXT:::::>>sandbox.test.LinuxX64Test.test1#0:::::>>
 2
 :::::>>:::::>>:::::>>

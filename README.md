@@ -147,8 +147,8 @@ properties:
    scope and given id) will be read and used for assertions.
 2. When the actual value changes, tests will fail since they do not match previous klip. In such cases inspect the
    differences and if everything is as expected, re-run test(s) with klip updates enabled. This is done by either
-   passing a gradle prop `./gradlew test -Pklip.update`
-   or setting an environment variable `KLIP_UPDATE=true ./gradlew test`.
+   passing a gradle prop `./gradlew test -Pklip.update`,
+   setting an environment variable `KLIP_UPDATE=true ./gradlew test` or running update task `./gradlew klipUpdate`.
 
 # Modules
 * `:library:klip-core` - main runtime library

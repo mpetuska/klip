@@ -1,8 +1,8 @@
 :::::>> KLIPS :::::>>
-:::::>>type=TEXT:::::>>type=TEXT:::::>>sandbox.test.kotest.JvmAnnotationSpec.testOne#0:::::>>
+:::::>>type=TEXT:::::>>sandbox.test.kotest.JvmAnnotationSpec.testOne#0:::::>>
 kotest zero
-:::::>>type=TEXT:::::>>type=TEXT:::::>>sandbox.test.kotest.JvmAnnotationSpec.testOne#1:::::>>
+:::::>>type=TEXT:::::>>sandbox.test.kotest.JvmAnnotationSpec.testOne#1:::::>>
 kotest one
-:::::>>type=TEXT:::::>>type=TEXT:::::>>sandbox.test.kotest.JvmAnnotationSpec.testTwo#0:::::>>
+:::::>>type=TEXT:::::>>sandbox.test.kotest.JvmAnnotationSpec.testTwo#0:::::>>
 kotest 2
 :::::>>:::::>>:::::>>

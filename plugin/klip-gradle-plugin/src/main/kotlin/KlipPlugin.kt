@@ -5,6 +5,7 @@ import dev.petuska.klip.plugin.config.KOTLIN_NATIVE_PLUGIN_ARTEFACT_ID
 import dev.petuska.klip.plugin.config.KOTLIN_PLUGIN_ARTEFACT_ID
 import dev.petuska.klip.plugin.config.KOTLIN_PLUGIN_ID
 import dev.petuska.klip.plugin.config.VERSION
+import dev.petuska.klip.plugin.task.KlipUpdateTask
 import dev.petuska.klip.plugin.util.KlipOption
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
@@ -19,6 +20,7 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
   override fun apply(target: Project) {
     with(target) {
       val extension = createExtension()
+      tasks.register("klipUpdate", KlipUpdateTask::class.java)
       tasks.withType(Test::class.java) {
         it.inputs.property("klip.update", "${extension.update}")
         it.inputs.property("klip.enabled", "${extension.enabled}")

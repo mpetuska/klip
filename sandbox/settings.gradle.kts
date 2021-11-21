@@ -10,6 +10,8 @@ plugins {
   id("com.gradle.enterprise") version "3.6.4"
 }
 
+refreshVersions { extraArtifactVersionKeyRules(file("versions.rules")) }
+
 rootProject.name = "sandbox"
 includeBuild("../")
 include(":jvm", "js")

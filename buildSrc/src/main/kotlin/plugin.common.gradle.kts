@@ -26,11 +26,7 @@ spotless {
 
 tasks {
   project.properties["org.gradle.project.targetCompatibility"]?.toString()?.let {
-    withType<KotlinCompile> {
-      kotlinOptions {
-        jvmTarget = it
-      }
-    }
+    withType<KotlinCompile> { kotlinOptions { jvmTarget = it } }
   }
   afterEvaluate {
     if (tasks.findByName("compile") == null) {

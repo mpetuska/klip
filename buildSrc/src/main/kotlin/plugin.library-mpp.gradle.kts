@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile
 import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.HostManager
 import util.CI
@@ -141,4 +142,5 @@ tasks {
       !CI || SANDBOX || compilation.konanTarget.buildHost == HostManager.host.family
     }
   }
+  withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
 }

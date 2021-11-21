@@ -1,6 +1,6 @@
-plugins {
-  `kotlin-dsl`
-}
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins { `kotlin-dsl` }
 
 repositories {
   mavenCentral()
@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-//  implementation("io.kotest:kotest-framework-multiplatform-plugin-gradle:_")
+  //  implementation("io.kotest:kotest-framework-multiplatform-plugin-gradle:_")
   implementation("com.android.tools.build:gradle:_")
   implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:_")
   implementation("org.jetbrains.dokka:dokka-gradle-plugin:_")
@@ -18,3 +18,5 @@ dependencies {
   implementation("com.github.gmazzo:gradle-buildconfig-plugin:_")
   implementation("com.github.jakemarsden:git-hooks-gradle-plugin:_")
 }
+
+tasks { withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" } }

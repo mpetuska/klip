@@ -19,28 +19,27 @@ tasks {
   }
   withType<Jar> {
     manifest {
-      attributes += sortedMapOf(
-        "Built-By" to System.getProperty("user.name"),
-        "Build-Jdk" to System.getProperty("java.version"),
-        "Implementation-Version" to project.version,
-        "Created-By" to "${GradleVersion.current()}",
-        "Created-From" to "${Git.headCommitHash}"
-      )
+      attributes +=
+          sortedMapOf(
+              "Built-By" to System.getProperty("user.name"),
+              "Build-Jdk" to System.getProperty("java.version"),
+              "Implementation-Version" to project.version,
+              "Created-By" to "${GradleVersion.current()}",
+              "Created-From" to "${Git.headCommitHash}")
     }
   }
   val cleanMavenLocal by registering {
     group = "build"
     doLast {
       val groupRepo =
-        file("${System.getProperty("user.home")}/.m2/repository/${project.group.toString().replace(".", "/")}")
+          file(
+              "${System.getProperty("user.home")}/.m2/repository/${project.group.toString().replace(".", "/")}")
       publishing.publications.filterIsInstance<MavenPublication>().forEach {
         groupRepo.resolve(it.artifactId).deleteRecursively()
       }
     }
   }
-  named("clean") {
-    dependsOn(cleanMavenLocal)
-  }
+  named("clean") { dependsOn(cleanMavenLocal) }
 }
 
 signing {
@@ -53,19 +52,12 @@ signing {
 }
 
 val isMainHost = HostManager.simpleOsName().equals("${project.properties["project.mainOS"]}", true)
-tasks {
-  withType<KotlinCompile> {
-    onlyIf
-  }
-}
+
+tasks { withType<KotlinCompile> { onlyIf } }
 
 publishing {
   fun Collection<KotlinTarget>.onlyBuildIf(enabled: Spec<in Task>) {
-    forEach {
-      it.compilations.all {
-        compileKotlinTask.onlyIf(enabled)
-      }
-    }
+    forEach { it.compilations.all { compileKotlinTask.onlyIf(enabled) } }
   }
 
   fun Collection<Named>.onlyPublishIf(enabled: Spec<in Task>) {
@@ -75,16 +67,14 @@ publishing {
         publications {
           matching { it.name in publications }.all {
             val targetPublication = this@all
-            tasks.withType<AbstractPublishToMaven>()
-              .matching { it.publication == targetPublication }
-              .configureEach {
-                onlyIf(enabled)
-              }
-            tasks.withType<GenerateModuleMetadata>()
-              .matching { it.publication.get() == targetPublication }
-              .configureEach {
-                onlyIf(enabled)
-              }
+            tasks
+                .withType<AbstractPublishToMaven>()
+                .matching { it.publication == targetPublication }
+                .configureEach { onlyIf(enabled) }
+            tasks
+                .withType<GenerateModuleMetadata>()
+                .matching { it.publication.get() == targetPublication }
+                .configureEach { onlyIf(enabled) }
           }
         }
       }

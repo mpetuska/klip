@@ -87,7 +87,9 @@ public object KlipManager {
    * @return klip-writable form of the value provided by [source] that's safe to append to klip file
    */
   public fun stringifyKlip(key: String, attributes: Map<String, String>, source: () -> String): String {
-    return "${SEPARATOR_KLIPS}${attributes.entries.joinToString { (k, v) -> "$k=$v" }}$SEPARATOR$key$SEPARATOR_KEY${source()}"
+    return "${SEPARATOR_KLIPS}" +
+      "${attributes.entries.joinToString { (k, v) -> "$k=$v" }}" +
+      "$SEPARATOR$key$SEPARATOR_KEY${source()}"
   }
 
   /**

@@ -16,12 +16,25 @@ buildConfig {
   buildConfigField("String", "NAME", "\"${rootProject.name}\"")
   buildConfigField("String", "VERSION", "\"${rootProject.version}\"")
   buildConfigField(
-      "String", "GRADLE_PLUGIN_ARTEFACT_ID", "\"${project(":plugin:klip-gradle-plugin").name}\"")
+    "String",
+    "GRADLE_PLUGIN_ARTEFACT_ID",
+    "\"${project(":plugin:klip-gradle-plugin").name}\""
+  )
   buildConfigField(
-      "String", "KOTLIN_PLUGIN_ARTEFACT_ID", "\"${project(":plugin:klip-kotlin-plugin").name}\"")
+    "String",
+    "KOTLIN_PLUGIN_ARTEFACT_ID",
+    "\"${project(":plugin:klip-kotlin-plugin").name}\""
+  )
   buildConfigField(
-      "String", "KOTLIN_NATIVE_PLUGIN_ARTEFACT_ID", "\"\$KOTLIN_PLUGIN_ARTEFACT_ID-native\"")
-  buildConfigField("String", "KOTLIN_PLUGIN_ID", "\"\$GROUP.\$KOTLIN_PLUGIN_ARTEFACT_ID\"")
+    "String",
+    "KOTLIN_NATIVE_PLUGIN_ARTEFACT_ID",
+    "\"\$KOTLIN_PLUGIN_ARTEFACT_ID-native\""
+  )
+  buildConfigField(
+    "String",
+    "KOTLIN_PLUGIN_ID",
+    "\"\$GROUP.\$KOTLIN_PLUGIN_ARTEFACT_ID\""
+  )
 }
 
 tasks { withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" } }

@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
 
 plugins {
   id("dev.petuska.klip")
-  id("io.kotest.multiplatform") version "5.0.0.5"
+  id("io.kotest.multiplatform")
   kotlin("multiplatform")
   id("com.android.library")
   idea

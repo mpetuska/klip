@@ -1,8 +1,9 @@
+import de.fayard.refreshVersions.core.versionFor
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
 
 plugins {
   id("dev.petuska.klip")
-  id("io.kotest.multiplatform")
+  id("io.kotest.multiplatform") version "5.0.0"
   kotlin("multiplatform")
   id("com.android.library")
   idea

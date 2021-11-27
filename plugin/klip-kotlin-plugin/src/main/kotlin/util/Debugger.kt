@@ -10,10 +10,11 @@ private object Debugger {
   }
   private val enabled = System.getenv("KLIP_DEBUG")?.let { !it.equals("false", true) } == true
   fun log(text: () -> String) {
-    if (enabled) text().let {
-      println("DEBUG: $it")
-      file.appendText("${it}\n")
-    }
+    if (enabled)
+        text().let {
+          println("DEBUG: $it")
+          file.appendText("${it}\n")
+        }
   }
 }
 

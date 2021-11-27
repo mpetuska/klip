@@ -57,7 +57,7 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
   ): Provider<List<SubpluginOption>> {
     val project = kotlinCompilation.target.project
     val extension = project.klip
-    
+
     return project.provider {
       listOf(
           SubpluginOption(

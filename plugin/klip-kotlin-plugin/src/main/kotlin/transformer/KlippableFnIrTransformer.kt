@@ -1,6 +1,7 @@
 package dev.petuska.klip.plugin.transformer
 
 import dev.petuska.klip.plugin.util.KlipSettings
+import java.io.File
 import org.jetbrains.kotlin.backend.common.FileLoweringPass
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -29,7 +30,6 @@ import org.jetbrains.kotlin.ir.util.isNullConst
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.util.Logger
 import org.jetbrains.kotlin.utils.addToStdlib.cast
-import java.io.File
 
 /**
  * The main worker-bee of the plugin, responsible for actually transforming the "klippable" function

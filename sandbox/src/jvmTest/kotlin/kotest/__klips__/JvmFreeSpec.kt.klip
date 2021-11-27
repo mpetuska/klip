@@ -5,4 +5,10 @@ kotest zero
 kotest one
 :::::>>type=TEXT:::::>>io.kotest.core.spec.style.scopes.FreeSpecContainerContext.invoke(test two)#0:::::>>
 kotest 2
+:::::>>type=TEXT:::::>>io.kotest.core.spec.style.scopes.FreeSpecContainerScope.invoke(test one)#0:::::>>
+kotest zero
+:::::>>type=TEXT:::::>>io.kotest.core.spec.style.scopes.FreeSpecContainerScope.invoke(test one)#1:::::>>
+kotest one
+:::::>>type=TEXT:::::>>io.kotest.core.spec.style.scopes.FreeSpecContainerScope.invoke(test two)#0:::::>>
+kotest 2
 :::::>>:::::>>:::::>>

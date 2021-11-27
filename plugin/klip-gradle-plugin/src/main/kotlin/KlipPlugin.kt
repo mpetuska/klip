@@ -22,8 +22,8 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
       val extension = createExtension()
       tasks.register("klipUpdate", KlipUpdateTask::class.java)
       tasks.withType(Test::class.java) {
-        it.inputs.property("klip.update", "${extension.update}")
         it.inputs.property("klip.enabled", "${extension.enabled}")
+        it.inputs.property("klip.update", "${extension.update}")
         it.environment("KLIP_UPDATE", "${extension.update}")
       }
     }
@@ -57,7 +57,7 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
   ): Provider<List<SubpluginOption>> {
     val project = kotlinCompilation.target.project
     val extension = project.klip
-
+    
     return project.provider {
       listOf(
           SubpluginOption(

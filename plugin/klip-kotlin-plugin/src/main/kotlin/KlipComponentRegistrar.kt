@@ -3,6 +3,7 @@ package dev.petuska.klip.plugin
 import com.google.auto.service.AutoService
 import dev.petuska.klip.plugin.util.KlipOption
 import dev.petuska.klip.plugin.util.KlipSettings
+import dev.petuska.klip.plugin.util.debug
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
@@ -22,6 +23,7 @@ class KlipComponentRegistrar : ComponentRegistrar {
       project: MockProject,
       configuration: CompilerConfiguration
   ) {
+    debug { java.io.File("").canonicalPath }
     val messageCollector =
         configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
     IrGenerationExtension.registerExtension(

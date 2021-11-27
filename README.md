@@ -92,14 +92,14 @@ klip {
   scopeAnnotation("kotlin.test.Test") // Appends the annotation to the default ones
   scopeFunctions = setOf(
     // Takes full control of functions
-    "io.kotest.core.spec.style.scopes.FunSpecRootContext.test",
-    "io.kotest.core.spec.style.scopes.DescribeSpecContainerContext.it",
-    "io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerContext.Then",
-    "io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerContext.then",
-    "io.kotest.core.spec.style.scopes.WordSpecShouldContainerContext.invoke",
-    "io.kotest.core.spec.style.scopes.FreeSpecContainerContext.invoke",
-    "io.kotest.core.spec.style.scopes.FeatureSpecContainerContext.scenario",
-    "io.kotest.core.spec.style.scopes.ExpectSpecContainerContext.expect",
+    "io.kotest.core.spec.style.scopes.FunSpecRootScope.test",
+    "io.kotest.core.spec.style.scopes.DescribeSpecContainerScope.it",
+    "io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerScope.Then",
+    "io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerScope.then",
+    "io.kotest.core.spec.style.scopes.WordSpecShouldContainerScope.invoke",
+    "io.kotest.core.spec.style.scopes.FreeSpecContainerScope.invoke",
+    "io.kotest.core.spec.style.scopes.FeatureSpecContainerScope.scenario",
+    "io.kotest.core.spec.style.scopes.ExpectSpecContainerScope.expect",
   )
   scopeFunction("io.kotest.core.spec.style.scopes.FunSpecRootContext.test") // Appends the function to the default ones
 }

@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
 
 plugins {
   id("dev.petuska.klip")
-  id("io.kotest.multiplatform") version "5.0.0.5"
+  id("io.kotest.multiplatform") version "5.0.0"
   kotlin("multiplatform")
   id("com.android.library")
   idea
@@ -20,6 +20,10 @@ android {
   defaultConfig {
     minSdkVersion(1)
     targetSdkVersion(31)
+  }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
 }
 
@@ -39,15 +43,22 @@ allprojects {
   }
   tasks {
     afterEvaluate {
+      withType(AbstractKotlinCompile::class) {
+        val debug =
+            (project.findProperty("klip.debug") ?: System.getenv("KLIP_DEBUG"))?.toString()?.let {
+              !it.equals("false", true)
+            } == true
+        if (debug) {
+          outputs.upToDateWhen { false }
+        }
+      }
       if (tasks.findByName("compile") == null) {
         register("compile") {
           dependsOn(withType(AbstractKotlinCompile::class))
           group = "build"
         }
       }
-      val testTasks = withType<Test> {
-        useJUnitPlatform()
-      }
+      val testTasks = withType<Test> { useJUnitPlatform() }
       if (tasks.findByName("allTests") == null) {
         register("allTests") {
           dependsOn(testTasks)
@@ -102,6 +113,7 @@ kotlin {
     named("androidTest") {
       dependencies {
         implementation(kotlin("test-junit5"))
+        implementation("io.kotest:kotest-framework-engine:_")
         implementation("io.kotest:kotest-runner-junit5:_")
       }
     }
@@ -114,6 +126,7 @@ kotlin {
     }
     named("jsTest") {
       dependencies {
+        implementation("io.kotest:kotest-framework-engine:_")
         implementation(kotlin("test-js"))
       }
     }

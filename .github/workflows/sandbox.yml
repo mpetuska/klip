@@ -62,7 +62,7 @@ jobs:
       - name: Restore native library cache
         if: ${{ github.event.inputs.runAtEnd == 'true' && startsWith(matrix.os.runner, github.event.inputs.runner) }}
         id: cache-native
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: |
             scripts/build
@@ -81,7 +81,7 @@ jobs:
       - name: Restore Gradle cache
         if: ${{ github.event.inputs.runAtEnd == 'true' && startsWith(matrix.os.runner, github.event.inputs.runner) }}
         id: cache-gradle
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: |
             ~/.gradle/caches

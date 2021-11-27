@@ -156,7 +156,7 @@ jobs:
             tasks: publishToSonatype closeSonatypeStagingRepository
             enabled: ${{ github.event.inputs.skipMavenCentral != 'y' }}
         os:
-          - runner: macos-latest
+          - runner: macos-11
             shell: bash
           - runner: windows-latest
             shell: msys2 {0}

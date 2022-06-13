@@ -6,9 +6,6 @@ import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.kotlin
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import util.CI
-import util.SANDBOX
-import util.isMainHost
 
 plugins {
   kotlin("jvm")

@@ -4,12 +4,3 @@ plugins {
 }
 
 description = "Kotlin multiplatform snapshot (klip) testing. API dependency."
-
-kotlin {
-  sourceSets {
-    named("commonMain") {
-      dependencies {
-      }
-    }
-  }
-}

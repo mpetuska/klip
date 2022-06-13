@@ -32,7 +32,6 @@ kotlin {
         api("dev.petuska:container-tasks-gradle-plugin:_")
         implementation("io.ktor:ktor-server-cio:_")
         implementation("io.ktor:ktor-server-content-negotiation:_")
-        implementation("io.ktor:ktor-serialization-kotlinx-cbor:_")
         implementation("io.ktor:ktor-serialization-kotlinx-json:_")
       }
     }

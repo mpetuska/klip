@@ -24,6 +24,16 @@ kotlin {
         implementation(kotlin("test-annotations-common"))
       }
     }
+    named("sharedTest") {
+      dependencies {
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
+      }
+    }
+//    named("blockingTest") {
+//      dependencies {
+//        implementation("dev.petuska:klip")
+//      }
+//    }
     named("androidTest") {
       dependencies {
         implementation("io.kotest:kotest-framework-engine:_")
@@ -39,6 +49,11 @@ kotlin {
     named("jsTest") {
       dependencies {
         implementation(kotlin("test-js"))
+      }
+    }
+    all {
+      languageSettings {
+        optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
       }
     }
   }

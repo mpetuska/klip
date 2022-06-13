@@ -47,7 +47,7 @@ class KlippableFnIrTransformer(
 
   override fun lower(irFile: IrFile) {
     val filePath = File(irFile.path)
-    klipPath = filePath.parentFile.resolve("__klips__/${filePath.name}.klip").canonicalPath
+    klipPath = filePath.parentFile.resolve("__klips__/${filePath.name}.json").canonicalPath
     index = 0
     scope = null
     scopeName = null
@@ -71,14 +71,17 @@ class KlippableFnIrTransformer(
   }
 
   override fun visitFunctionNew(declaration: IrFunction): IrStatement {
+    logger { "Visiting function ${declaration.kotlinFqName}" }
     detectScopeFn(declaration)
     return super.visitFunctionNew(declaration)
   }
 
   override fun visitCall(expression: IrCall): IrExpression {
+    logger { "Visiting call [scope: ${scope?.kotlinFqName}] ${expression.symbol.owner.kotlinFqName}" }
     val scopeFn = scope
     val isKlippable = settings.klipAnnotations.any { expression.symbol.owner.hasAnnotation(it) }
-    if (scopeFn == null || !isKlippable) return expression
+    logger { "isKlippable: $isKlippable" }
+    if (scopeFn == null || !isKlippable) return super.visitCall(expression)
 
     logger { "scope: ${scope?.name}" }
     detectScopeName(scopeFn, expression)
@@ -97,25 +100,6 @@ class KlippableFnIrTransformer(
     }
     logger { "fn: ${expression.symbol.owner.name}" }
     logger { "fnAnnotations: ${expression.symbol.owner.annotations}" }
-//      val params = expression.symbol.owner.valueParameters
-//      val param: IrValueParameter? = params.find { it.type.classOrNull == klipContextClass }
-//      debug {
-//        """
-//          params: $params
-//          param: $param
-//        """.trimIndent()
-//      }
-//      if (param != null) {
-//        if (expression.getArgumentsWithIr().none { (p, v) -> p == param && !v.isNullConst() }) {
-//          expression.putArgument(param, klipContextConstructorCall)
-//        }
-//        expression
-//      } else {
-//        expression.transform(
-//          KlipContextIrTransformer(context, klipContextClass, klipContextConstructorCall),
-//          null
-//        )
-//      }
     return expression.transform(
       KlipContextIrTransformer(context, logger, klipContextClass, klipContextConstructorCall),
       null

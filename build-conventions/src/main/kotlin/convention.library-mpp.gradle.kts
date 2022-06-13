@@ -14,9 +14,15 @@ kotlin {
 //    }
   }
   sourceSets {
-    named("androidTest") {
-      dependencies {
-        implementation(kotlin("test-junit5"))
+    afterEvaluate {
+      named("androidMain") {
+        dependsOn(getByName("blockingMain"))
+      }
+      named("androidTest") {
+        dependsOn(getByName("blockingTest"))
+        dependencies {
+          implementation(kotlin("test-junit5"))
+        }
       }
     }
   }

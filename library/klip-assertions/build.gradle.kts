@@ -14,5 +14,10 @@ kotlin {
         implementation(project(":library:klip-core"))
       }
     }
+    named("blockingMain") {
+      dependencies {
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:_")
+      }
+    }
   }
 }

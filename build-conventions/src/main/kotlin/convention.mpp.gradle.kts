@@ -1,4 +1,4 @@
-import util.nativeTargetGroup
+import util.targetGroup
 
 plugins {
   id("convention.common")
@@ -6,15 +6,41 @@ plugins {
 }
 
 kotlin {
-  jvm()
-  js(IR) {
-    browser()
-    nodejs()
-  }
-  linuxX64()
-  mingwX64()
-  nativeTargetGroup(
+  targetGroup(
+    "stub",
+    "commonMain",
+    "commonTest",
+    mingwX86(),
+    linuxArm32Hfp(),
+    linuxArm64(),
+    linuxMips32(),
+    linuxMipsel32(),
+    androidNativeArm32(),
+    androidNativeArm64(),
+    androidNativeX64(),
+    androidNativeX86(),
+  )
+  val (sharedMain, sharedTest) = targetGroup(
+    "shared",
+    "commonMain",
+    "commonTest",
+    js(IR) {
+      browser()
+      nodejs()
+    }
+  )
+  val (blockingMain, blockingTest) = targetGroup(
+    "blocking",
+    sharedMain,
+    sharedTest,
+    jvm(),
+    mingwX64(),
+    linuxX64(),
+  )
+  targetGroup(
     "apple",
+    blockingMain,
+    blockingTest,
     iosArm32(),
     iosArm64(),
     iosSimulatorArm64(),
@@ -30,33 +56,9 @@ kotlin {
     watchosX86(),
     watchosX64(),
   )
-//  KotlinPlatformType.jvm()
-//  KotlinPlatformType.js(IR) {
-//    useCommonJs()
-//    enableSCSS(main = true, test = true)
-//    browser {
-//      testTask {
-//        useKarma {
-//          when (project.properties["kotlin.js.test.browser"]) {
-//            "firefox" -> useFirefox()
-//            "firefox-headless" -> useFirefoxHeadless()
-//            "firefox-developer" -> useFirefoxDeveloper()
-//            "firefox-developer-headless" -> useFirefoxDeveloperHeadless()
-//            "chrome" -> useChrome()
-//            "chrome-headless" -> useChromeHeadless()
-//            "chromium" -> useChromium()
-//            "chromium-headless" -> useChromiumHeadless()
-//            "safari" -> useSafari()
-//            "opera" -> useOpera()
-//            else -> usePhantomJS()
-//          }
-//        }
-//      }
-//    }
-//  }
 
   sourceSets {
-    named("commonTest") {
+    named("sharedTest") {
       dependencies {
         implementation(kotlin("test-common"))
         implementation(kotlin("test-annotations-common"))

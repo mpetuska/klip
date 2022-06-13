@@ -3,10 +3,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.HostManager
-import util.CI
-import util.SANDBOX
 import util.buildHost
-import util.isMainHost
 
 plugins {
   kotlin("multiplatform")

@@ -1,0 +1,22 @@
+{
+    "sandbox.BlockingTest.withoutReceiver#0": {
+        "data": "\"zero\"",
+        "attributes": {
+        }
+    },
+    "sandbox.BlockingTest.withoutReceiver#1": {
+        "data": "\"one\"",
+        "attributes": {
+        }
+    },
+    "sandbox.BlockingTest.withReceiver#0": {
+        "data": "0",
+        "attributes": {
+        }
+    },
+    "sandbox.BlockingTest.withReceiver#1": {
+        "data": "1",
+        "attributes": {
+        }
+    }
+}

@@ -15,9 +15,3 @@ fun execAndCapture(cmd: String): String? {
     child.inputStream.readAllBytes().toString(Charset.defaultCharset()).trim()
   } else null
 }
-
-val CI by lazy { "true".equals(System.getenv("CI"), true) }
-val SANDBOX by lazy { "true".equals(System.getenv("SANDBOX"), true) }
-
-val Project.isMainHost: Boolean
-  get() = HostManager.simpleOsName().equals("${properties["project.mainOS"]}", true)

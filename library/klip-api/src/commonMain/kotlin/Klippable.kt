@@ -15,3 +15,6 @@ package dev.petuska.klip.api
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.FUNCTION)
 public annotation class Klippable
+
+public inline val KlippableStub: Nothing
+  get() = throw NotImplementedError("Invoked stubbed klip API. Did the compiler plugin run?")

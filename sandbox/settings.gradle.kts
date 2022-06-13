@@ -3,16 +3,22 @@ pluginManagement {
     gradlePluginPortal()
     mavenCentral()
     google()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
   }
 }
 
 plugins {
-  id("de.fayard.refreshVersions") version "0.21.0"
-  id("com.gradle.enterprise") version "3.6.4"
+  id("de.fayard.refreshVersions") version "0.40.2"
+  id("com.gradle.enterprise") version "3.10.2"
 }
 
-refreshVersions { extraArtifactVersionKeyRules(file("versions.rules")) }
+refreshVersions {
+  versionsPropertiesFile = rootDir.resolve("gradle/versions.properties")
+  extraArtifactVersionKeyRules(rootDir.resolve("gradle/versions.rules"))
+}
+
+includeBuild("../build-conventions")
+includeBuild("..")
 
 rootProject.name = "sandbox"
-includeBuild("../")
-include(":jvm", "js")
+include(":jvm", ":js")

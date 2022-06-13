@@ -1,17 +1,17 @@
 package sandbox.test
 
-import dev.petuska.klip.api.assertMatchesKlip
+import dev.petuska.klip.assertions.assertMatchesKlip
 import kotlin.test.Test
 
 class CommonTest {
   @Test
-  fun test() {
+  fun commonTest() {
     assertMatchesKlip("zero")
     assertMatchesKlip("one")
   }
 
   @Test
-  fun test1() {
+  fun commonTest1() {
     assertMatchesKlip("2")
   }
 }

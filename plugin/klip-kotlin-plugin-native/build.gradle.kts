@@ -1,17 +1,13 @@
+import io.gitlab.arturbosch.detekt.Detekt
+
 plugins {
-  id("plugin.publishing-jvm")
-  kotlin("kapt")
+  id("convention.publishing-jvm")
 }
 
 description = "Kotlin compiler plugin to manage KLIP snapshots for native targets"
 
-java { withSourcesJar() }
-
 dependencies {
   compileOnly(kotlin("compiler"))
-  compileOnly("com.google.auto.service:auto-service-annotations:_")
-  kapt("com.google.auto.service:auto-service:_")
-
   testImplementation(kotlin("reflect"))
   testImplementation(kotlin("test-junit5"))
   testImplementation(kotlin("compiler-embeddable"))
@@ -38,7 +34,8 @@ tasks {
         // Replace shadowed imports from plugin module
         when (it) {
           "import org.jetbrains.kotlin.com.intellij.mock.MockProject" ->
-              "import com.intellij.mock.MockProject"
+            "import com.intellij.mock.MockProject"
+
           else -> it
         }
       }
@@ -46,11 +43,10 @@ tasks {
     from(sourceSet.resources) { into("resources") }
   }
 
-  val syncSourceMain by
-      registering(Sync::class) {
-        registerSources(mainPluginSourceSets().main.get(), projectDir.resolve("src/main"))
-      }
+  val syncSourceMain by registering(Sync::class) {
+    registerSources(mainPluginSourceSets().main.get(), projectDir.resolve("src/main"))
+  }
   named("compileKotlin") { dependsOn(syncSourceMain) }
   named("clean") { doLast { projectDir.resolve("src").delete() } }
-  withType<com.diffplug.gradle.spotless.SpotlessCheck> { enabled = false }
+  withType<Detekt> { enabled = false }
 }

@@ -1,14 +1,11 @@
 plugins {
   id("com.gradle.plugin-publish")
   `java-gradle-plugin`
-  id("plugin.publishing-jvm")
-  id("plugin.build-config-jvm")
-  kotlin("kapt")
+  id("convention.publishing-jvm")
+  id("convention.build-konfig")
 }
 
 description = """Gradle plugin to manage KLIP snapshots, processors and dependencies"""
-
-java { withSourcesJar() }
 
 gradlePlugin {
   plugins {
@@ -29,7 +26,16 @@ pluginBundle {
 
 kotlin {
   sourceSets {
-    main { dependencies { compileOnly(kotlin("gradle-plugin-api")) } }
+    main {
+      dependencies {
+        compileOnly(kotlin("gradle-plugin-api"))
+        api("dev.petuska:container-tasks-gradle-plugin:_")
+        implementation("io.ktor:ktor-server-cio:_")
+        implementation("io.ktor:ktor-server-content-negotiation:_")
+        implementation("io.ktor:ktor-serialization-kotlinx-cbor:_")
+        implementation("io.ktor:ktor-serialization-kotlinx-json:_")
+      }
+    }
 
     test {
       dependencies {
@@ -38,4 +44,8 @@ kotlin {
       }
     }
   }
+}
+
+java {
+  withSourcesJar()
 }

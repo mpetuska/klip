@@ -5,24 +5,30 @@
 [![Version maven-central](https://img.shields.io/maven-central/v/dev.petuska/klip?logo=apache-maven&style=flat-square)](https://mvnrepository.com/artifact/dev.petuska/klip/latest)
 
 # KLIP
+
 Kotlin Multiplatform snapshot ((c|k)lip) manager for tests. Automatically generates and asserts against a
 persistent `Any::toString()` representation of the object until you explicitly trigger an update. Powered by kotlin
 compiler plugin to inject relevant keys and paths.
 
 # Support
+
 The plugin only works on targets using new IR kotlin compiler (which is pretty much all of them since kotlin 1.5 except
 JS which still defaults to legacy compiler).
 
 # Versions
+
 The current version was built using the following tooling versions and is guaranteed to work with this setup. Given the
 experimental nature of kotlin compiler plugin API, the plugin powering this library is likely to stop working on
 projects using newer/older kotlin versions.
+
 * Kotlin: `1.6.0`
 * Gradle: `7.2.0`
 * JDK: `11`
 
 # Targets
+
 Bellow is a list of currently supported targets and planned targets:
+
 - [x] android
 - [x] js
 - [x] jvm
@@ -43,20 +49,10 @@ Bellow is a list of currently supported targets and planned targets:
 - [x] tvosSimulatorArm64
 - [x] tvosX64
 
-There's also a subset of targets that you currently cannot run tests on (and as such making the library redundant).
-These targets will use a fallback implementation that throws an error on native api access (since those targets will not
-execute tests) to enable the general library usage in `commonMain` source set. If you have a valid use-case of the
-library for these targets, please raise an issue to discuss a real implementation.
-- [x] androidNativeArm32
-- [x] androidNativeArm64
-- [x] linuxArm32Hfp
-- [x] linuxMips32
-- [x] linuxMipsel32
-- [x] linuxArm64
-- [x] mingwX86
-
 # Usage
+
 1. Apply the plugin and add a runtime dependency.
+
 ```kotlin
 plugins {
   kotlin("multiplatform")
@@ -73,8 +69,10 @@ plugins {
   }
 }
 ```
+
 2. (Optional) Configure the plugin extension (shown with default values). For property descriptions.
    see [Gradle Properties](#gradle-properties)
+
 ```kotlin
 klip {
   enabled = true // Turns the compiler plugin on/off
@@ -104,7 +102,9 @@ klip {
   scopeFunction("io.kotest.core.spec.style.scopes.FunSpecRootContext.test") // Appends the function to the default ones
 }
 ```
+
 3. Use provided klip assertions anywhere under one of the `scopeAnnotations` or `scopeFunctions`.
+
 ```kotlin
 class MyTest {
   data class DomainObject(val name: String, val value: String?)
@@ -128,10 +128,12 @@ class MyTest {
 ```
 
 ## Gradle Properties
+
 Most of the DSL configuration options can also be set/overridden via gradle properties
 `./gradlew <some-task> -Pprop.name=propValue`, `gradle.properties` or `~/.gradle/gradle.properties`. Environment
 variables are also supported, however gradle properties take precedence over them. Bellow is the full list of supported
 properties:
+
 * `klip.enabled (KLIP_ENABLED)` - toggles the compiler processing on/off.
 * `klip.update (KLIP_UPDATE)` - if true, will override and update all previous klips during test run.
 * `klip.klipAnnotations (KLIP_KLIPANNOTATIONS)` - comma separated list of fully qualified names of annotations to
@@ -142,6 +144,7 @@ properties:
   klip keys.
 
 ## Basic Flow
+
 1. Run tests as normal and use generated klip assertions such as `assertMatchesKlip(myObject)`
    or `myObject.assertKlip()`. New klips will always be written to file, whereas existing ones (identified by test class
    scope and given id) will be read and used for assertions.
@@ -151,6 +154,7 @@ properties:
    setting an environment variable `KLIP_UPDATE=true ./gradlew test` or running update task `./gradlew klipUpdate`.
 
 # Modules
+
 * `:library:klip-core` - main runtime library
 * `:library:klip-api` - assertion api and utility DSLs
 * `:plugin:klip-gradle-plugin` - gradle plugin to manage kotlin compiler plugins

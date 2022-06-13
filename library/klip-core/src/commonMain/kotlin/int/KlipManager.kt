@@ -1,16 +1,9 @@
 package dev.petuska.klip.core.int
 
-import dev.petuska.klip.core.ext.File
-import dev.petuska.klip.core.ext.readText
-import dev.petuska.klip.core.ext.writeText
+import dev.petuska.klip.api.KlipContext
+import dev.petuska.klip.core.domain.Klip
+import dev.petuska.klip.core.domain.Klips
 import kotlin.native.concurrent.ThreadLocal
-
-public typealias Klips = MutableMap<String, Klip>
-
-public data class Klip(
-  val value: String,
-  val attributes: Map<String, String>,
-)
 
 /**
  * A helper class to assist in reading and writing persisted klips
@@ -59,25 +52,27 @@ public object KlipManager {
         prefix = SEPARATOR_SOF,
         postfix = SEPARATOR_EOF
       ) { (k, v) ->
-        stringifyKlip(k, v.attributes) { v.value }
+        stringifyKlip(k, v.attributes) { v.data }
       }
     }
   }
 
   private fun write(path: String, source: () -> String): String {
-    return File(path).run {
-      getParentFile()?.mkdirs()
-      source().also { writeText(it) }
-    }
+//    return File(path).run {
+//      getParentFile()?.mkdirs()
+//      source().also { writeText(it) }
+//    }
+    TODO()
   }
 
   private fun read(path: String): String? {
-    val file = File(path)
-    return if (file.exists()) {
-      file.readText()
-    } else {
-      null
-    }
+//    val file = File(path)
+//    return if (file.exists()) {
+//      file.readText()
+//    } else {
+//      null
+//    }
+    TODO()
   }
 
   /**

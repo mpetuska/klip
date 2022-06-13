@@ -3,20 +3,19 @@ package dev.petuska.klip.plugin
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import dev.petuska.klip.plugin.test.Compiler
+import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.reflect.full.memberExtensionFunctions
 import kotlin.reflect.full.memberFunctions
 import kotlin.test.assertEquals
-import org.junit.jupiter.api.Test
 
 class KlipPluginITest {
   @Test
   fun works() {
-    val result =
-        Compiler.compile(
-            SourceFile.kotlin(
-                "main.kt",
-                """     
+    val result = Compiler.compile(
+      SourceFile.kotlin(
+        "main.kt",
+        """     
         import dev.petuska.klip.core.int.KlipContext
         
         class Main {
@@ -36,7 +35,9 @@ class KlipPluginITest {
           @${Compiler.scopeAnnotations[1]}
           fun Any?.testKlip2() = klip2()
         }
-        """.trimIndent()))
+        """.trimIndent()
+      )
+    )
     assertEquals(KotlinCompilation.ExitCode.OK, result.exitCode)
     val kClazz = result.classLoader.loadClass("Main")
     val instance = kClazz.getConstructor().newInstance()
@@ -45,6 +46,7 @@ class KlipPluginITest {
     val klipPath = File("${Compiler.kotlinRoot}/sources/__klips__/main.kt.klip").canonicalPath
     assertEquals("Argument, $klipPath, Main.testKlip#0, false", testKlip.call(instance, "Argument"))
     assertEquals(
-        "Receiver, $klipPath, Main.testKlip2#0, false", testKlip2.call(instance, "Receiver"))
+      "Receiver, $klipPath, Main.testKlip2#0, false", testKlip2.call(instance, "Receiver")
+    )
   }
 }

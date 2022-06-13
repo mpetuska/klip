@@ -1,7 +1,7 @@
 package sandbox.test.kotest
 
-import dev.petuska.klip.api.assertKlip
-import dev.petuska.klip.api.assertMatchesKlip
+import dev.petuska.klip.assertions.assertKlip
+import dev.petuska.klip.assertions.assertMatchesKlip
 import io.kotest.core.spec.style.FeatureSpec
 
 class JvmFeatureSpec : FeatureSpec({

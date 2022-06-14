@@ -14,7 +14,6 @@ import kotlin.coroutines.CoroutineContext
 @Suppress("ACTUAL_WITHOUT_EXPECT")
 public actual typealias TestResult = Unit
 
-
 /**
  * @see [kotlinx.coroutines.test.runTest]
  */

@@ -15,7 +15,6 @@ import kotlin.js.Promise
 @Suppress("ACTUAL_WITHOUT_EXPECT", "ACTUAL_TYPE_ALIAS_TO_CLASS_WITH_DECLARATION_SITE_VARIANCE")
 public actual typealias TestResult = Promise<Unit>
 
-
 /**
  * @see [kotlinx.coroutines.test.runTest]
  */

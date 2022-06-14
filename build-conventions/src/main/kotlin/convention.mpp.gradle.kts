@@ -22,10 +22,13 @@ kotlin {
     androidNativeX64(),
     androidNativeX86(),
   )
-  val (sharedMain, sharedTest) = targetGroup("shared", "commonMain", "commonTest", js(IR) {
-    browser()
-    nodejs()
-  })
+  val (sharedMain, sharedTest) = targetGroup(
+    "shared", "commonMain", "commonTest",
+    js(IR) {
+      browser()
+      nodejs()
+    }
+  )
   val (blockingMain, blockingTest) = targetGroup(
     "blocking",
     sharedMain,

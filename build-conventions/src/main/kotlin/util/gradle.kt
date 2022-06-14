@@ -1,7 +1,5 @@
 package util
 
-import org.gradle.api.Project
-import org.jetbrains.kotlin.konan.target.HostManager
 import java.nio.charset.*
 
 object Git {

@@ -51,7 +51,7 @@ class KlipIrGenerationExtension(
         }
 
         override fun visitFile(declaration: IrFile) {
-          logger{"Inspecting ${declaration.path}"}
+          logger { "Inspecting ${declaration.path}" }
           lower(declaration)
           super.visitFile(declaration)
         }

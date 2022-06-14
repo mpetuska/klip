@@ -10,6 +10,7 @@ import kotlin.test.assertEquals
 
 /**
  * Asserts that the given object matches its respective klip
+ * @param T
  * @param actual value to assert
  * @return [actual]
  */
@@ -28,6 +29,7 @@ public suspend inline fun <reified T : Any?> assertMatchesKlip(context: KlipCont
 
 /**
  * Asserts that the given object matches its respective klip
+ * @param T
  * @receiver actual value to assert
  * @return [this] for chaining
  */

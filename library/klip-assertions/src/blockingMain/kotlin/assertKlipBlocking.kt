@@ -8,6 +8,7 @@ import kotlinx.coroutines.runBlocking
 
 /**
  * Asserts that the given object matches its respective klip
+ * @param T
  * @param actual value to assert
  * @return [actual]
  */
@@ -25,6 +26,7 @@ public inline fun <reified T : Any?> assertMatchesKlipBlocking(context: KlipCont
 
 /**
  * Asserts that the given object matches its respective klip
+ * @param T
  * @receiver actual value to assert
  * @return [this] for chaining
  */

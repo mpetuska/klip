@@ -6,6 +6,7 @@ import dev.petuska.klip.plugin.config.VERSION
 import dev.petuska.klip.plugin.task.KlipServerTask
 import dev.petuska.klip.plugin.util.KlipOption
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.api.tasks.testing.AbstractTestTask
@@ -19,20 +20,10 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
   override fun apply(target: Project) {
     with(target) {
       val extension = createExtension()
-      val server = tasks.register("startKlipServer", KlipServerTask::class.java) {
-        it.port.convention(extension.port)
-        it.destroyables
-      }
-      val stopServer = tasks.register("stopKlipServer") {
-        it.description = "Stops klip server"
-        it.mustRunAfter(server)
-        it.mustRunAfter(tasks.withType(AbstractTestTask::class.java))
-        it.doLast {
-          server.get().stop()
-        }
-      }
+      val server = startServer()
+      val stopServer = stopServer(server)
       project.gradle.buildFinished {
-        server.get().stop()
+        server.stop()
       }
       tasks.withType(AbstractTestTask::class.java) {
         it.dependsOn(server)
@@ -47,17 +38,42 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
     }
   }
 
-  private fun Project.createExtension(): KlipExtension {
-    val klip = extensions.findByType(KlipExtension::class.java)
-      ?: extensions.create(KlipExtension.NAME, KlipExtension::class.java)
-    klip.klipAnnotations.addAll(KlipOption.KlipAnnotation.default)
-    klip.scopeAnnotations.addAll(KlipOption.ScopeAnnotation.default)
-    klip.scopeFunctions.addAll(KlipOption.ScopeFunction.default)
-    klip.debug.convention(KlipOption.Debug.default)
-    klip.port.convention(6969)
-    klip.enabled.convention(KlipOption.Enabled.default)
-    klip.update.convention(KlipOption.Update.default)
+  private fun Project.startServer(): KlipServerTask {
+    val extension = rootKlip
+    val server = rootProject.tasks.maybeCreate("startKlipServer", KlipServerTask::class.java).apply {
+      port.convention(extension.port)
+    }
+    return server
+  }
 
+  private fun Project.stopServer(server: KlipServerTask): Task {
+    val stopServer = rootProject.tasks.maybeCreate("stopKlipServer").apply {
+      description = "Stops klip server"
+      mustRunAfter(server)
+      mustRunAfter(tasks.withType(AbstractTestTask::class.java))
+      doLast {
+        server.stop()
+      }
+    }
+    return stopServer
+  }
+
+  private fun Project.createExtension(): KlipExtension {
+    val commonConfig: KlipExtension.() -> Unit = {
+      klipAnnotations.addAll(KlipOption.KlipAnnotation.default)
+      scopeAnnotations.addAll(KlipOption.ScopeAnnotation.default)
+      scopeFunctions.addAll(KlipOption.ScopeFunction.default)
+      debug.convention(KlipOption.Debug.default)
+      enabled.convention(KlipOption.Enabled.default)
+      update.convention(KlipOption.Update.default)
+    }
+    rootProject.extensions.findByType(KlipRootExtension::class.java)
+      ?: rootProject.extensions.create(KlipExtension.NAME, KlipRootExtension::class.java).apply {
+        port.convention(6969)
+        commonConfig()
+      }
+    val klip = extensions.findByType(KlipExtension::class.java)
+      ?: extensions.create(KlipExtension.NAME, KlipExtension::class.java).apply(commonConfig)
     return klip
   }
 
@@ -81,6 +97,7 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
     kotlinCompilation: KotlinCompilation<*>
   ): Provider<List<SubpluginOption>> {
     val project = kotlinCompilation.target.project
+    val rootExtension = project.rootProject.rootKlip
     val extension = project.klip
 
     return project.provider {
@@ -90,12 +107,12 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
       listOfNotNull(
         SubpluginOption(key = KlipOption.Enabled.name, value = extension.enabled.get().toString()),
         SubpluginOption(key = KlipOption.Update.name, value = extension.update.get().toString()),
-        SubpluginOption(key = KlipOption.ServerUrl.name, value = "http://localhost:${extension.port.get()}"),
+        SubpluginOption(key = KlipOption.ServerUrl.name, value = "http://localhost:${rootExtension.port.get()}"),
         SubpluginOption(key = KlipOption.Debug.name, value = debugFile),
-      ) +
-        extension.klipAnnotations.get().map { SubpluginOption(key = KlipOption.KlipAnnotation.name, value = it) } +
-        extension.scopeAnnotations.get().map { SubpluginOption(key = KlipOption.ScopeAnnotation.name, value = it) } +
-        extension.scopeFunctions.get().map { SubpluginOption(key = KlipOption.ScopeFunction.name, value = it) }
+      ) + extension.klipAnnotations.get()
+        .map { SubpluginOption(key = KlipOption.KlipAnnotation.name, value = it) } + extension.scopeAnnotations.get()
+        .map { SubpluginOption(key = KlipOption.ScopeAnnotation.name, value = it) } + extension.scopeFunctions.get()
+        .map { SubpluginOption(key = KlipOption.ScopeFunction.name, value = it) }
     }
   }
 }

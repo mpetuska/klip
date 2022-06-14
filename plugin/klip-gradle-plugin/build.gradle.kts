@@ -31,6 +31,7 @@ kotlin {
         compileOnly(kotlin("gradle-plugin-api"))
         api("dev.petuska:container-tasks-gradle-plugin:_")
         implementation("io.ktor:ktor-server-cio:_")
+        implementation("io.ktor:ktor-server-cors:_")
         implementation("io.ktor:ktor-server-content-negotiation:_")
         implementation("io.ktor:ktor-serialization-kotlinx-json:_")
       }

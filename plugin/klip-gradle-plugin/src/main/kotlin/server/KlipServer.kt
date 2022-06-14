@@ -10,6 +10,7 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.plugins.NotFoundException
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
@@ -25,7 +26,7 @@ import java.io.Closeable
 import java.io.File
 
 class KlipServer(
-  projectDir: File,
+  rootDir: File,
   port: Int,
 ) : Closeable {
   private val json = Json {
@@ -41,6 +42,9 @@ class KlipServer(
     install(ContentNegotiation) {
       json()
     }
+    install(CORS) {
+      anyHost()
+    }
     routing {
       get {
         val klipPath = call.request.queryParameters["path"]
@@ -48,8 +52,8 @@ class KlipServer(
         val klipKey = call.request.queryParameters["key"]
           ?: throw BadRequestException("Missing key parameter")
         val klipFile = File(klipPath)
-        if (!klipFile.startsWith(projectDir)) {
-          throw BadRequestException("Klip path is not within the project bounds ${projectDir.absolutePath}")
+        if (!klipFile.startsWith(rootDir)) {
+          throw BadRequestException("Klip path is not within the project bounds ${rootDir.absolutePath}")
         }
         if (!klipFile.exists()) throw NotFoundException("Klip file does not exist")
         val klips: JsonObject = json.decodeFromString(klipFile.readText())
@@ -63,8 +67,8 @@ class KlipServer(
           ?: throw BadRequestException("Missing key parameter")
         withContext(Dispatchers.IO) {
           val klipFile = File(klipPath)
-          if (!klipFile.startsWith(projectDir)) {
-            throw BadRequestException("Klip path is not within the project bounds ${projectDir.absolutePath}")
+          if (!klipFile.startsWith(rootDir)) {
+            throw BadRequestException("Klip path is not within the project bounds ${rootDir.absolutePath}")
           }
           val klip: JsonObject = call.receive()
           val klips: JsonObject = if (klipFile.exists()) {

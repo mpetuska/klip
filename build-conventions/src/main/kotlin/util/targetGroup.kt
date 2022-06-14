@@ -1,9 +1,11 @@
 package util
 
-import org.gradle.api.NamedDomainObjectProvider
+import org.gradle.api.Action
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 
@@ -24,4 +26,29 @@ fun <T : KotlinTarget> KotlinMultiplatformExtension.targetGroup(
     }
   }
   return mainName to testName
+}
+
+private fun NamedDomainObjectContainer<KotlinSourceSet>.sharedDependencies(
+  sourceSets: List<String>,
+  action: Action<KotlinDependencyHandler>,
+) {
+  sourceSets.forEach {
+    findByName(it)?.dependencies { action.execute(this) }
+  }
+}
+
+fun NamedDomainObjectContainer<KotlinSourceSet>.sharedMainDependencies(action: Action<KotlinDependencyHandler>) {
+  sharedDependencies(listOf("sharedMain", "androidMain"), action)
+}
+
+fun NamedDomainObjectContainer<KotlinSourceSet>.sharedTestDependencies(action: Action<KotlinDependencyHandler>) {
+  sharedDependencies(listOf("sharedTest", "androidTest"), action)
+}
+
+fun NamedDomainObjectContainer<KotlinSourceSet>.blockingMainDependencies(action: Action<KotlinDependencyHandler>) {
+  sharedDependencies(listOf("blockingMain", "androidMain"), action)
+}
+
+fun NamedDomainObjectContainer<KotlinSourceSet>.blockingTestDependencies(action: Action<KotlinDependencyHandler>) {
+  sharedDependencies(listOf("blockingTest", "androidTest"), action)
 }

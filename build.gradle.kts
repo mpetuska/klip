@@ -18,11 +18,17 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        api(project(":library:klip-assertions"))
         api(project(":library:klip-api"))
+        api(project(":library:klip-runner"))
+        api(project(":library:klip-assertions"))
       }
     }
 
+    named("androidMain") {
+      dependencies {
+        implementation("io.ktor:ktor-client-android:_")
+      }
+    }
     named("jsMain") {
       dependencies {
         implementation("io.ktor:ktor-client-js:_")

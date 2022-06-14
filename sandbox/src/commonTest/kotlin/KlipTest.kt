@@ -2,7 +2,7 @@ package sandbox.test
 
 import dev.petuska.klip.assertions.assertKlip
 import dev.petuska.klip.assertions.assertMatchesKlip
-import kotlinx.coroutines.test.runTest
+import dev.petuska.klip.runner.runTest
 import kotlin.test.Test
 
 abstract class KlipTest {

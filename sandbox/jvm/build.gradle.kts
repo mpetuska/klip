@@ -14,7 +14,6 @@ kotlin {
       dependencies {
         implementation("dev.petuska:klip")
         implementation(kotlin("test-junit5"))
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
       }
     }
   }

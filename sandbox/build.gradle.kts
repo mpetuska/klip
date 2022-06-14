@@ -1,7 +1,6 @@
 plugins {
   id("convention.library-mpp")
   id("dev.petuska.klip")
-//  id("io.kotest.multiplatform")
 }
 
 gradleEnterprise {
@@ -24,11 +23,11 @@ kotlin {
         implementation(kotlin("test-annotations-common"))
       }
     }
-    named("sharedTest") {
-      dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
-      }
-    }
+//    named("sharedTest") {
+//      dependencies {
+//        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
+//      }
+//    }
 //    named("blockingTest") {
 //      dependencies {
 //        implementation("dev.petuska:klip")

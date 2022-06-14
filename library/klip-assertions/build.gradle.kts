@@ -1,3 +1,5 @@
+import util.blockingMainDependencies
+
 plugins {
   id("convention.library-mpp")
 //  id("plugin.publishing-mpp")
@@ -14,10 +16,8 @@ kotlin {
         implementation(project(":library:klip-core"))
       }
     }
-    named("blockingMain") {
-      dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:_")
-      }
+    blockingMainDependencies {
+      implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:_")
     }
   }
 }

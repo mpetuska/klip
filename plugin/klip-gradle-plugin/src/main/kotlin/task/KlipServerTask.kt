@@ -24,7 +24,7 @@ abstract class KlipServerTask : AsyncExecTask<KlipServer, KlipServerTask.Runner>
     port.convention(0)
   }
 
-  override fun buildRunner(): Runner = Runner(project.projectDir, port.get(), logger)
+  override fun buildRunner(): Runner = Runner(project.rootDir, port.get(), logger)
 
   fun stop() {
     logger.info("Stopping klip server on ${port.get()}")
@@ -32,16 +32,16 @@ abstract class KlipServerTask : AsyncExecTask<KlipServer, KlipServerTask.Runner>
   }
 
   class Runner(
-    private val projectDir: File,
+    private val rootDir: File,
     private val port: Int,
     private val logger: Logger,
   ) : AsyncRunner<KlipServer, KlipServer> {
-    override fun execute(services: ServiceRegistry): KlipServer = KlipServer(projectDir, port).apply {
+    override fun execute(services: ServiceRegistry): KlipServer = KlipServer(rootDir, port).apply {
       logger.info("Starting blocking klip server on $port")
       start(true)
     }
 
-    override fun start(): KlipServer = KlipServer(projectDir, port).apply {
+    override fun start(): KlipServer = KlipServer(rootDir, port).apply {
       logger.info("Starting async klip server on $port")
       start(false)
     }

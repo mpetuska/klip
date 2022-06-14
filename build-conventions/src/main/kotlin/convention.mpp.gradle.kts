@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.org.bouncycastle.asn1.x509.Target.targetGroup
+import util.*
 import util.targetGroup
 
 plugins {
@@ -20,27 +22,27 @@ kotlin {
     androidNativeX64(),
     androidNativeX86(),
   )
-  val (sharedMain, sharedTest) = targetGroup(
-    "shared",
-    "commonMain",
-    "commonTest",
-    js(IR) {
-      browser()
-      nodejs()
-    }
-  )
+  val (sharedMain, sharedTest) = targetGroup("shared", "commonMain", "commonTest", js(IR) {
+    browser()
+    nodejs()
+  })
   val (blockingMain, blockingTest) = targetGroup(
     "blocking",
     sharedMain,
     sharedTest,
     jvm(),
+  )
+  val (nativeMain, nativeTest) = targetGroup(
+    "native",
+    blockingMain,
+    blockingTest,
     mingwX64(),
     linuxX64(),
   )
   targetGroup(
     "apple",
-    blockingMain,
-    blockingTest,
+    nativeMain,
+    nativeTest,
     iosArm32(),
     iosArm64(),
     iosSimulatorArm64(),
@@ -58,10 +60,14 @@ kotlin {
   )
 
   sourceSets {
-    named("sharedTest") {
+    named("commonTest") {
       dependencies {
         implementation(kotlin("test-common"))
         implementation(kotlin("test-annotations-common"))
+      }
+    }
+    afterEvaluate {
+      sharedTestDependencies {
         implementation("io.kotest:kotest-assertions-core:_")
         implementation("io.kotest:kotest-property:_")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")

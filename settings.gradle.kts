@@ -23,6 +23,7 @@ rootProject.name = "klip"
 include(
   ":library:klip-api",
   ":library:klip-core",
+  ":library:klip-runner",
   ":library:klip-assertions",
   ":plugin:klip-gradle-plugin",
   ":plugin:klip-kotlin-plugin",

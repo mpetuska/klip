@@ -10,7 +10,6 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
@@ -18,18 +17,18 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.ExperimentalSerializationApi
 
 internal actual object KlipManager {
-  @OptIn(ExperimentalCoroutinesApi::class)
-  private val KlipDispatcher = Dispatchers.Default.limitedParallelism(1)
-
-  @OptIn(ExperimentalSerializationApi::class)
-  private val client = HttpClient {
-    install(ContentNegotiation) {
-      json()
+  private val client by lazy {
+    HttpClient {
+      install(ContentNegotiation) {
+        json()
+      }
     }
   }
+
+  @OptIn(ExperimentalCoroutinesApi::class)
+  private val KlipDispatcher = Dispatchers.Default.limitedParallelism(1)
 
   actual suspend fun writeKlip(
     context: KlipContext,

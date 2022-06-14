@@ -7,8 +7,6 @@ import org.gradle.api.provider.SetProperty
 /** Gradle extension to manage klip plugin properties */
 @Suppress("unused")
 abstract class KlipExtension {
-  abstract val port: Property<Int>
-
   abstract val debug: Property<Boolean>
 
   /** Whether plugin is enabled */
@@ -75,12 +73,19 @@ abstract class KlipExtension {
   }
 }
 
+abstract class KlipRootExtension : KlipExtension() {
+  abstract val port: Property<Int>
+}
+
 /**
  * Klip plugin extension
  * @throws IllegalStateException if the plugin did not register an extension yet
  */
 internal inline val Project.klip: KlipExtension
   get() = extensions.getByType(KlipExtension::class.java)
+
+internal inline val Project.rootKlip: KlipRootExtension
+  get() = rootProject.extensions.getByType(KlipRootExtension::class.java)
 
 /**
  * Configure klip plugin extension

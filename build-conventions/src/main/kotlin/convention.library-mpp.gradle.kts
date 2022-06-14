@@ -1,6 +1,6 @@
 plugins {
-  id("convention.mpp")
   id("convention.library-android")
+  id("convention.mpp")
 }
 
 kotlin {
@@ -16,10 +16,18 @@ kotlin {
   sourceSets {
     afterEvaluate {
       named("androidMain") {
-        dependsOn(getByName("blockingMain"))
+        kotlin.srcDir("src/sharedMain/kotlin")
+        kotlin.srcDir("src/blockingMain/kotlin")
+        resources.srcDir("src/sharedMain/resources")
+        resources.srcDir("src/blockingMain/resources")
+        dependsOn(getByName("sharedMain"))
       }
       named("androidTest") {
-        dependsOn(getByName("blockingTest"))
+        kotlin.srcDir("src/blockingTest/kotlin")
+        kotlin.srcDir("src/sharedTest/kotlin")
+        resources.srcDir("src/blockingTest/resources")
+        resources.srcDir("src/sharedTest/resources")
+        dependsOn(getByName("sharedTest"))
         dependencies {
           implementation(kotlin("test-junit5"))
         }

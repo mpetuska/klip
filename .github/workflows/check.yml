@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  GRADLE_OPTS: "-Dorg.gradle.daemon=true"
 
 jobs:
   check:

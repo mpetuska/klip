@@ -1,5 +1,4 @@
-import org.gradle.internal.impldep.org.bouncycastle.asn1.x509.Target.targetGroup
-import util.*
+import util.sharedTestDependencies
 import util.targetGroup
 
 plugins {
@@ -23,7 +22,9 @@ kotlin {
     androidNativeX86(),
   )
   val (sharedMain, sharedTest) = targetGroup(
-    "shared", "commonMain", "commonTest",
+    "shared",
+    "commonMain",
+    "commonTest",
     js(IR) {
       browser()
       nodejs()
@@ -69,12 +70,10 @@ kotlin {
         implementation(kotlin("test-annotations-common"))
       }
     }
-    afterEvaluate {
-      sharedTestDependencies {
-        implementation("io.kotest:kotest-assertions-core:_")
-        implementation("io.kotest:kotest-property:_")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
-      }
+    sharedTestDependencies {
+//      implementation("io.kotest:kotest-assertions-core:_")
+//      implementation("io.kotest:kotest-property:_")
+      implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
     }
     named("jsTest") {
       dependencies {

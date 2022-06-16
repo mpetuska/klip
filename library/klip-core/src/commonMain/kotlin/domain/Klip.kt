@@ -1,15 +1,21 @@
 package dev.petuska.klip.core.domain
 
-public typealias Klips = Map<String, Klip>
-public typealias MutableKlips = MutableMap<String, Klip>
+import kotlin.jvm.Transient
+import kotlin.reflect.KType
+import kotlin.reflect.typeOf
 
-@Serializable
-public data class Klip(
-  val data: String,
-  val attributes: Map<String, String> = mapOf(),
+public typealias Klips = Map<String, Klip<*>>
+public typealias MutableKlips = MutableMap<String, Klip<*>>
+
+public data class Klip<T>(
+  @Transient
+  val type: KType,
+  val data: @Serializable T,
+  val attributes: Map<String, String>,
 )
 
-public data class TypedKlip<T>(
-  val data: T,
-  val attributes: Map<String, String> = mapOf(),
-)
+@Suppress("FunctionNaming")
+public inline fun <reified T> Klip(
+  data: T,
+  attributes: Map<String, String> = mapOf(),
+): Klip<T> = Klip(data = data, attributes = attributes, type = typeOf<T>())

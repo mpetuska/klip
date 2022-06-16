@@ -4,8 +4,13 @@ plugins {
   kotlin("jvm")
 }
 
+repositories {
+  mavenLocal()
+}
+
 klip {
-  debug.set(true)
+  debug.set(rootProject.klip.debug)
+  update.set(rootProject.klip.update)
 }
 
 kotlin {

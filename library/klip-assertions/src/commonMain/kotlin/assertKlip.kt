@@ -4,8 +4,8 @@ import dev.petuska.klip.api.KlipContext
 import dev.petuska.klip.api.Klippable
 import dev.petuska.klip.api.KlippableStub
 import dev.petuska.klip.core.KlipCompilerAPI
-import dev.petuska.klip.core.domain.TypedKlip
-import dev.petuska.klip.core.syncTypedKlip
+import dev.petuska.klip.core.domain.Klip
+import dev.petuska.klip.core.syncKlip
 import kotlin.test.assertEquals
 
 /**
@@ -18,12 +18,9 @@ import kotlin.test.assertEquals
 @Suppress("UNUSED_PARAMETER", "RedundantSuspendModifier")
 public suspend inline fun <T : Any?> assertMatchesKlip(actual: T): T = KlippableStub
 
-@Klippable
 @KlipCompilerAPI
 public suspend inline fun <reified T : Any?> assertMatchesKlip(context: KlipContext, actual: T): T = actual.also {
-  val klip = context.syncTypedKlip {
-    TypedKlip(data = actual)
-  }
+  val klip = context.syncKlip(Klip(data = actual))
   assertEquals(klip.data, actual, message = "Value does not match its klip")
 }
 

@@ -1,6 +1,8 @@
+import util.withName
+
 plugins {
   id("convention.library-mpp")
-  id("dev.petuska.klip")
+  id("dev.petuska.klip") version "0.0.0"
 }
 
 gradleEnterprise {
@@ -10,8 +12,13 @@ gradleEnterprise {
   }
 }
 
+repositories {
+  mavenLocal()
+}
+
 klip {
   debug.set(true)
+  update.set(false)
 }
 
 kotlin {
@@ -23,29 +30,19 @@ kotlin {
         implementation(kotlin("test-annotations-common"))
       }
     }
-//    named("sharedTest") {
-//      dependencies {
-//        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
-//      }
-//    }
-//    named("blockingTest") {
-//      dependencies {
-//        implementation("dev.petuska:klip")
-//      }
-//    }
-    named("androidTest") {
+    withName("androidTest") {
       dependencies {
         implementation("io.kotest:kotest-framework-engine:_")
         implementation("io.kotest:kotest-runner-junit5:_")
       }
     }
-    named("jvmTest") {
+    withName("jvmTest") {
       dependencies {
         implementation("io.kotest:kotest-framework-engine:_")
         runtimeOnly("io.kotest:kotest-runner-junit5:_")
       }
     }
-    named("jsTest") {
+    withName("jsTest") {
       dependencies {
         implementation(kotlin("test-js"))
       }
@@ -55,14 +52,5 @@ kotlin {
         optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
       }
     }
-  }
-}
-
-tasks {
-  register("detektAll", io.gitlab.arturbosch.detekt.Detekt::class) {
-    description = "Run Detekt for all modules"
-    config.from(project.detekt.config)
-    buildUponDefaultConfig = project.detekt.buildUponDefaultConfig
-    setSource(files(projectDir))
   }
 }

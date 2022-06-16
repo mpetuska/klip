@@ -89,7 +89,7 @@ class KlippableFnIrTransformer(
     val klipContextConstructorCall = run {
       val tName = scopeName?.let { "($it)" } ?: ""
       val klipKey = "${scopeFn.kotlinFqName.asString()}$tName#${index++}"
-      val irBuilder = DeclarationIrBuilder(context, expression.symbol)
+      val irBuilder = DeclarationIrBuilder(context, expression.symbol, expression.startOffset, expression.endOffset)
 
       irBuilder.irCall(klipContextClass.constructors.first()).apply {
         putValueArgument(0, irBuilder.irString(path))

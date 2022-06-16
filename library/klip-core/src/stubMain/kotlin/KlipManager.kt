@@ -2,8 +2,9 @@ package dev.petuska.klip.core
 
 import dev.petuska.klip.api.KlipContext
 import dev.petuska.klip.core.domain.Klip
+import kotlin.reflect.KType
 
 internal actual object KlipManager {
-  actual suspend fun writeKlip(context: KlipContext, klip: Klip): Unit = stub
-  actual suspend fun readKlip(context: KlipContext): Klip? = stub
+  actual suspend fun <T> writeKlip(context: KlipContext, klip: Klip<T>): Unit = stub
+  actual suspend fun <T> readKlip(context: KlipContext, type: KType): Klip<T>? = stub
 }

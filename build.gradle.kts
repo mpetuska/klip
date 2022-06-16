@@ -1,10 +1,12 @@
+import util.withName
+
 plugins {
   if (System.getenv("CI") == null) {
     id("convention.git-hooks")
   }
   id("convention.library-mpp")
   id("convention.publishing-nexus")
-//  id("plugin.publishing-mpp")
+  id("convention.publishing-mpp")
 }
 
 gradleEnterprise {
@@ -24,44 +26,35 @@ kotlin {
       }
     }
 
-    named("androidMain") {
+    withName("androidMain") {
       dependencies {
         implementation("io.ktor:ktor-client-android:_")
       }
     }
-    named("jsMain") {
+    withName("jsMain") {
       dependencies {
         implementation("io.ktor:ktor-client-js:_")
       }
     }
-    named("jvmMain") {
+    withName("jvmMain") {
       dependencies {
         implementation("io.ktor:ktor-client-java:_")
       }
     }
-    named("linuxX64Main") {
+    withName("linuxX64Main") {
       dependencies {
         implementation("io.ktor:ktor-client-curl:_")
       }
     }
-    named("mingwX64Main") {
+    withName("mingwX64Main") {
       dependencies {
         implementation("io.ktor:ktor-client-curl:_")
       }
     }
-    named("appleMain") {
+    withName("appleMain") {
       dependencies {
         implementation("io.ktor:ktor-client-darwin:_")
       }
     }
-  }
-}
-
-tasks {
-  register("detektAll", io.gitlab.arturbosch.detekt.Detekt::class) {
-    description = "Run Detekt for all modules"
-    config.from(project.detekt.config)
-    buildUponDefaultConfig = project.detekt.buildUponDefaultConfig
-    setSource(files(projectDir))
   }
 }

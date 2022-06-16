@@ -3,7 +3,7 @@ import util.sharedMainDependencies
 plugins {
   kotlin("plugin.serialization")
   id("convention.library-mpp")
-//  id("plugin.publishing-mpp")
+  id("convention.publishing-mpp")
 }
 
 description = "Kotlin multiplatform snapshot (klip) testing. Runtime dependency."

@@ -11,11 +11,9 @@ abstract class KlipExtension {
 
   /** Whether plugin is enabled */
   abstract val enabled: Property<Boolean>
-//      project.propertyDelegate(default = KlipOption.Enabled.default) { it.toBoolean() }
 
   /** Whether the klips should be updated */
   abstract val update: Property<Boolean>
-//      project.propertyDelegate(default = KlipOption.Update.default) { it.toBoolean() }
 
   /**
    * Fully qualified annotation names to register for compiler processing and path injection.
@@ -23,9 +21,6 @@ abstract class KlipExtension {
    * ones.
    */
   abstract val klipAnnotations: SetProperty<String>
-//      project.propertyDelegate(default = KlipOption.KlipAnnotation.default) {
-//        it.split(",").toSet()
-//      }
 
   /**
    * Register an annotation for compiler processing and path injection
@@ -41,7 +36,6 @@ abstract class KlipExtension {
    * default ones.
    */
   abstract val scopeAnnotations: SetProperty<String>
-//      project.propertyDelegate(default = KlipOption.ScopeAnnotation.default) { it.split(",").toSet() }
 
   /**
    * Register an annotation for function scopes for compiler klip detection and processing
@@ -57,7 +51,6 @@ abstract class KlipExtension {
    * default ones.
    */
   abstract val scopeFunctions: SetProperty<String>
-//      project.propertyDelegate(default = KlipOption.ScopeFunction.default) { it.split(",").toSet() }
 
   /**
    * Register a function for function scopes for compiler klip detection and processing
@@ -73,6 +66,7 @@ abstract class KlipExtension {
   }
 }
 
+/** Gradle extension to manage klip plugin properties applied to root project */
 abstract class KlipRootExtension : KlipExtension() {
   abstract val port: Property<Int>
 }
@@ -84,6 +78,10 @@ abstract class KlipRootExtension : KlipExtension() {
 internal inline val Project.klip: KlipExtension
   get() = extensions.getByType(KlipExtension::class.java)
 
+/**
+ * Root klip plugin extension
+ * @throws IllegalStateException if the plugin did not register an extension yet
+ */
 internal inline val Project.rootKlip: KlipRootExtension
   get() = rootProject.extensions.getByType(KlipRootExtension::class.java)
 

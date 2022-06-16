@@ -2,32 +2,21 @@ package dev.petuska.klip.core
 
 import dev.petuska.klip.api.KlipContext
 import dev.petuska.klip.core.domain.Klip
-import dev.petuska.klip.core.domain.TypedKlip
-import dev.petuska.klip.core.domain.raw
-import dev.petuska.klip.core.domain.typed
-import kotlin.native.concurrent.ThreadLocal
+import kotlin.reflect.KType
 
-@ThreadLocal
 internal expect object KlipManager {
-  suspend fun writeKlip(context: KlipContext, klip: Klip)
-  suspend fun readKlip(context: KlipContext): Klip?
+  suspend fun <T> writeKlip(context: KlipContext, klip: Klip<T>)
+  suspend fun <T> readKlip(context: KlipContext, type: KType): Klip<T>?
 }
 
-public suspend fun KlipContext.syncKlip(actual: () -> Klip): Klip {
+public suspend fun <T> KlipContext.syncKlip(actual: Klip<T>): Klip<T> {
   return if (update) {
-    actual().also {
+    actual.also {
       KlipManager.writeKlip(this, it)
     }
   } else {
-    KlipManager.readKlip(this) ?: actual().also {
+    KlipManager.readKlip(this, actual.type) ?: actual.also {
       KlipManager.writeKlip(this, it)
     }
   }
-}
-
-public suspend inline fun <reified T> KlipContext.syncTypedKlip(crossinline actual: () -> TypedKlip<T>): TypedKlip<T> {
-  val klip = syncKlip {
-    actual().raw()
-  }
-  return klip.typed()
 }

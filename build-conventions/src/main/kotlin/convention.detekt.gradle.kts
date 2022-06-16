@@ -15,6 +15,14 @@ detekt {
 }
 
 tasks {
+  if (project == rootProject) {
+    register("detektAll", io.gitlab.arturbosch.detekt.Detekt::class) {
+      description = "Run Detekt for all modules"
+      config.from(project.detekt.config)
+      buildUponDefaultConfig = project.detekt.buildUponDefaultConfig
+      setSource(files(projectDir))
+    }
+  }
   afterEvaluate {
     withType<Detekt> {
       parallel = true

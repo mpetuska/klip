@@ -28,12 +28,18 @@ fun <T : KotlinTarget> KotlinMultiplatformExtension.targetGroup(
   return mainName to testName
 }
 
+fun NamedDomainObjectContainer<KotlinSourceSet>.withName(name: String, action: Action<KotlinSourceSet>) {
+  matching { it.name == name }.all(action)
+}
+
 private fun NamedDomainObjectContainer<KotlinSourceSet>.sharedDependencies(
   sourceSets: List<String>,
   action: Action<KotlinDependencyHandler>,
 ) {
   sourceSets.forEach {
-    findByName(it)?.dependencies { action.execute(this) }
+    withName(it) {
+      dependencies { action.execute(this) }
+    }
   }
 }
 

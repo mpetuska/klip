@@ -7,10 +7,12 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.reflect.full.memberExtensionFunctions
 import kotlin.reflect.full.memberFunctions
+import kotlin.test.Ignore
 import kotlin.test.assertEquals
 
 class KlipPluginITest {
   @Test
+  @Ignore
   fun works() {
     val result = Compiler.compile(
       SourceFile.kotlin(

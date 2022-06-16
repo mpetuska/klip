@@ -106,7 +106,7 @@ jobs:
       - name: Gradle Check Sandbox
         env:
           SANDBOX: true
-        working-directory: sandbox
+        working-directory: klip-sandbox
         run: ./gradlew check --scan
 
       - uses: actions/upload-artifact@v2

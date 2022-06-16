@@ -4,6 +4,7 @@ pluginManagement {
     mavenCentral()
     google()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    mavenLocal()
   }
 }
 
@@ -20,5 +21,8 @@ refreshVersions {
 includeBuild("../build-conventions")
 includeBuild("..")
 
-rootProject.name = "sandbox"
-include(":jvm", ":js")
+rootProject.name = "klip-sandbox"
+include(
+  ":jvm",
+  ":js",
+)

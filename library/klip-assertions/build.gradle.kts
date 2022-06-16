@@ -2,7 +2,7 @@ import util.blockingMainDependencies
 
 plugins {
   id("convention.library-mpp")
-//  id("plugin.publishing-mpp")
+  id("convention.publishing-mpp")
 }
 
 description = "Kotlin multiplatform snapshot (klip) testing. Assertions dependency."

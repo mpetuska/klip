@@ -3,12 +3,12 @@ package dev.petuska.klip.plugin
 import dev.petuska.klip.plugin.config.GROUP
 import dev.petuska.klip.plugin.config.NAME
 import dev.petuska.klip.plugin.config.VERSION
-import dev.petuska.klip.plugin.task.KlipServerTask
+import dev.petuska.klip.plugin.server.KlipServerService
+import dev.petuska.klip.plugin.task.KlipServerStartTask
 import dev.petuska.klip.plugin.util.KlipOption
+import dev.petuska.klip.plugin.util.sysOrGradleOrEnvConvention
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.compile.AbstractCompile
 import org.gradle.api.tasks.testing.AbstractTestTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
@@ -20,42 +20,29 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
   override fun apply(target: Project) {
     with(target) {
       val extension = createExtension()
-      val server = startServer()
-      val stopServer = stopServer(server)
-      project.gradle.buildFinished {
-        server.stop()
+      val server = project.gradle.sharedServices.registerIfAbsent(KlipExtension.NAME, KlipServerService::class.java) {
+        it.parameters.port.set(rootKlip.port)
+        it.parameters.rootDir.set(rootProject.layout.projectDirectory)
+      }
+      val startServer = rootProject.tasks.maybeCreate("startKlipServer", KlipServerStartTask::class.java).also {
+        it.usesService(server)
+        it.service.set(server)
       }
       tasks.withType(AbstractTestTask::class.java) {
-        it.dependsOn(server)
-        it.finalizedBy(stopServer)
+        it.dependsOn(startServer)
+        it.usesService(server)
         it.inputs.property("klip.enabled", extension.enabled)
         it.inputs.property("klip.update", extension.update)
         it.inputs.property("klip.debug", extension.debug)
       }
-      tasks.withType(AbstractCompile::class.java) {
-        it.finalizedBy(stopServer)
+      configurations.all {
+        it.resolutionStrategy.eachDependency { dep ->
+          if (dep.requested.group == GROUP && dep.requested.name.startsWith(NAME)) {
+            dep.useVersion(VERSION)
+          }
+        }
       }
     }
-  }
-
-  private fun Project.startServer(): KlipServerTask {
-    val extension = rootKlip
-    val server = rootProject.tasks.maybeCreate("startKlipServer", KlipServerTask::class.java).apply {
-      port.convention(extension.port)
-    }
-    return server
-  }
-
-  private fun Project.stopServer(server: KlipServerTask): Task {
-    val stopServer = rootProject.tasks.maybeCreate("stopKlipServer").apply {
-      description = "Stops klip server"
-      mustRunAfter(server)
-      mustRunAfter(tasks.withType(AbstractTestTask::class.java))
-      doLast {
-        server.stop()
-      }
-    }
-    return stopServer
   }
 
   private fun Project.createExtension(): KlipExtension {
@@ -63,18 +50,43 @@ class KlipPlugin : KotlinCompilerPluginSupportPlugin {
       klipAnnotations.addAll(KlipOption.KlipAnnotation.default)
       scopeAnnotations.addAll(KlipOption.ScopeAnnotation.default)
       scopeFunctions.addAll(KlipOption.ScopeFunction.default)
-      debug.convention(KlipOption.Debug.default)
-      enabled.convention(KlipOption.Enabled.default)
-      update.convention(KlipOption.Update.default)
+      debug.sysOrGradleOrEnvConvention(
+        project = project,
+        propName = "klip.debug",
+        envName = "KLIP_DEBUG",
+        default = { KlipOption.Debug.default },
+        converter = { !"false".equals(it, true) },
+      )
+      enabled.sysOrGradleOrEnvConvention(
+        project = project,
+        propName = "klip.enabled",
+        envName = "KLIP_ENABLED",
+        default = { KlipOption.Enabled.default },
+        converter = { !"false".equals(it, true) },
+      )
+      update.sysOrGradleOrEnvConvention(
+        project = project,
+        propName = "klip.update",
+        envName = "KLIP_UPDATE",
+        default = { KlipOption.Update.default },
+        converter = { !"false".equals(it, true) },
+      )
     }
     rootProject.extensions.findByType(KlipRootExtension::class.java)
       ?: rootProject.extensions.create(KlipExtension.NAME, KlipRootExtension::class.java).apply {
-        port.convention(6969)
+        port.sysOrGradleOrEnvConvention(
+          project = project,
+          propName = "klip.port",
+          envName = "KLIP_PORT",
+          default = { 6969 },
+          converter = String::toInt,
+        )
         commonConfig()
       }
-    val klip = extensions.findByType(KlipExtension::class.java)
-      ?: extensions.create(KlipExtension.NAME, KlipExtension::class.java).apply(commonConfig)
-    return klip
+    return extensions.findByType(KlipExtension::class.java) ?: extensions.create(
+      KlipExtension.NAME,
+      KlipExtension::class.java
+    ).apply(commonConfig)
   }
 
   override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean = true

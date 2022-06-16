@@ -27,7 +27,7 @@ class KlipContextIrTransformer(
     val (param, fn) = findTarget(expression)
     logger { "pick: $fn" }
 
-    val irBuilder = DeclarationIrBuilder(context, expression.symbol)
+    val irBuilder = DeclarationIrBuilder(context, expression.symbol, expression.startOffset, expression.endOffset)
     val rewrite =
       if (param != null) {
         expression.apply {

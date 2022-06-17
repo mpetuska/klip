@@ -27,10 +27,13 @@ jobs:
         os:
           - runner: macos-latest
             shell: bash
+            separator: "/"
           - runner: ubuntu-latest
             shell: bash
+            separator: "/"
           - runner: windows-latest
             shell: msys2 {0}
+            separator: "\\"
     steps:
       - uses: msys2/setup-msys2@v2
         if: ${{ runner.os == 'Windows' }}
@@ -98,7 +101,7 @@ jobs:
       - uses: github/codeql-action/upload-sarif@v2
         if: ${{ always() }}
         with:
-          sarif_file: ${{ github.workspace }}/detekt.sarif.json
+          sarif_file: ${{ github.workspace }}${{ matrix.os.separator }}detekt.sarif.json
           checkout_path: ${{ github.workspace }}
 
       - name: Gradle Check Sandbox

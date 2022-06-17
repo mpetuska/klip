@@ -37,17 +37,38 @@ kotlin {
   logger.info("Windows host targets: $windowsHostTargets")
   logger.info("Main host targets: $mainHostTargets")
   logger.info("Android targets: $androidTargets")
+  val mpp = objects.domainObjectContainer(Named::class.java)
+  mpp.add(Named { "kotlinMultiplatform" })
 
   androidTargets.all {
     if (!CI || SANDBOX || isMainHost) {
       publishLibraryVariants("release", "debug")
     }
   }
-  linuxHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsLinux }
-  osxHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsMac }
-  windowsHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsMingw }
-  mainHostTargets.onlyPublishIf { !CI || SANDBOX || isMainHost }
-  val mpp = objects.domainObjectContainer(Named::class.java)
-  mpp.add(Named { "kotlinMultiplatform" })
-  mpp.onlyPublishIf { !CI || SANDBOX || isMainHost }
+
+  linuxHostTargets.onlyPublishIf {
+    val enabled = !CI || SANDBOX || HostManager.hostIsLinux
+    printlnCI("[${it.name}] ${!CI} || $SANDBOX || ${HostManager.hostIsLinux} = $enabled")
+    enabled
+  }
+  osxHostTargets.onlyPublishIf {
+    val enabled = !CI || SANDBOX || HostManager.hostIsMac
+    printlnCI("[${it.name}] ${!CI} || $SANDBOX || ${HostManager.hostIsMac} = $enabled")
+    enabled
+  }
+  windowsHostTargets.onlyPublishIf {
+    val enabled = !CI || SANDBOX || HostManager.hostIsMingw
+    printlnCI("[${it.name}] ${!CI} || $SANDBOX || ${HostManager.hostIsMingw} = $enabled")
+    enabled
+  }
+  mainHostTargets.onlyPublishIf {
+    val enabled = !CI || SANDBOX || isMainHost
+    printlnCI("[${it.name}] ${!CI} || $SANDBOX || $isMainHost = $enabled")
+    enabled
+  }
+  mpp.onlyPublishIf {
+    val enabled = !CI || SANDBOX || isMainHost
+    println("[${it.name}] ${!CI} || $SANDBOX || $isMainHost = $enabled")
+    enabled
+  }
 }

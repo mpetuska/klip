@@ -29,3 +29,7 @@ val SANDBOX = System.getenv("SANDBOX") != null
 
 val Project.isMainHost: Boolean
   get() = HostManager.simpleOsName().equals("${properties["project.mainOS"]}", true)
+
+fun printlnCI(text: Any?) {
+  if (CI) println(text)
+}

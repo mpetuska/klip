@@ -44,8 +44,24 @@ fun control(targets: NamedDomainObjectCollection<KotlinTarget>) {
   val linuxHostTargets = nativeTargets.matching { it.konanTarget.buildHost == Family.LINUX }
   val osxHostTargets = nativeTargets.matching { it.konanTarget.buildHost == Family.OSX }
   val mainHostTargets = targets.matching { it !in nativeTargets }
-  linuxHostTargets.onlyBuildIf { !CI || SANDBOX || HostManager.hostIsLinux }
-  osxHostTargets.onlyBuildIf { !CI || SANDBOX || HostManager.hostIsMac }
-  windowsHostTargets.onlyBuildIf { !CI || SANDBOX || HostManager.hostIsMingw }
-  mainHostTargets.onlyBuildIf { !CI || SANDBOX || isMainHost }
+  linuxHostTargets.onlyBuildIf {
+    val enabled = !CI || SANDBOX || HostManager.hostIsLinux
+    printlnCI("[${it.name}] ${!CI} || $SANDBOX || ${HostManager.hostIsLinux} = $enabled")
+    enabled
+  }
+  osxHostTargets.onlyBuildIf {
+    val enabled = !CI || SANDBOX || HostManager.hostIsMac
+    printlnCI("[${it.name}] ${!CI} || $SANDBOX || ${HostManager.hostIsMac} = $enabled")
+    enabled
+  }
+  windowsHostTargets.onlyBuildIf {
+    val enabled = !CI || SANDBOX || HostManager.hostIsMingw
+    printlnCI("[${it.name}] ${!CI} || $SANDBOX || ${HostManager.hostIsMingw} = $enabled")
+    enabled
+  }
+  mainHostTargets.onlyBuildIf {
+    val enabled = !CI || SANDBOX || isMainHost
+    printlnCI("[${it.name}] ${!CI} || $SANDBOX || $isMainHost = $enabled")
+    enabled
+  }
 }

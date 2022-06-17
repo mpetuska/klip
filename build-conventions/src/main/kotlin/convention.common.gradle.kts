@@ -14,7 +14,7 @@ repositories {
   gradlePluginPortal()
 }
 
-println(
+printlnCI(
   """
   CI: $CI
   SANDBOX: $SANDBOX

@@ -3,6 +3,7 @@ import util.withName
 plugins {
   id("convention.library-android")
   id("convention.mpp")
+  id("convention.control-mpp")
 }
 
 kotlin {

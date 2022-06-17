@@ -27,6 +27,7 @@ publishing {
 tasks {
   val mainPluginSourceSets = { project(":plugin:klip-kotlin-plugin").sourceSets }
   fun Sync.registerSources(sourceSet: SourceSet, root: File) {
+    dependsOn(sourceSet)
     destinationDir = root
     from(sourceSet.allSource) {
       into("kotlin")

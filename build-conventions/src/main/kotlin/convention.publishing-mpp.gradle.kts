@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.target.Family
@@ -11,14 +10,6 @@ plugins {
 }
 
 kotlin {
-  fun Collection<KotlinTarget>.onlyBuildIf(enabled: Spec<in Task>) {
-    forEach {
-      it.compilations.all {
-        compileKotlinTask.onlyIf(enabled)
-      }
-    }
-  }
-
   fun Collection<Named>.onlyPublishIf(enabled: Spec<in Task>) {
     val publications: Collection<String> = map { it.name }
     afterEvaluate {
@@ -59,19 +50,9 @@ kotlin {
       it.publishLibraryVariants("release", "debug")
     }
   }
-
-  linuxHostTargets.onlyBuildIf { !CI || SANDBOX || HostManager.hostIsLinux }
   linuxHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsLinux }
-
-  osxHostTargets.onlyBuildIf { !CI || SANDBOX || HostManager.hostIsMac }
   osxHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsMac }
-
-  windowsHostTargets.onlyBuildIf { !CI || SANDBOX || HostManager.hostIsMingw }
   windowsHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsMingw }
-
-  mainHostTargets.onlyBuildIf {
-    !CI || SANDBOX || isMainHost
-  }
   (mainHostTargets + Named { "kotlinMultiplatform" }).onlyPublishIf {
     !CI || SANDBOX || isMainHost
   }

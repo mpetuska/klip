@@ -153,11 +153,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
-      - uses: actions/download-artifact@v3
-        if: ${{ matrix.repository.enabled == true }}
-        with:
-          name: publications-${{ runner.os }}
-
       - name: Resolve Version
         if: ${{ matrix.repository.enabled == true }}
         run: |

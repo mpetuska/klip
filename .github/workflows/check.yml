@@ -38,11 +38,13 @@ jobs:
       - uses: msys2/setup-msys2@v2
         if: ${{ runner.os == 'Windows' }}
         with:
+          release: false
           msystem: MINGW64
           path-type: inherit
           update: true
           install: >-
             curl
+            mingw-w64-x86_64-curl
 
       - uses: actions/checkout@v3.0.2
 
@@ -100,6 +102,8 @@ jobs:
           checkout_path: ${{ github.workspace }}
 
       - name: Gradle Check Sandbox
+        env:
+          LIBRARY_PATH: "C:/msys64/mingw64/lib"
         working-directory: klip-sandbox
         run: ./gradlew check --scan
 

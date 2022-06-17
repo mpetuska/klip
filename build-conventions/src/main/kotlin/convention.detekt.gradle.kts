@@ -16,11 +16,12 @@ detekt {
 
 tasks {
   if (project == rootProject) {
-    register("detektAll", io.gitlab.arturbosch.detekt.Detekt::class) {
+    register("detektAll", Detekt::class) {
       description = "Run Detekt for all modules"
       config.from(project.detekt.config)
       buildUponDefaultConfig = project.detekt.buildUponDefaultConfig
       setSource(files(projectDir))
+      exclude("**/klip-kotlin-plugin-native/src")
     }
   }
   afterEvaluate {

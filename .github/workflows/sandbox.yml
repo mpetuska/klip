@@ -56,13 +56,13 @@ jobs:
             mingw-w64-x86_64-extra-cmake-modules
             mingw64/mingw-w64-x86_64-cyrus-sasl
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.0.2
         if: ${{ startsWith(matrix.os.runner, github.event.inputs.runner) }}
 
       - name: Restore native library cache
         if: ${{ github.event.inputs.runAtEnd == 'true' && startsWith(matrix.os.runner, github.event.inputs.runner) }}
         id: cache-native
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.0.4
         with:
           path: |
             scripts/build
@@ -72,7 +72,7 @@ jobs:
         if: ${{ github.event.inputs.runAtEnd == 'true' && startsWith(matrix.os.runner, github.event.inputs.runner) }}
         run: ./scripts/setup.sh
 
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         if: ${{ startsWith(matrix.os.runner, github.event.inputs.runner) }}
         with:
           distribution: 'adopt'
@@ -81,7 +81,7 @@ jobs:
       - name: Restore Gradle cache
         if: ${{ github.event.inputs.runAtEnd == 'true' && startsWith(matrix.os.runner, github.event.inputs.runner) }}
         id: cache-gradle
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.0.4
         with:
           path: |
             ~/.gradle/caches
@@ -103,7 +103,7 @@ jobs:
         if: ${{ startsWith(matrix.os.runner, github.event.inputs.runner) }}
         run: ${{ github.event.inputs.command }}
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: ${{ startsWith(matrix.os.runner, github.event.inputs.runner) && always() }}
         with:
           name: build-${{ runner.os }}

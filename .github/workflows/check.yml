@@ -102,8 +102,6 @@ jobs:
           checkout_path: ${{ github.workspace }}
 
       - name: Gradle Check Sandbox
-        env:
-          SANDBOX: true
         working-directory: klip-sandbox
         run: ./gradlew check --scan
 

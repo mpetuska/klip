@@ -105,24 +105,6 @@ jobs:
         working-directory: klip-sandbox
         run: ./gradlew check --scan
 
-      - name: Make sandbox artifact location URIs relative
-        if: ${{ always() }}
-        continue-on-error: true
-        run: |
-          cp ${{ github.workspace }}/klip-sandbox/build/reports/detekt/detekt.sarif ${{ github.workspace }}/klip-sandbox/detekt.sarif.json
-          echo "$(
-            jq \
-              --arg github_workspace ${{ github.workspace }}/klip-sandbox \
-              '. | ( .runs[].results[].locations[].physicalLocation.artifactLocation.uri |= if test($github_workspace) then .[($github_workspace | length | . + 1):] else . end )' \
-              ${{ github.workspace }}/klip-sandbox/detekt.sarif.json
-          )" > ${{ github.workspace }}/klip-sandbox/detekt.sarif.json
-
-      - uses: github/codeql-action/upload-sarif@v2
-        if: ${{ always() }}
-        with:
-          sarif_file: ${{ github.workspace }}/klip-sandbox/detekt.sarif.json
-          checkout_path: ${{ github.workspace }}/klip-sandbox
-
       - uses: actions/upload-artifact@v3
         if: ${{ always() }}
         with:

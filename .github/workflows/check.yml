@@ -90,13 +90,13 @@ jobs:
         if: ${{ always() }}
         continue-on-error: true
         run: |
-          cp ${{ github.workspace }}/build/reports/detekt/detekt.sarif ${{ github.workspace }}/detekt.sarif.json
+          cp ${{ github.workspace }}${{ matrix.os.separator }}build${{ matrix.os.separator }}reports${{ matrix.os.separator }}detekt${{ matrix.os.separator }}detekt.sarif ${{ github.workspace }}${{ matrix.os.separator }}detekt.sarif.json
           echo "$(
             jq \
               --arg github_workspace ${{ github.workspace }} \
               '. | ( .runs[].results[].locations[].physicalLocation.artifactLocation.uri |= if test($github_workspace) then .[($github_workspace | length | . + 1):] else . end )' \
               ${{ github.workspace }}/detekt.sarif.json
-          )" > ${{ github.workspace }}/detekt.sarif.json
+          )" > ${{ github.workspace }}${{ matrix.os.separator }}detekt.sarif.json
 
       - uses: github/codeql-action/upload-sarif@v2
         if: ${{ always() }}

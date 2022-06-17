@@ -12,6 +12,14 @@ repositories {
   gradlePluginPortal()
 }
 
+println(
+  """
+  CI: $CI
+  SANDBOX: $SANDBOX
+  isMainHost: $isMainHost
+  """.trimIndent()
+)
+
 idea {
   module {
     isDownloadSources = true

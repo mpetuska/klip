@@ -2,6 +2,7 @@ plugins {
   id("convention.common")
   id("dev.petuska.klip")
   kotlin("js")
+  id("convention.control")
 }
 
 repositories {

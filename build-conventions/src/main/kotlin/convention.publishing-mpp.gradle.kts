@@ -10,34 +10,27 @@ plugins {
 }
 
 kotlin {
-  fun Collection<Named>.onlyPublishIf(enabled: Spec<in Task>) {
-    val publications: Collection<String> = map { it.name }
-    afterEvaluate {
-      publishing {
-        publications {
-          matching { it.name in publications }.all {
-            val targetPublication = this@all
-            tasks.withType<AbstractPublishToMaven>()
-              .matching { it.publication == targetPublication }
-              .configureEach {
-                onlyIf(enabled)
-              }
-            tasks.withType<GenerateModuleMetadata>()
-              .matching { it.publication.get() == targetPublication }
-              .configureEach {
-                onlyIf(enabled)
-              }
-          }
+  fun NamedDomainObjectCollection<out Named>.onlyPublishIf(enabled: Spec<in Task>) {
+    publishing {
+      publications {
+        matching { it.name in this@onlyPublishIf.names }.all {
+          val targetPublication = this@all
+          tasks.withType<AbstractPublishToMaven>()
+            .matching { it.publication == targetPublication }
+            .all { onlyIf(enabled) }
+          tasks.withType<GenerateModuleMetadata>()
+            .matching { it.publication.orNull == targetPublication }
+            .all { onlyIf(enabled) }
         }
       }
     }
   }
 
   val nativeTargets = targets.withType<KotlinNativeTarget>()
-  val windowsHostTargets = nativeTargets.filter { it.konanTarget.buildHost == Family.MINGW }
-  val linuxHostTargets = nativeTargets.filter { it.konanTarget.buildHost == Family.LINUX }
-  val osxHostTargets = nativeTargets.filter { it.konanTarget.buildHost == Family.OSX }
-  val mainHostTargets = targets.filter { it !in nativeTargets }
+  val windowsHostTargets = nativeTargets.matching { it.konanTarget.buildHost == Family.MINGW }
+  val linuxHostTargets = nativeTargets.matching { it.konanTarget.buildHost == Family.LINUX }
+  val osxHostTargets = nativeTargets.matching { it.konanTarget.buildHost == Family.OSX }
+  val mainHostTargets = targets.matching { it !in nativeTargets }
   val androidTargets = targets.withType<KotlinAndroidTarget>()
   logger.info("Linux host targets: $linuxHostTargets")
   logger.info("OSX host targets: $osxHostTargets")
@@ -45,15 +38,16 @@ kotlin {
   logger.info("Main host targets: $mainHostTargets")
   logger.info("Android targets: $androidTargets")
 
-  androidTargets.forEach {
+  androidTargets.all {
     if (!CI || SANDBOX || isMainHost) {
-      it.publishLibraryVariants("release", "debug")
+      publishLibraryVariants("release", "debug")
     }
   }
   linuxHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsLinux }
   osxHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsMac }
   windowsHostTargets.onlyPublishIf { !CI || SANDBOX || HostManager.hostIsMingw }
-  (mainHostTargets + Named { "kotlinMultiplatform" }).onlyPublishIf {
-    !CI || SANDBOX || isMainHost
-  }
+  mainHostTargets.onlyPublishIf { !CI || SANDBOX || isMainHost }
+  val mpp = objects.domainObjectContainer(Named::class.java)
+  mpp.add(Named { "kotlinMultiplatform" })
+  mpp.onlyPublishIf { !CI || SANDBOX || isMainHost }
 }

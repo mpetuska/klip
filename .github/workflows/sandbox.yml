@@ -21,7 +21,7 @@ on:
         default: "true"
 
 env:
-  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  GRADLE_OPTS: "-Dorg.gradle.daemon=true"
   SANDBOX: true
 
 jobs:

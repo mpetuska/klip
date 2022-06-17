@@ -27,7 +27,7 @@ on:
 
 env:
   VERSION: ${{ github.event.release.tag_name }}
-  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  GRADLE_OPTS: "-Dorg.gradle.daemon=true"
 
 jobs:
   build:

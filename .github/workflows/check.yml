@@ -33,7 +33,7 @@ jobs:
             separator: '/'
           - runner: windows-latest
             shell: msys2 {0}
-            separator: '\\'
+            separator: '\'
     steps:
       - uses: msys2/setup-msys2@v2
         if: ${{ runner.os == 'Windows' }}
@@ -42,7 +42,6 @@ jobs:
           path-type: inherit
           update: true
           install: >-
-            mingw-w64-curl
             curl
 
       - uses: actions/checkout@v3.0.2

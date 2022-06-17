@@ -5,6 +5,11 @@ on:
     branches:
       - '**'
   workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
 
 env:
   GRADLE_OPTS: "-Dorg.gradle.daemon=true"

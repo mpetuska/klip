@@ -42,12 +42,8 @@ jobs:
           path-type: inherit
           update: true
           install: >-
-            tar
-            make
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-cmake
-            mingw-w64-x86_64-extra-cmake-modules
-            mingw64/mingw-w64-x86_64-cyrus-sasl
+            mingw-w64-curl
+            curl
 
       - uses: actions/checkout@v3.0.2
 

@@ -1,3 +1,11 @@
+# 0.4.0
+## Versions
+* Kotlin: `1.7.0`
+* Gradle: `7.4.2`
+* JDK: `11`
+## Changes
+* Reworked compiler plugin and core to support frontend js test. Based on HTTP client as instead of mock file API
+
 # 0.3.0
 ## Versions
 * Kotlin: `1.6.0`

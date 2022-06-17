@@ -1,35 +1,33 @@
 package dev.petuska.klip.plugin
 
-import dev.petuska.klip.plugin.delegate.propertyDelegate
-import dev.petuska.klip.plugin.util.KlipOption
 import org.gradle.api.Project
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.SetProperty
 
 /** Gradle extension to manage klip plugin properties */
-open class KlipExtension(project: Project) {
+@Suppress("unused")
+abstract class KlipExtension {
+  abstract val debug: Property<Boolean>
+
   /** Whether plugin is enabled */
-  var enabled: Boolean by
-      project.propertyDelegate(default = KlipOption.Enabled.default) { it.toBoolean() }
+  abstract val enabled: Property<Boolean>
 
   /** Whether the klips should be updated */
-  var update: Boolean by
-      project.propertyDelegate(default = KlipOption.Update.default) { it.toBoolean() }
+  abstract val update: Property<Boolean>
 
   /**
    * Fully qualified annotation names to register for compiler processing and path injection.
    * Setting this property gives you full control over the annotations and overrides the default
    * ones.
    */
-  var klipAnnotations: Collection<String> by
-      project.propertyDelegate(default = KlipOption.KlipAnnotation.default) {
-        it.split(",").toSet()
-      }
+  abstract val klipAnnotations: SetProperty<String>
 
   /**
    * Register an annotation for compiler processing and path injection
    * @param fqName fully qualified annotation name to register
    */
   fun klipAnnotation(fqName: String) {
-    klipAnnotations += fqName
+    klipAnnotations.add(fqName)
   }
 
   /**
@@ -37,17 +35,14 @@ open class KlipExtension(project: Project) {
    * processing Setting this property gives you full control over the annotations and overrides the
    * default ones.
    */
-  var scopeAnnotations: Collection<String> by
-      project.propertyDelegate(default = KlipOption.ScopeAnnotation.default) {
-        it.split(",").toSet()
-      }
+  abstract val scopeAnnotations: SetProperty<String>
 
   /**
    * Register an annotation for function scopes for compiler klip detection and processing
    * @param fqName fully qualified annotation name to register
    */
   fun scopeAnnotation(fqName: String) {
-    scopeAnnotations += fqName
+    scopeAnnotations.add(fqName)
   }
 
   /**
@@ -55,15 +50,14 @@ open class KlipExtension(project: Project) {
    * processing Setting this property gives you full control over the functions and overrides the
    * default ones.
    */
-  var scopeFunctions: Collection<String> by
-      project.propertyDelegate(default = KlipOption.ScopeFunction.default) { it.split(",").toSet() }
+  abstract val scopeFunctions: SetProperty<String>
 
   /**
    * Register a function for function scopes for compiler klip detection and processing
    * @param fqName fully qualified function name to register
    */
   fun scopeFunction(fqName: String) {
-    scopeFunctions += fqName
+    scopeFunctions.add(fqName)
   }
 
   companion object {
@@ -72,17 +66,27 @@ open class KlipExtension(project: Project) {
   }
 }
 
+/** Gradle extension to manage klip plugin properties applied to root project */
+abstract class KlipRootExtension : KlipExtension() {
+  abstract val port: Property<Int>
+}
+
 /**
  * Klip plugin extension
  * @throws IllegalStateException if the plugin did not register an extension yet
  */
-val Project.klip: KlipExtension
-  get() =
-      extensions.findByType(KlipExtension::class.java)
-          ?: throw IllegalStateException("${KlipExtension.NAME} is not of the correct type")
+internal inline val Project.klip: KlipExtension
+  get() = extensions.getByType(KlipExtension::class.java)
+
+/**
+ * Root klip plugin extension
+ * @throws IllegalStateException if the plugin did not register an extension yet
+ */
+internal inline val Project.rootKlip: KlipRootExtension
+  get() = rootProject.extensions.getByType(KlipRootExtension::class.java)
 
 /**
  * Configure klip plugin extension
  * @throws IllegalStateException if the plugin did not register an extension yet
  */
-internal fun Project.klip(config: KlipExtension.() -> Unit): KlipExtension = klip.apply(config)
+internal inline fun Project.klip(config: KlipExtension.() -> Unit): KlipExtension = klip.apply(config)

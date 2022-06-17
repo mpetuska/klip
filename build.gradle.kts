@@ -1,10 +1,12 @@
+import util.withName
+
 plugins {
   if (System.getenv("CI") == null) {
-    id("plugin.git-hooks")
+    id("convention.git-hooks")
   }
-  id("plugin.library-mpp")
-  id("plugin.publishing-nexus")
-  id("plugin.publishing-mpp")
+  id("convention.library-mpp")
+  id("convention.publishing-nexus")
+  id("convention.publishing-mpp")
 }
 
 gradleEnterprise {
@@ -17,7 +19,42 @@ gradleEnterprise {
 kotlin {
   sourceSets {
     commonMain {
-      dependencies { subprojects.filter { it.path.startsWith(":library:") }.forEach { api(it) } }
+      dependencies {
+        api(project(":library:klip-api"))
+        api(project(":library:klip-runner"))
+        api(project(":library:klip-assertions"))
+      }
+    }
+
+    withName("androidMain") {
+      dependencies {
+        implementation("io.ktor:ktor-client-android:_")
+      }
+    }
+    withName("jsMain") {
+      dependencies {
+        implementation("io.ktor:ktor-client-js:_")
+      }
+    }
+    withName("jvmMain") {
+      dependencies {
+        implementation("io.ktor:ktor-client-java:_")
+      }
+    }
+    withName("linuxX64Main") {
+      dependencies {
+        implementation("io.ktor:ktor-client-curl:_")
+      }
+    }
+    withName("mingwX64Main") {
+      dependencies {
+        implementation("io.ktor:ktor-client-curl:_")
+      }
+    }
+    withName("appleMain") {
+      dependencies {
+        implementation("io.ktor:ktor-client-darwin:_")
+      }
     }
   }
 }

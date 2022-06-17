@@ -1,13 +1,30 @@
+import util.sharedMainDependencies
+
 plugins {
-  id("plugin.library-mpp")
-  id("plugin.publishing-mpp")
+  kotlin("plugin.serialization")
+  id("convention.library-mpp")
+  id("convention.publishing-mpp")
 }
 
 description = "Kotlin multiplatform snapshot (klip) testing. Runtime dependency."
 
 kotlin {
   sourceSets {
-    val commonMain by getting { dependencies { api(kotlin("test")) } }
-    all { languageSettings { optIn("kotlin.contracts.ExperimentalContracts") } }
+    named("commonMain") {
+      dependencies {
+        api(project(":library:klip-api"))
+      }
+    }
+    sharedMainDependencies {
+      implementation("io.ktor:ktor-client-core:_")
+      implementation("io.ktor:ktor-serialization-kotlinx-json:_")
+      implementation("io.ktor:ktor-client-content-negotiation:_")
+    }
+
+    configureEach {
+      languageSettings {
+        optIn("kotlin.contracts.ExperimentalContracts")
+      }
+    }
   }
 }

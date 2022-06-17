@@ -1,8 +1,0 @@
-:::::>> KLIPS :::::>>
-:::::>>type=TEXT:::::>>sandbox.test.kotest.JvmAnnotationSpec.testOne#0:::::>>
-kotest zero
-:::::>>type=TEXT:::::>>sandbox.test.kotest.JvmAnnotationSpec.testOne#1:::::>>
-kotest one
-:::::>>type=TEXT:::::>>sandbox.test.kotest.JvmAnnotationSpec.testTwo#0:::::>>
-kotest 2
-:::::>>:::::>>:::::>>

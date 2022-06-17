@@ -1,0 +1,22 @@
+{
+    "sandbox.test.KlipTest.withoutReceiver#0": {
+        "data": "zero",
+        "attributes": {
+        }
+    },
+    "sandbox.test.KlipTest.withoutReceiver#1": {
+        "data": "one",
+        "attributes": {
+        }
+    },
+    "sandbox.test.KlipTest.withReceiver#0": {
+        "data": 0,
+        "attributes": {
+        }
+    },
+    "sandbox.test.KlipTest.withReceiver#1": {
+        "data": 1,
+        "attributes": {
+        }
+    }
+}

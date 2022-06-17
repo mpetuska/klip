@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.target.HostManager
+
 plugins {
   id("io.gitlab.arturbosch.detekt")
   id("convention.local-properties")
@@ -17,6 +19,10 @@ println(
   CI: $CI
   SANDBOX: $SANDBOX
   isMainHost: $isMainHost
+  ---
+  hostIsLinux: ${HostManager.hostIsLinux}
+  hostIsMac: ${HostManager.hostIsMac}
+  hostIsMingw: ${HostManager.hostIsMingw}
   """.trimIndent()
 )
 

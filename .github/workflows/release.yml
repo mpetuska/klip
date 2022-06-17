@@ -109,11 +109,12 @@ jobs:
       - uses: msys2/setup-msys2@v2
         if: ${{ matrix.repository.enabled == true && runner.os == 'Windows' }}
         with:
+          release: false
           msystem: MINGW64
           update: true
           path-type: inherit
           install: >-
-            mingw-w64-curl
+            mingw-w64-x86_64-curl
             curl
 
       - name: Restore native cache

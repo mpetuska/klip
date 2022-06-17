@@ -27,13 +27,13 @@ jobs:
         os:
           - runner: macos-latest
             shell: bash
-            separator: "/"
+            separator: '/'
           - runner: ubuntu-latest
             shell: bash
-            separator: "/"
+            separator: '/'
           - runner: windows-latest
             shell: msys2 {0}
-            separator: "\\"
+            separator: '\\'
     steps:
       - uses: msys2/setup-msys2@v2
         if: ${{ runner.os == 'Windows' }}
@@ -86,6 +86,7 @@ jobs:
         if: ${{ always() }}
         continue-on-error: true
         run: |
+          ls '${{ github.workspace }}${{ matrix.os.separator }}build${{ matrix.os.separator }}reports${{ matrix.os.separator }}detekt${{ matrix.os.separator }}
           cp '${{ github.workspace }}${{ matrix.os.separator }}build${{ matrix.os.separator }}reports${{ matrix.os.separator }}detekt${{ matrix.os.separator }}detekt.sarif' '${{ github.workspace }}${{ matrix.os.separator }}detekt.sarif.json'
           echo "$(
             jq --arg github_workspace ${{ github.workspace }} \
@@ -108,4 +109,4 @@ jobs:
         with:
           name: reports-${{ runner.os }}
           path: |
-            **/build/reports
+            **${{ matrix.os.separator }}build${{ matrix.os.separator }}reports

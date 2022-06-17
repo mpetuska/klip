@@ -27,7 +27,7 @@ publishing {
 tasks {
   val mainPluginSourceSets = { project(":plugin:klip-kotlin-plugin").sourceSets }
   fun Sync.registerSources(sourceSet: SourceSet, root: File) {
-    dependsOn(sourceSet)
+//    dependsOn(sourceSet)
     destinationDir = root
     from(sourceSet.allSource) {
       into("kotlin")
@@ -36,7 +36,6 @@ tasks {
         when (it) {
           "import org.jetbrains.kotlin.com.intellij.mock.MockProject" ->
             "import com.intellij.mock.MockProject"
-
           else -> it
         }
       }
@@ -48,6 +47,7 @@ tasks {
     registerSources(mainPluginSourceSets().main.get(), projectDir.resolve("src/main"))
   }
   named("compileKotlin") { dependsOn(syncSourceMain) }
+  named("processResources") { dependsOn(syncSourceMain) }
   named("clean") { doLast { projectDir.resolve("src").delete() } }
   withType<Detekt> { enabled = false }
 }

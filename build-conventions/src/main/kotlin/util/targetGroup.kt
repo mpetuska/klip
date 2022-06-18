@@ -5,7 +5,6 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 
@@ -32,29 +31,27 @@ fun NamedDomainObjectContainer<KotlinSourceSet>.withName(name: String, action: A
   matching { it.name == name }.all(action)
 }
 
-private fun NamedDomainObjectContainer<KotlinSourceSet>.sharedDependencies(
+private fun NamedDomainObjectContainer<KotlinSourceSet>.sharedSourceSets(
   sourceSets: List<String>,
-  action: Action<KotlinDependencyHandler>,
+  action: Action<KotlinSourceSet>,
 ) {
   sourceSets.forEach {
-    withName(it) {
-      dependencies { action.execute(this) }
-    }
+    withName(it, action)
   }
 }
 
-fun NamedDomainObjectContainer<KotlinSourceSet>.sharedMainDependencies(action: Action<KotlinDependencyHandler>) {
-  sharedDependencies(listOf("sharedMain", "androidMain"), action)
+fun NamedDomainObjectContainer<KotlinSourceSet>.sharedMain(action: Action<KotlinSourceSet>) {
+  sharedSourceSets(listOf("sharedMain", "androidMain"), action)
 }
 
-fun NamedDomainObjectContainer<KotlinSourceSet>.sharedTestDependencies(action: Action<KotlinDependencyHandler>) {
-  sharedDependencies(listOf("sharedTest", "androidTest"), action)
+fun NamedDomainObjectContainer<KotlinSourceSet>.sharedTest(action: Action<KotlinSourceSet>) {
+  sharedSourceSets(listOf("sharedTest", "androidTest"), action)
 }
 
-fun NamedDomainObjectContainer<KotlinSourceSet>.blockingMainDependencies(action: Action<KotlinDependencyHandler>) {
-  sharedDependencies(listOf("blockingMain", "androidMain"), action)
+fun NamedDomainObjectContainer<KotlinSourceSet>.blockingMain(action: Action<KotlinSourceSet>) {
+  sharedSourceSets(listOf("blockingMain", "androidMain"), action)
 }
 
-fun NamedDomainObjectContainer<KotlinSourceSet>.blockingTestDependencies(action: Action<KotlinDependencyHandler>) {
-  sharedDependencies(listOf("blockingTest", "androidTest"), action)
+fun NamedDomainObjectContainer<KotlinSourceSet>.blockingTest(action: Action<KotlinSourceSet>) {
+  sharedSourceSets(listOf("blockingTest", "androidTest"), action)
 }

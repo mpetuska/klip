@@ -15,12 +15,12 @@ kotlin {
       publications {
         matching { it.name in this@onlyPublishIf.names }.all {
           val targetPublication = this@all
-          tasks.withType<AbstractPublishToMaven>()
-            .matching { it.publication == targetPublication }
-            .all { onlyIf(enabled) }
-          tasks.withType<GenerateModuleMetadata>()
-            .matching { it.publication.orNull == targetPublication }
-            .all { onlyIf(enabled) }
+          tasks {
+            withType<AbstractPublishToMaven>()
+              .all { onlyIf { publication != targetPublication || enabled(this) } }
+            withType<GenerateModuleMetadata>()
+              .all { onlyIf { publication.orNull != targetPublication || enabled(this) } }
+          }
         }
       }
     }
@@ -32,11 +32,6 @@ kotlin {
   val osxHostTargets = nativeTargets.matching { it.konanTarget.buildHost == Family.OSX }
   val mainHostTargets = targets.matching { it !in nativeTargets }
   val androidTargets = targets.withType<KotlinAndroidTarget>()
-  logger.info("Linux host targets: $linuxHostTargets")
-  logger.info("OSX host targets: $osxHostTargets")
-  logger.info("Windows host targets: $windowsHostTargets")
-  logger.info("Main host targets: $mainHostTargets")
-  logger.info("Android targets: $androidTargets")
   val mpp = objects.domainObjectContainer(Named::class.java)
   mpp.add(Named { "kotlinMultiplatform" })
 

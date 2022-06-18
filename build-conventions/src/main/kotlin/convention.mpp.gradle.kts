@@ -1,4 +1,4 @@
-import util.sharedTestDependencies
+import util.sharedTest
 import util.targetGroup
 
 plugins {
@@ -70,10 +70,12 @@ kotlin {
         implementation(kotlin("test-annotations-common"))
       }
     }
-    sharedTestDependencies {
-//      implementation("io.kotest:kotest-assertions-core:_")
-//      implementation("io.kotest:kotest-property:_")
-      implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
+    sharedTest {
+      dependencies {
+        implementation("io.kotest:kotest-assertions-core:_")
+        implementation("io.kotest:kotest-property:_")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
+      }
     }
     named("jsTest") {
       dependencies {

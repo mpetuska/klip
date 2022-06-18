@@ -1,4 +1,4 @@
-import util.sharedMainDependencies
+import util.sharedMain
 
 plugins {
   id("convention.library-mpp")
@@ -9,8 +9,10 @@ description = "Kotlin multiplatform snapshot (klip) testing. Common test runner.
 
 kotlin {
   sourceSets {
-    sharedMainDependencies {
-      api("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
+    sharedMain {
+      dependencies {
+        api("org.jetbrains.kotlinx:kotlinx-coroutines-test:_")
+      }
     }
     named("stubMain") {
       dependencies {

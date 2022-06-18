@@ -1,4 +1,4 @@
-import util.sharedMainDependencies
+import util.sharedMain
 
 plugins {
   kotlin("plugin.serialization")
@@ -15,10 +15,12 @@ kotlin {
         api(project(":library:klip-api"))
       }
     }
-    sharedMainDependencies {
-      implementation("io.ktor:ktor-client-core:_")
-      implementation("io.ktor:ktor-serialization-kotlinx-json:_")
-      implementation("io.ktor:ktor-client-content-negotiation:_")
+    sharedMain {
+      dependencies {
+        implementation("io.ktor:ktor-client-core:_")
+        implementation("io.ktor:ktor-serialization-kotlinx-json:_")
+        implementation("io.ktor:ktor-client-content-negotiation:_")
+      }
     }
 
     configureEach {

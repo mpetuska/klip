@@ -1,6 +1,7 @@
 import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
+  kotlin("jvm")
   id("convention.publishing-jvm")
 }
 

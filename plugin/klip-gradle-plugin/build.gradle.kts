@@ -1,4 +1,7 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
+  kotlin("jvm")
   id("com.gradle.plugin-publish")
   `java-gradle-plugin`
   id("convention.publishing-jvm")
@@ -24,12 +27,18 @@ pluginBundle {
   tags = listOf("multiplatform", "test", "kotlin", "snapshots")
 }
 
+configurations.all {
+  resolutionStrategy {
+    force("org.jetbrains.kotlin:kotlin-stdlib:$embeddedKotlinVersion")
+  }
+}
+
 kotlin {
   sourceSets {
     main {
       dependencies {
+        compileOnly(kotlin("stdlib"))
         compileOnly(kotlin("gradle-plugin-api"))
-        api("dev.petuska:container-tasks-gradle-plugin:_")
         implementation("io.ktor:ktor-server-cio:_")
         implementation("io.ktor:ktor-server-cors:_")
         implementation("io.ktor:ktor-server-content-negotiation:_")
@@ -48,4 +57,12 @@ kotlin {
 
 java {
   withSourcesJar()
+}
+
+tasks {
+  withType<KotlinCompile> {
+    kotlinOptions {
+      languageVersion = "1.4"
+    }
+  }
 }

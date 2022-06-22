@@ -45,17 +45,17 @@ fun control(targets: NamedDomainObjectCollection<KotlinTarget>) {
   val osxHostTargets = nativeTargets.matching { it.konanTarget.buildHost == Family.OSX }
   val mainHostTargets = targets.matching { it !in nativeTargets }
   linuxHostTargets.onlyBuildIf {
-    val enabled = !CI || SANDBOX || HostManager.hostIsLinux
+    val enabled = HostManager.hostIsLinux
     printlnCI("[${it.name}] ${!CI} || $SANDBOX || ${HostManager.hostIsLinux} = $enabled")
     enabled
   }
   osxHostTargets.onlyBuildIf {
-    val enabled = !CI || SANDBOX || HostManager.hostIsMac
+    val enabled = HostManager.hostIsMac
     printlnCI("[${it.name}] ${!CI} || $SANDBOX || ${HostManager.hostIsMac} = $enabled")
     enabled
   }
   windowsHostTargets.onlyBuildIf {
-    val enabled = !CI || SANDBOX || HostManager.hostIsMingw
+    val enabled = HostManager.hostIsMingw
     printlnCI("[${it.name}] ${!CI} || $SANDBOX || ${HostManager.hostIsMingw} = $enabled")
     enabled
   }

@@ -47,7 +47,7 @@ class KlippableFnIrTransformer(
 
   override fun lower(irFile: IrFile) {
     val filePath = File(irFile.path)
-    klipPath = filePath.parentFile.resolve("__klips__/${filePath.name}.json").canonicalPath
+    klipPath = filePath.parentFile.resolve("__klips__/${filePath.name}.klip.json").canonicalPath
     index = 0
     scope = null
     scopeName = null

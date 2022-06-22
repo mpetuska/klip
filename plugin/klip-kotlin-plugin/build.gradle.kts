@@ -1,4 +1,5 @@
 plugins {
+  kotlin("jvm")
   id("convention.publishing-jvm")
   id("convention.build-konfig")
 }

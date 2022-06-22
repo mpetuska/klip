@@ -2,7 +2,8 @@ import util.withName
 
 plugins {
   id("convention.library-mpp")
-  id("dev.petuska.klip") version "0.4.0"
+  id("convention.control")
+  id("dev.petuska.klip") version "0.4.1-SNAPSHOT"
 }
 
 gradleEnterprise {
@@ -18,7 +19,6 @@ repositories {
 
 klip {
   debug.set(true)
-  update.set(false)
 }
 
 kotlin {

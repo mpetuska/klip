@@ -1,0 +1,24 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:dev.petuska.klip.assertions//assertKlipBlocking/TypeParam(bounds=[kotlin.Any?])#/PointingToDeclaration/klip-assertions/dev.petuska.klip.assertions/[blocking]assert-klip-blocking.html
+$dokka.location:dev.petuska.klip.assertions//assertKlipBlocking/TypeParam(bounds=[kotlin.Any?])#dev.petuska.klip.api.KlipContext/PointingToDeclaration/klip-assertions/dev.petuska.klip.assertions/[blocking]assert-klip-blocking.html
+$dokka.location:dev.petuska.klip.assertions//assertMatchesKlipBlocking/#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/klip-assertions/dev.petuska.klip.assertions/[blocking]assert-matches-klip-blocking.html
+$dokka.location:dev.petuska.klip.assertions//assertMatchesKlipBlocking/#dev.petuska.klip.api.KlipContext#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/klip-assertions/dev.petuska.klip.assertions/[blocking]assert-matches-klip-blocking.html
+module:klip-api
+dev.petuska.klip.api
+module:klip-assertions
+dev.petuska.klip.assertions
+module:klip-core
+dev.petuska.klip.core
+dev.petuska.klip.core.domain
+module:klip-runner
+dev.petuska.klip.runner
+module:klip-gradle-plugin
+dev.petuska.klip.plugin
+dev.petuska.klip.plugin.server
+dev.petuska.klip.plugin.task
+dev.petuska.klip.plugin.util
+module:klip-kotlin-plugin
+dev.petuska.klip.plugin
+dev.petuska.klip.plugin.transformer
+dev.petuska.klip.plugin.util

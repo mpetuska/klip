@@ -3,7 +3,7 @@ import util.withName
 plugins {
   id("convention.library-mpp")
   id("convention.control")
-  id("dev.petuska.klip") version "0.4.1-SNAPSHOT"
+  id("dev.petuska.klip") version "0.4.1"
 }
 
 gradleEnterprise {
